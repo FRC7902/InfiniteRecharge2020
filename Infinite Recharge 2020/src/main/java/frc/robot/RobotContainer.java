@@ -8,11 +8,18 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import frc.robot.subsystems.*;
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -25,14 +32,53 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
+  //Declaring Subsystems
+  public static DriveSubsystem driveSubsystem = new DriveSubsystem();
+
+  //Declaring Joysticks
+  XboxController driverStick = new XboxController(0);
 
 
+  public XboxController getDriverStick(){
+    return driverStick;
+  }
+
+  //Autonomous Routines
+
+  //Auto #1
+  private final Command auto1 = new StartEndCommand(
+    //start driving forward at the start of the command
+    () -> driveSubsystem.driveRaw(0.5, 0.5),
+    //Stop driving at the end of the command
+    () -> driveSubsystem.stop(),
+    //Requires drive subsystem
+    driveSubsystem)
+    //Times out after 1 second
+    .withTimeout(1);
+
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
+  
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
+    driveSubsystem.setDefaultCommand(
+      //The Arcade command
+      new RunCommand(() -> driveSubsystem
+        .driveJoystick(driverStick.getY(GenericHID.Hand.kLeft), 
+                       driverStick.getX(GenericHID.Hand.kRight)), 
+        driveSubsystem));
+
+    //Add Commands to the autonomous command chooser
+    m_chooser.addOption("Auto1", auto1);
+
+    //m_chooser.setDefaultOption("Auto1", auto1);
+
+    //Put the Chooser on Dashboard
+    Shuffleboard.getTab("Autonomous").add(m_chooser);
   }
 
   /**
@@ -42,6 +88,10 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    //When right bumper is pressed, halves top speed
+    new JoystickButton(driverStick, Button.kBumperRight.value)
+      .whenPressed(() -> driveSubsystem.setMaxOutput(0.5))
+      .whenReleased(() -> driveSubsystem.setMaxOutput(1));
   }
 
 
@@ -52,6 +102,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return m_chooser.getSelected();
   }
 }
