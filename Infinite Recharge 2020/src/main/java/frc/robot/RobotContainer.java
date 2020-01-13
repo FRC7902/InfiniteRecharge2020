@@ -8,8 +8,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -27,13 +27,16 @@ import frc.robot.subsystems.*;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
   //Declaring Subsystems
   public static DriveSubsystem driveSubsystem = new DriveSubsystem();
+
+  //Declaring Command
+  public static DriveCommand driveCommand = new DriveCommand(driveSubsystem);
 
   //Declaring Joysticks
   XboxController driverStick = new XboxController(0);
@@ -56,10 +59,13 @@ public class RobotContainer {
     //Times out after 1 second
     .withTimeout(1);
 
+  /**
+   * This is the dropbox that will display all the auto functions
+   */
   SendableChooser<Command> m_chooser = new SendableChooser<>();
   
   /**
-   * The container for the robot.  Contains subsystems, OI devices, and commands.
+   * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
@@ -72,6 +78,8 @@ public class RobotContainer {
                        driverStick.getX(GenericHID.Hand.kRight)), 
         driveSubsystem));
 
+
+    // new RunCommand(() -> driveSubsystem.driveJoystick(driver, rightX); ), requirements)
     //Add Commands to the autonomous command chooser
     m_chooser.addOption("Auto1", auto1);
 
@@ -88,7 +96,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    //When right bumper is pressed, halves top speed
+    // (Example) When right bumper is pressed, halves top speed
     new JoystickButton(driverStick, Button.kBumperRight.value)
       .whenPressed(() -> driveSubsystem.setMaxOutput(0.5))
       .whenReleased(() -> driveSubsystem.setMaxOutput(1));

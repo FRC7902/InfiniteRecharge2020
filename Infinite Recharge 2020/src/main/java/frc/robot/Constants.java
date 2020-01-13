@@ -20,29 +20,6 @@ package frc.robot;
 
 public final class Constants {
 
-  // Joystick - Button
-  public static final int A = 1,
-                          B = 2,
-                          X = 3,
-                          Y = 4,
-                          LB = 5, // Bumper
-                          RB = 6, // Bumper
-                          M = 7, // menu
-                          S = 8, // start
-                          LA = 9, // Press Left axis
-                          RA = 10; // Press right axis
-
-  // Joystick - Axis
-  public static final int LX = 1,
-                          LY = 2,
-                          LT = 3, // Tigger
-                          RT = 4, // Tigger
-                          RX = 5,
-                          RY = 6, 
-                          PX = 7, // D-Pad
-                          PY = 8; // D-Pad
-
   public static final double kDriveSpeedLimiter = 0.6;
   public static final double kDriveFBSpeed = 1;
-  public static final double kDriveTurnSpeed = 0.75;
 }

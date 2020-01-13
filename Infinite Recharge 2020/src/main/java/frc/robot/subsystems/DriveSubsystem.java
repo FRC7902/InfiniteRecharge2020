@@ -11,23 +11,24 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class DriveSubsystem extends SubsystemBase {
+
   /**
    * Creates a new DriveSubsystem.
    */
-
   public WPI_VictorSPX frontRight = new WPI_VictorSPX(1);
   public WPI_VictorSPX frontLeft = new WPI_VictorSPX(2);
   public WPI_VictorSPX backRight = new WPI_VictorSPX(3);
   public WPI_VictorSPX backLeft = new WPI_VictorSPX(4);
 
+  /**
+   * Creates SpeedControllers
+   */
   SpeedController leftSide = new SpeedControllerGroup(frontLeft, backLeft);
   SpeedController rightSide = new SpeedControllerGroup(frontRight, backRight);
 
@@ -43,30 +44,49 @@ public class DriveSubsystem extends SubsystemBase {
     drive = new DifferentialDrive(leftSide, rightSide);
   }
 
+  /**
+   * Sets the speed of the robot on both sides. Recommended method to use.
+   * @param leftY
+   * Left Side
+   * @param rightX
+   * Right Side
+   */
   public void driveJoystick(double leftY, double rightX){
-    leftSide.set((-leftY*Constants.kDriveFBSpeed-rightX*Constants.kDriveTurnSpeed)*Constants.kDriveSpeedLimiter);
-    rightSide.set((-leftY*Constants.kDriveFBSpeed+rightX*Constants.kDriveTurnSpeed)*Constants.kDriveSpeedLimiter);
+    leftSide.set((-leftY*Constants.kDriveFBSpeed)*Constants.kDriveSpeedLimiter);
+    rightSide.set((-rightX*Constants.kDriveFBSpeed)*Constants.kDriveSpeedLimiter);
   }
 
+  /**
+   * Sets the speed of the robot on both sides. Use {@link driveJoystick} instead.
+   * @param leftSpeed
+   * @param rightSpeed
+   */
   public void driveRaw(double leftSpeed, double rightSpeed){
     leftSide.set(leftSpeed);
     rightSide.set(rightSpeed);
   }
 
+  /**
+   * Stops motors
+   */
   public void stop(){
     drive.stopMotor();
   }
 
+  /**
+   * Set max output 
+   */
   public void setMaxOutput(double maxOutput){
     drive.setMaxOutput(maxOutput);
   }
+
+  /**
+   * This method will be called once per scheduler run
+   */
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-
-    //Put up the speeds
+    // Put up the speeds
     SmartDashboard.putNumber("Left Drive Speed", leftSide.get());
     SmartDashboard.putNumber("Right Drive Speed", rightSide.get());
-
   }
 }

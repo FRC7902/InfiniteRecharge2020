@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatchResult;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.ColorMatch;
 
 
@@ -24,7 +23,8 @@ import com.revrobotics.ColorMatch;
  * detect pre-configured colors.
  */
 public class Robot extends TimedRobot {
-  
+
+  // TODO
   private Command m_autonomousCommand;
   private RobotContainer m_robotContainer;
 
@@ -32,9 +32,6 @@ public class Robot extends TimedRobot {
    * Change the I2C port below to match the connection of your color sensor
    */
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
-
-  private final WPI_VictorSPX m = new WPI_VictorSPX(1);
-  private final WPI_VictorSPX m2 = new WPI_VictorSPX(2);
 
   /**
    * A Rev Color Sensor V3 object is constructed with an I2C port as a 
@@ -53,8 +50,7 @@ public class Robot extends TimedRobot {
   private final ColorMatch m_colorMatcher = new ColorMatch();
 
   /**
-   * Note: Any example colors should be calibrated as the user needs, these
-   * are here as a basic example.
+   * The colours of the wheel of misfortune
    */
   private final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
   private final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
@@ -67,51 +63,34 @@ public class Robot extends TimedRobot {
     m_colorMatcher.addColorMatch(kGreenTarget);
     m_colorMatcher.addColorMatch(kRedTarget);
     m_colorMatcher.addColorMatch(kYellowTarget);    
-
-    m2.setInverted(true);
-    m.setInverted(false);
   }
 
   @Override
   public void robotPeriodic() {
     /**
-     * The method GetColor() returns a normalized color value from the sensor and can be
-     * useful if outputting the color to an RGB LED or similar. To
-     * read the raw color, use GetRawColor().
-     * 
-     * The color sensor works best when within a few inches from an object in
-     * well lit conditions (the built in LED is a big help here!). The farther
-     * an object is the more light from the surroundings will bleed into the 
-     * measurements and make it difficult to accurately determine its color.
+     * This gets the color sensed from the sensor
      */
     Color detectedColor = m_colorSensor.getColor();
 
     /**
      * Run the color match algorithm on our detected color
      */
-    String colorString;
+    String colorString = "N/A";
     ColorMatchResult match = m_colorMatcher.matchClosestColor(detectedColor);
 
-    if (match.color == kBlueTarget) {
-      colorString = "Blue";
-      m.stopMotor();
-      m2.stopMotor();
-    } else if (match.color == kRedTarget) {
-      colorString = "Red";
-      m.stopMotor();
-      m2.stopMotor();
-    } else if (match.color == kGreenTarget) {
-      m.stopMotor();
-      m2.stopMotor();
-      colorString = "Green";
-    } else if (match.color == kYellowTarget) {
-      colorString = "Yellow";
-      m.set(1);
-      m2.set(1);
-    } else {
-      colorString = "Unknown";
-      m.stopMotor();
-      m2.stopMotor();
+    // Test for colour
+    if(match.confidence > 0.8) {
+      if (match.color == kBlueTarget) {
+        colorString = "Blue";
+      } else if (match.color == kRedTarget) {
+        colorString = "Red";
+      } else if (match.color == kGreenTarget) {
+        colorString = "Green";
+      } else if (match.color == kYellowTarget) {
+        colorString = "Yellow";
+      } else {
+        colorString = "Unknown";
+      }
     }
 
     /**
