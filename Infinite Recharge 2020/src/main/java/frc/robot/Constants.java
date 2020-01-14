@@ -15,6 +15,9 @@ package frc.robot;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
+
+ //Drive Values
+
 public final class Constants {
 
   // Joystick - Button
@@ -39,4 +42,7 @@ public final class Constants {
                           PX = 7, // D-Pad
                           PY = 8; // D-Pad
 
+  public static final double kDriveSpeedLimiter = 0.6;
+  public static final double kDriveFBSpeed = 1;
+  public static final double kDriveTurnSpeed = 0.75;
 }

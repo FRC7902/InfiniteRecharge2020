@@ -11,17 +11,23 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj2.command.Command;
 
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatchResult;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.ColorMatch;
 
+
 /**
  * This is a simple example to show how the REV Color Sensor V3 can be used to
  * detect pre-configured colors.
  */
 public class Robot extends TimedRobot {
+  
+  private Command m_autonomousCommand;
+  private RobotContainer m_robotContainer;
+
   /**
    * Change the I2C port below to match the connection of your color sensor
    */
