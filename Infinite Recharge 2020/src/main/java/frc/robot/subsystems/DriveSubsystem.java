@@ -21,10 +21,12 @@ public class DriveSubsystem extends SubsystemBase {
   /**
    * Creates a new DriveSubsystem.
    */
-  public WPI_VictorSPX frontRight = new WPI_VictorSPX(1);
+  public WPI_VictorSPX frontRight = new WPI_VictorSPX(4);
   public WPI_VictorSPX frontLeft = new WPI_VictorSPX(2);
   public WPI_VictorSPX backRight = new WPI_VictorSPX(3);
-  public WPI_VictorSPX backLeft = new WPI_VictorSPX(4);
+  public WPI_VictorSPX backLeft = new WPI_VictorSPX(1);
+
+  public static double turnSpeed = 0;
 
   /**
    * Creates SpeedControllers
@@ -52,8 +54,10 @@ public class DriveSubsystem extends SubsystemBase {
    * Right Side
    */
   public void driveJoystick(double leftY, double rightX){
-    leftSide.set((-leftY*Constants.kDriveFBSpeed)*Constants.kDriveSpeedLimiter);
-    rightSide.set((-rightX*Constants.kDriveFBSpeed)*Constants.kDriveSpeedLimiter);
+    leftSide.set((leftY*Constants.kDriveFBSpeed)*Constants.kDriveSpeedLimiter-rightX*Constants.kDriveTurn);
+    rightSide.set((leftY*Constants.kDriveFBSpeed)*Constants.kDriveSpeedLimiter+rightX*Constants.kDriveTurn);
+    turnSpeed = rightX*Constants.kDriveTurn;
+    broadcastSpeed();
   }
 
   /**
@@ -64,6 +68,12 @@ public class DriveSubsystem extends SubsystemBase {
   public void driveRaw(double leftSpeed, double rightSpeed){
     leftSide.set(leftSpeed);
     rightSide.set(rightSpeed);
+    broadcastSpeed();
+  }
+
+  private void broadcastSpeed() {
+    SmartDashboard.putNumber("Speed", leftSide.get());
+    SmartDashboard.putNumber("Turn Speed", turnSpeed);
   }
 
   /**
@@ -86,7 +96,7 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // Put up the speeds
-    SmartDashboard.putNumber("Left Drive Speed", leftSide.get());
-    SmartDashboard.putNumber("Right Drive Speed", rightSide.get());
+    SmartDashboard.putNumber("Drive Speed", leftSide.get());
+    SmartDashboard.putNumber("Turn Speed", turnSpeed);
   }
 }

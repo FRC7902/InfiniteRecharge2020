@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class DriveCommand extends CommandBase {
@@ -33,7 +34,7 @@ public class DriveCommand extends CommandBase {
   @Override
   public void execute() {
     // TODO
-    driveSub.driveJoystick(0, 0);
+    driveSub.driveJoystick(RobotContainer.getJS().getRawAxis(1), RobotContainer.getJS().getRawAxis(5));
   }
 
   // Called once the command ends or is interrupted.

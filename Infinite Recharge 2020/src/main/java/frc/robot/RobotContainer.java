@@ -8,15 +8,14 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
+//import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.subsystems.*;
@@ -38,12 +37,11 @@ public class RobotContainer {
   //Declaring Command
   public static DriveCommand driveCommand = new DriveCommand(driveSubsystem);
 
-  //Declaring Joysticks
-  XboxController driverStick = new XboxController(0);
+  // Joystick
+  private static Joystick js = new Joystick(0);
 
-
-  public XboxController getDriverStick(){
-    return driverStick;
+  public static Joystick getJS() {
+    return js;
   }
 
   //Autonomous Routines
@@ -71,12 +69,13 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    driveSubsystem.setDefaultCommand(
-      //The Arcade command
-      new RunCommand(() -> driveSubsystem
-        .driveJoystick(driverStick.getY(GenericHID.Hand.kLeft), 
-                       driverStick.getX(GenericHID.Hand.kRight)), 
-        driveSubsystem));
+    driveSubsystem.setDefaultCommand(driveCommand
+      /* TEST
+      //The Tank command
+      new RunCommand(() -> 
+        driveSubsystem.driveJoystick(js.getRawAxis(1), 
+                                     js.getRawAxis(5)), 
+        driveSubsystem)*/);
 
 
     // new RunCommand(() -> driveSubsystem.driveJoystick(driver, rightX); ), requirements)
@@ -90,16 +89,13 @@ public class RobotContainer {
   }
 
   /**
-   * Use this method to define your button->command mappings.  Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
+   * Use this method to define your bu  Buttons can be created by
+   * instantiating a {@link GenericHID} or one of its subclatton->command mappings.sses ({@link
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // (Example) When right bumper is pressed, halves top speed
-    new JoystickButton(driverStick, Button.kBumperRight.value)
-      .whenPressed(() -> driveSubsystem.setMaxOutput(0.5))
-      .whenReleased(() -> driveSubsystem.setMaxOutput(1));
+    
   }
 
 

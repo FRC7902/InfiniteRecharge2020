@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatchResult;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.ColorMatch;
 
 
@@ -59,11 +60,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+    m_robotContainer = new RobotContainer();
     m_colorMatcher.addColorMatch(kBlueTarget);
     m_colorMatcher.addColorMatch(kGreenTarget);
     m_colorMatcher.addColorMatch(kRedTarget);
     m_colorMatcher.addColorMatch(kYellowTarget);    
   }
+
+  public WPI_VictorSPX f = new WPI_VictorSPX(1);
 
   @Override
   public void robotPeriodic() {
@@ -91,7 +95,16 @@ public class Robot extends TimedRobot {
       } else {
         colorString = "Unknown";
       }
+
+      if(RobotContainer.getJS().getRawButton(Constants.B)) {
+        RobotContainer.driveSubsystem.stop();
+      }
+
+      //RobotContainer.driveSubsystem.driveRaw(RobotContainer.getJS().getRawAxis(1), RobotContainer.getJS().getRawAxis(5));
+      RobotContainer.driveSubsystem.driveJoystick(RobotContainer.getJS().getRawAxis(1), RobotContainer.getJS().getRawAxis(4));
     }
+
+
 
     /**
      * Open Smart Dashboard or Shuffleboard to see the color detected by the 
