@@ -39,9 +39,9 @@ public class RobotContainer {
   //Auto #1
   private final Command auto1 = new StartEndCommand(
     //start driving forward at the start of the command
-    () -> driveSubsystem.driveRaw(0.5, 0.5),
+    () -> driveSubsystem.driveRaw(1, 1),
     //Stop driving at the end of the command
-    () -> driveSubsystem.stop(),
+    () -> driveSubsystem.driveRaw(0.1, 0.1),
     //Requires drive subsystem
     driveSubsystem)
     //Times out after 1 second
