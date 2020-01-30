@@ -33,14 +33,14 @@ public final class Constants {
                           RA = 10; // Press right axis
 
   // Joystick - Axis
-  public static final int LX = 1,
-                          LY = 2,
-                          LT = 3, // Tigger
-                          RT = 4, // Tigger
-                          RX = 5,
-                          RY = 6, 
-                          PX = 7, // D-Pad
-                          PY = 8; // D-Pad
+  public static final int LX = 0,
+                          LY = 1,
+                          LT = 2, // Tigger
+                          RT = 3, // Tigger
+                          RX = 4,
+                          RY = 5, 
+                          PX = 6, // D-Pad
+                          PY = 7; // D-Pad
 
   public static final double kDriveSpeedLimiter = 0.7;
   public static final double kDriveFBSpeed = 1;

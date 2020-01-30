@@ -9,13 +9,10 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.DriveCommand;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-//import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.subsystems.*;
@@ -26,22 +23,15 @@ import frc.robot.subsystems.*;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-
-  //Declaring Subsystems
   public static DriveSubsystem driveSubsystem = new DriveSubsystem();
 
-  //Declaring Command
-  public static DriveCommand driveCommand = new DriveCommand(driveSubsystem);
+  //Declaring Joysticks
+  private static Joystick driverStick = new Joystick(0);
 
-  // Joystick
-  private static Joystick js = new Joystick(0);
-
-  public static Joystick getJS() {
-    return js;
+  //Access to Joysticks
+  public static Joystick getJS(){
+    return driverStick;
   }
 
   //Autonomous Routines
@@ -57,30 +47,24 @@ public class RobotContainer {
     //Times out after 1 second
     .withTimeout(1);
 
-  /**
-   * This is the dropbox that will display all the auto functions
-   */
   SendableChooser<Command> m_chooser = new SendableChooser<>();
   
   /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
+   * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
 
-    driveSubsystem.setDefaultCommand(driveCommand
-      /* TEST
-      //The Tank command
-      new RunCommand(() -> 
-        driveSubsystem.driveJoystick(js.getRawAxis(1), 
-                                     js.getRawAxis(5)), 
-        driveSubsystem)*/);
+    driveSubsystem.setDefaultCommand(
+      //The Arcade command
+      new RunCommand(() -> driveSubsystem
+        .driveJoystick(driverStick.getRawAxis(Constants.LY), 
+                       driverStick.getRawAxis(Constants.RX)), 
+        driveSubsystem));
 
-
-    // new RunCommand(() -> driveSubsystem.driveJoystick(driver, rightX); ), requirements)
     //Add Commands to the autonomous command chooser
-    m_chooser.addOption("Auto1", auto1);
+    m_chooser.setDefaultOption("Auto1", auto1);
 
     //m_chooser.setDefaultOption("Auto1", auto1);
 
@@ -89,13 +73,16 @@ public class RobotContainer {
   }
 
   /**
-   * Use this method to define your bu  Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclatton->command mappings.sses ({@link
+   * Use this method to define your button->command mappings.  Buttons can be created by
+   * instantiating a {@link GenericHID} or one of its subclasses ({@link
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    
+    //When right bumper is pressed, halves top speed
+    new JoystickButton(driverStick, Constants.RB)
+      .whenPressed(() -> driveSubsystem.setMaxOutput(0.5))
+      .whenReleased(() -> driveSubsystem.setMaxOutput(1));
   }
 
 
