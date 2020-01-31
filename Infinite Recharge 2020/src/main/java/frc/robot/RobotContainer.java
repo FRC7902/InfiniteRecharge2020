@@ -41,7 +41,7 @@ public class RobotContainer {
     //start driving forward at the start of the command
     () -> driveSubsystem.driveRaw(1, 1),
     //Stop driving at the end of the command
-    () -> driveSubsystem.driveRaw(0.1, 0.1),
+    () -> driveSubsystem.stop(),
     //Requires drive subsystem
     driveSubsystem)
     //Times out after 1 second
