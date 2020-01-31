@@ -44,9 +44,9 @@ public class RobotContainer {
     //Stop driving at the end of the command
     () -> driveSubsystem.stop(),
     //Requires drive subsystem
-    driveSubsystem)
+    driveSubsystem);
     //Times out after 1 second
-    .withTimeout(1);
+    //.withTimeout(1);
 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
   
