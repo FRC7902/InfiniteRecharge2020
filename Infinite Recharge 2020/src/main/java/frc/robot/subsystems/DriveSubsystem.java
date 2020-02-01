@@ -68,7 +68,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void driveRaw(double leftSpeed, double rightSpeed){
     leftSide.set(leftSpeed);
     rightSide.set(rightSpeed);
-    broadcastSpeed();
+    //broadcastSpeed();
   }
 
   private void broadcastSpeed() {
