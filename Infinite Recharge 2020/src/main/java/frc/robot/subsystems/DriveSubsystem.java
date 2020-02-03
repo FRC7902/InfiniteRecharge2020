@@ -38,10 +38,11 @@ public class DriveSubsystem extends SubsystemBase {
 
   public DriveSubsystem() {
     // if a motor is inverted, switch the boolean
-    frontRight.setInverted(false);
-    frontLeft.setInverted(true);
-    backRight.setInverted(false);
-    backLeft.setInverted(true);
+    // frontRight.setInverted(false);
+    // frontLeft.setInverted(true);
+    // backRight.setInverted(false);
+    // backLeft.setInverted(true);
+    rightSide.setInverted(true);
     // drive is a new DifferentialDrive
     drive = new DifferentialDrive(leftSide, rightSide);
   }
@@ -54,12 +55,16 @@ public class DriveSubsystem extends SubsystemBase {
    * Right Side
    */
   public void driveJoystick(double leftY, double rightX){
-    leftSide.set((leftY*Constants.kDriveFBSpeed)*Constants.kDriveSpeedLimiter-rightX*Constants.kDriveTurn);
-    rightSide.set((leftY*Constants.kDriveFBSpeed)*Constants.kDriveSpeedLimiter+rightX*Constants.kDriveTurn);
-    turnSpeed = rightX*Constants.kDriveTurn;
-    broadcastSpeed();
+    drive.arcadeDrive(rightX, leftY);
+    // leftSide.set((leftY*Constants.kDriveFBSpeed)*Constants.kDriveSpeedLimiter-rightX*Constants.kDriveTurn);
+    // rightSide.set((leftY*Constants.kDriveFBSpeed)*Constants.kDriveSpeedLimiter+rightX*Constants.kDriveTurn);
+    // turnSpeed = rightX*Constants.kDriveTurn;
+    // broadcastSpeed();
   }
 
+  public void testPrint(String text){
+    System.out.println(text);
+  }
   /**
    * Sets the speed of the robot on both sides. Use {@link driveJoystick} instead.
    * @param leftSpeed
@@ -88,6 +93,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void setMaxOutput(double maxOutput){
     drive.setMaxOutput(maxOutput);
+    SmartDashboard.putBoolean("Halved", true);
   }
 
   /**
@@ -96,7 +102,11 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // Put up the speeds
-    SmartDashboard.putNumber("Drive Speed", leftSide.get());
-    SmartDashboard.putNumber("Turn Speed", turnSpeed);
+    // SmartDashboard.putNumber("Drive Speed", leftSide.get()); //kinda problematic but not gonna change that
+    //SmartDashboard.putNumber("Turn Speed", turnSpeed);
+
+    SmartDashboard.putNumber("Left Speed", leftSide.get());
+    SmartDashboard.putNumber("Right Speed", rightSide.get());
+    //testPrint("e");
   }
 }

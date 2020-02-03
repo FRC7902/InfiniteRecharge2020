@@ -44,5 +44,5 @@ public final class Constants {
 
   public static final double kDriveSpeedLimiter = 0.7;
   public static final double kDriveFBSpeed = 1;
-  public static final double kDriveTurn = 0.5;
+  public static final double kDriveTurn = 0.9;
 }

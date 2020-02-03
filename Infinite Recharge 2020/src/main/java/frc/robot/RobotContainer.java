@@ -5,7 +5,6 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
@@ -16,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import frc.robot.commands.AutonomousSequence;
 import frc.robot.subsystems.*;
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -38,16 +38,22 @@ public class RobotContainer {
   //Autonomous Routines
 
   //Auto #1
-  private final Command auto1 = new StartEndCommand(
+  private final Command auto1 = new RunCommand(
     //start driving forward at the start of the command
-    () -> driveSubsystem.driveRaw(1, 1),
+    () -> driveSubsystem.driveRaw(0.5, 0.5),
     //Stop driving at the end of the command
-    () -> driveSubsystem.stop(),
+    // () -> driveSubsystem.stop(),
     //Requires drive subsystem
     driveSubsystem)
     //Times out after 1 second
     .withTimeout(1);
 
+  public final Command auto2 = new RunCommand(
+    () -> driveSubsystem.testPrint("Forward"),
+    driveSubsystem)
+    .withTimeout(3);
+  
+  private final Command autonomousSequence = new AutonomousSequence(driveSubsystem);
   SendableChooser<Command> m_chooser = new SendableChooser<>();
   
   /**
@@ -60,13 +66,14 @@ public class RobotContainer {
     driveSubsystem.setDefaultCommand(
       //The Arcade command
       new RunCommand(() -> driveSubsystem
-        .driveJoystick(driverStick.getRawAxis(Constants.LY), 
-                       driverStick.getRawAxis(Constants.RX)), 
+        .driveJoystick(-driverStick.getRawAxis(Constants.LY)*Constants.kDriveFBSpeed*Constants.kDriveSpeedLimiter, 
+                       driverStick.getRawAxis(Constants.RX)*Constants.kDriveTurn*Constants.kDriveSpeedLimiter), 
         driveSubsystem));
 
     //Add Commands to the autonomous command chooser
-    m_chooser.setDefaultOption("Auto1", auto1);
-
+    m_chooser.setDefaultOption("THE AUTO", autonomousSequence);
+    m_chooser.addOption("Auto2", auto2);
+    m_chooser.addOption("Auto1", auto1);
     //m_chooser.setDefaultOption("Auto1", auto1);
 
     //Put the Chooser on Dashboard
