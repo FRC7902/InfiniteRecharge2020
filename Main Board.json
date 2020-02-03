@@ -89,18 +89,6 @@
           }
         }
       }
-    },
-    {
-      "title": "THE DASHBOARD",
-      "autoPopulate": true,
-      "autoPopulatePrefix": "RawBoxes/",
-      "widgetPane": {
-        "gridSize": 128.0,
-        "showGrid": false,
-        "hgap": 16.0,
-        "vgap": 16.0,
-        "tiles": {}
-      }
     }
   ],
   "windowGeometry": {
