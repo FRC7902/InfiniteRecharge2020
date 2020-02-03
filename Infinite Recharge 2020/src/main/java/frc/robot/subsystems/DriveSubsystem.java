@@ -9,9 +9,11 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
+import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -61,10 +63,6 @@ public class DriveSubsystem extends SubsystemBase {
     // turnSpeed = rightX*Constants.kDriveTurn;
     // broadcastSpeed();
   }
-
-  public void testPrint(String text){
-    System.out.println(text);
-  }
   /**
    * Sets the speed of the robot on both sides. Use {@link driveJoystick} instead.
    * @param leftSpeed
@@ -76,10 +74,6 @@ public class DriveSubsystem extends SubsystemBase {
     //broadcastSpeed();
   }
 
-  private void broadcastSpeed() {
-    SmartDashboard.putNumber("Speed", leftSide.get());
-    SmartDashboard.putNumber("Turn Speed", turnSpeed);
-  }
 
   /**
    * Stops motors
@@ -93,9 +87,8 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void setMaxOutput(double maxOutput){
     drive.setMaxOutput(maxOutput);
-    SmartDashboard.putBoolean("Halved", true);
+    //SmartDashboard.putBoolean("Halved", true);
   }
-
   /**
    * This method will be called once per scheduler run
    */
@@ -107,6 +100,5 @@ public class DriveSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("Left Speed", leftSide.get());
     SmartDashboard.putNumber("Right Speed", rightSide.get());
-    //testPrint("e");
   }
 }

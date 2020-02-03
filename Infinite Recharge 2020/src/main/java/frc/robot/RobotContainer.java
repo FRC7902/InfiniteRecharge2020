@@ -48,11 +48,6 @@ public class RobotContainer {
     //Times out after 1 second
     .withTimeout(1);
 
-  public final Command auto2 = new RunCommand(
-    () -> driveSubsystem.testPrint("Forward"),
-    driveSubsystem)
-    .withTimeout(3);
-  
   private final Command autonomousSequence = new AutonomousSequence(driveSubsystem);
   SendableChooser<Command> m_chooser = new SendableChooser<>();
   
@@ -72,7 +67,6 @@ public class RobotContainer {
 
     //Add Commands to the autonomous command chooser
     m_chooser.setDefaultOption("THE AUTO", autonomousSequence);
-    m_chooser.addOption("Auto2", auto2);
     m_chooser.addOption("Auto1", auto1);
     //m_chooser.setDefaultOption("Auto1", auto1);
 
