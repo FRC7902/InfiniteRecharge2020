@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -28,7 +29,20 @@ public class DriveSubsystem extends SubsystemBase {
   public WPI_VictorSPX backRight = new WPI_VictorSPX(3);
   public WPI_VictorSPX backLeft = new WPI_VictorSPX(1);
 
-  public static double turnSpeed = 0;
+  /**
+   * Encoders
+   */
+  private static Encoder leftEncoder = new Encoder(0, 1, true);
+  private static Encoder rightEncoder = new Encoder(2, 3, false);
+
+  /**
+   * Positions
+   */
+  private static double x = 0.0,
+                        y = 0.0;
+                        
+  // Current Rotation
+  private double curRot = 0.0;
 
   /**
    * Creates SpeedControllers
@@ -47,6 +61,35 @@ public class DriveSubsystem extends SubsystemBase {
     rightSide.setInverted(true);
     // drive is a new DifferentialDrive
     drive = new DifferentialDrive(leftSide, rightSide);
+
+    // Encoder
+    /*
+     * Defines the number of samples to average when determining the rate.
+     * On a quadrature encoder, values range from 1-255;
+     * larger values result in smoother but potentially
+     * less accurate rates than lower values.
+     */
+    leftEncoder.setSamplesToAverage(5);
+    rightEncoder.setSamplesToAverage(5);
+
+    /*
+     * Defines how far the mechanism attached to the encoder moves per pulse. In
+     * this case, we assume that a 2048 count encoder is directly
+     * attached to a 6 inch diameter or 0.1524 meter wheel,
+     * and that we want to measure distance in meter.
+     */
+    leftEncoder.setDistancePerPulse(1.0 / 2048.0 * Math.PI * 0.1524);
+    rightEncoder.setDistancePerPulse(1.0 / 2048.0 * Math.PI * 0.1524);
+
+    /*
+     * Defines the lowest rate at which the encoder will
+     * not be considered stopped, for the purposes of
+     * the GetStopped() method. Units are in distance / second,
+     * where distance refers to the units of distance
+     * that you are using, in this case meter.
+     */
+    leftEncoder.setMinRate(1.0);
+    rightEncoder.setMinRate(1.0);
   }
 
   /**
@@ -62,6 +105,7 @@ public class DriveSubsystem extends SubsystemBase {
     // rightSide.set((leftY*Constants.kDriveFBSpeed)*Constants.kDriveSpeedLimiter+rightX*Constants.kDriveTurn);
     // turnSpeed = rightX*Constants.kDriveTurn;
     // broadcastSpeed();
+    updatePos();
   }
   /**
    * Sets the speed of the robot on both sides. Use {@link driveJoystick} instead.
@@ -71,6 +115,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void driveRaw(double leftSpeed, double rightSpeed){
     leftSide.set(leftSpeed);
     rightSide.set(rightSpeed);
+    updatePos();
     //broadcastSpeed();
   }
 
@@ -83,22 +128,53 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   /**
+   * Reset Encoder
+   */
+  public void resetEnc() {
+    leftEncoder.reset();
+    rightEncoder.reset();
+  }
+
+  /**
    * Set max output 
    */
   public void setMaxOutput(double maxOutput){
     drive.setMaxOutput(maxOutput);
-    //SmartDashboard.putBoolean("Halved", true);
   }
   /**
    * This method will be called once per scheduler run
    */
   @Override
   public void periodic() {
+    // Important for Displacement Calculation
+    getRotationRobo();
     // Put up the speeds
-    // SmartDashboard.putNumber("Drive Speed", leftSide.get()); //kinda problematic but not gonna change that
-    //SmartDashboard.putNumber("Turn Speed", turnSpeed);
-
     SmartDashboard.putNumber("Left Speed", leftSide.get());
     SmartDashboard.putNumber("Right Speed", rightSide.get());
+    SmartDashboard.putNumber("Robot Rotation", curRot); 
+    SmartDashboard.putNumber("Total Distance Travelled", 0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance()));
+  }
+
+  /**
+   * Determines the positions of the robo
+   */
+  private void updatePos() {
+    double initTime = System.nanoTime();
+    x += 0.5 * ((leftEncoder.getRate() * ((System.nanoTime() - initTime) * Math.pow(10, -9)) * Math.sin(curRot)) + (rightEncoder.getRate() * ((System.nanoTime() - initTime) * Math.pow(10, -9)) * Math.sin(curRot))) ;
+    y += 0.5 * ((leftEncoder.getRate() * ((System.nanoTime() - initTime) * Math.pow(10, -9)) * Math.cos(curRot)) + (rightEncoder.getRate() * ((System.nanoTime() - initTime) * Math.pow(10, -9)) * Math.cos(curRot))) ;
+  }
+
+  /**
+   * Get Cur Rotation of robo in deg
+   * TODO will change rot over time, must fix
+   */
+  private void getRotationRobo() {
+    // calculate robot rotation change
+    long startT = System.nanoTime();
+    double leftRot = leftEncoder.getRate() * ((System.nanoTime() - startT) * Math.pow(10, -9)) / (Constants.roboDia / 2);
+    double rightRot = rightEncoder.getRate() * ((System.nanoTime() - startT) * Math.pow(10, -9)) / (Constants.roboDia / 2);
+    // Positive if turn right
+    // Negative if turn left
+    curRot += 0.5 * (leftRot - rightRot);
   }
 }

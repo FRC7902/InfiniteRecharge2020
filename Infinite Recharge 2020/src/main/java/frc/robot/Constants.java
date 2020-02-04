@@ -42,7 +42,11 @@ public final class Constants {
                           PX = 6, // D-Pad
                           PY = 7; // D-Pad
 
+  // Drive Limiters
   public static final double kDriveSpeedLimiter = 0.7;
   public static final double kDriveFBSpeed = 1;
   public static final double kDriveTurn = 0.9;
+
+  // Diameter of Robot in meters
+  public static final double roboDia = 0.582;
 }

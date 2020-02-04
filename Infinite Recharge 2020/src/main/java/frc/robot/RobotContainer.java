@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -83,8 +82,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     //When right bumper is pressed, halves top speed
     new JoystickButton(driverStick, Constants.RB)
-      .whenPressed(() -> driveSubsystem.setMaxOutput(0.5))
-      .whenReleased(() -> driveSubsystem.setMaxOutput(1));
+      .whenPressed(() -> driveSubsystem.resetEnc());
   }
 
 
