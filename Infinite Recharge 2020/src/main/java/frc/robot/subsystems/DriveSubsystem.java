@@ -173,7 +173,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   /**
-   * Get Cur Rotation of robo in deg
+   * Get Cur Rotation of robot
    * TODO will change rot over time, must fix
    */
   private void getRotationRobo() {
