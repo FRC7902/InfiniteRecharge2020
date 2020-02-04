@@ -158,7 +158,7 @@ public class DriveSubsystem extends SubsystemBase {
     // Put up the speeds
     SmartDashboard.putNumber("Left Speed", leftSide.get());
     SmartDashboard.putNumber("Right Speed", rightSide.get());
-    SmartDashboard.putNumber("Robot Rotation", curRot); 
+    SmartDashboard.putNumber("Robot Rotation (Rad)", curRot); 
     SmartDashboard.putNumber("Displacement", getDisplacement());
     SmartDashboard.putNumber("Total Distance Travelled", 0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance()));
   }
