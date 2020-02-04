@@ -136,6 +136,13 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   /**
+   * Calculate Displacement
+   */
+  public double getDisplacement() {
+    return Math.sqrt(x * x + y * y);
+  }
+
+  /**
    * Set max output 
    */
   public void setMaxOutput(double maxOutput){
@@ -152,6 +159,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Left Speed", leftSide.get());
     SmartDashboard.putNumber("Right Speed", rightSide.get());
     SmartDashboard.putNumber("Robot Rotation", curRot); 
+    SmartDashboard.putNumber("Displacement", getDisplacement());
     SmartDashboard.putNumber("Total Distance Travelled", 0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance()));
   }
 
