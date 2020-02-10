@@ -48,5 +48,24 @@ public final class Constants {
   public static final double kDriveTurn = 0.9;
 
   // Diameter of Robot in meters
-  public static final double roboDia = 0.582;
+  public static final double ROBODIA = 0.582;
+
+  // Encoder
+  public static final int LEFT1 = 0,
+                          LEFT2 = 1,
+                          RIGHT1 = 2,
+                          RIGHT3 = 3;
+  // Maps Pulse to Distance (m/pulse)
+  public static final double RATIO = 1.0 / 2048.0 * Math.PI * 0.1524;
+  // Random Error Avg Number
+  public static final int AVGNUM = 5;
+  // Minimum Rate Cap (m/s)
+  public static final double MINRATE = 1.0;
+
+  // Drive Controllers
+  public static final int FL = 6, 
+                          FR = 1, 
+                          BL = 7, 
+                          BR = 6;
+
 }

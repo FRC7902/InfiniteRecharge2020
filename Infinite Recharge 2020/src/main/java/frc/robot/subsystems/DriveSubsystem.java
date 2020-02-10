@@ -10,11 +10,9 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -24,16 +22,16 @@ public class DriveSubsystem extends SubsystemBase {
   /**
    * Creates a new DriveSubsystem.
    */
-  public WPI_VictorSPX frontRight = new WPI_VictorSPX(4);
-  public WPI_VictorSPX frontLeft = new WPI_VictorSPX(2);
-  public WPI_VictorSPX backRight = new WPI_VictorSPX(3);
-  public WPI_VictorSPX backLeft = new WPI_VictorSPX(1);
+  public WPI_VictorSPX frontRight = new WPI_VictorSPX(Constants.FR);
+  public WPI_VictorSPX frontLeft = new WPI_VictorSPX(Constants.FL);
+  public WPI_VictorSPX backRight = new WPI_VictorSPX(Constants.BR);
+  public WPI_VictorSPX backLeft = new WPI_VictorSPX(Constants.BL);
 
   /**
    * Encoders
    */
-  private static Encoder leftEncoder = new Encoder(0, 1, true);
-  private static Encoder rightEncoder = new Encoder(2, 3, false);
+  private static Encoder leftEncoder = new Encoder(Constants.LEFT1, Constants.LEFT2, true);
+  private static Encoder rightEncoder = new Encoder(Constants.RIGHT1, Constants.RIGHT1, false);
 
   /**
    * Positions
@@ -42,7 +40,7 @@ public class DriveSubsystem extends SubsystemBase {
                         y = 0.0;
                         
   // Current Rotation
-  private double curRot = 0.0;
+  private static double curRot = 0.0;
 
   /**
    * Creates SpeedControllers
@@ -52,6 +50,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   public DifferentialDrive drive;
 
+  /**
+   * <t>Drive Subsystem</t>
+   */
   public DriveSubsystem() {
     // if a motor is inverted, switch the boolean
     // frontRight.setInverted(false);
@@ -69,17 +70,17 @@ public class DriveSubsystem extends SubsystemBase {
      * larger values result in smoother but potentially
      * less accurate rates than lower values.
      */
-    leftEncoder.setSamplesToAverage(5);
-    rightEncoder.setSamplesToAverage(5);
+    leftEncoder.setSamplesToAverage(Constants.AVGNUM);
+    rightEncoder.setSamplesToAverage(Constants.AVGNUM);
 
     /*
      * Defines how far the mechanism attached to the encoder moves per pulse. In
-     * this case, we assume that a 2048 count encoder is directly
+     * this case, we have a 2048 count encoder is directly
      * attached to a 6 inch diameter or 0.1524 meter wheel,
      * and that we want to measure distance in meter.
      */
-    leftEncoder.setDistancePerPulse(1.0 / 2048.0 * Math.PI * 0.1524);
-    rightEncoder.setDistancePerPulse(1.0 / 2048.0 * Math.PI * 0.1524);
+    leftEncoder.setDistancePerPulse(Constants.RATIO);
+    rightEncoder.setDistancePerPulse(Constants.RATIO);
 
     /*
      * Defines the lowest rate at which the encoder will
@@ -88,8 +89,8 @@ public class DriveSubsystem extends SubsystemBase {
      * where distance refers to the units of distance
      * that you are using, in this case meter.
      */
-    leftEncoder.setMinRate(1.0);
-    rightEncoder.setMinRate(1.0);
+    leftEncoder.setMinRate(Constants.MINRATE);
+    rightEncoder.setMinRate(Constants.MINRATE);
   }
 
   /**
@@ -139,6 +140,7 @@ public class DriveSubsystem extends SubsystemBase {
    * Calculate Displacement
    */
   public double getDisplacement() {
+    // Someguy's Theorm
     return Math.sqrt(x * x + y * y);
   }
 
@@ -158,13 +160,16 @@ public class DriveSubsystem extends SubsystemBase {
     // Put up the speeds
     SmartDashboard.putNumber("Left Speed", leftSide.get());
     SmartDashboard.putNumber("Right Speed", rightSide.get());
-    SmartDashboard.putNumber("Robot Rotation (Rad)", curRot); 
+    // For the Humans
+    SmartDashboard.putNumber("Robot Rotation", Math.toDegrees(curRot)); 
+    // Displacement from Spawn
     SmartDashboard.putNumber("Displacement", getDisplacement());
+    // AVG Dist
     SmartDashboard.putNumber("Total Distance Travelled", 0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance()));
   }
 
   /**
-   * Determines the positions of the robo
+   * Determines the positions (coords) of the robo
    */
   private void updatePos() {
     double initTime = System.nanoTime();
@@ -175,12 +180,15 @@ public class DriveSubsystem extends SubsystemBase {
   /**
    * Get Cur Rotation of robot
    * TODO will change rot over time, must fix
+   * FIX nah
    */
   private void getRotationRobo() {
     // calculate robot rotation change
     long startT = System.nanoTime();
-    double leftRot = leftEncoder.getRate() * ((System.nanoTime() - startT) * Math.pow(10, -9)) / (Constants.roboDia / 2);
-    double rightRot = rightEncoder.getRate() * ((System.nanoTime() - startT) * Math.pow(10, -9)) / (Constants.roboDia / 2);
+    // Uses the equation (length of Arc) = (Angle (RAD)) * (Radius)
+    /*                                       //Get the change in Time//      //Convert to Seconds///Radius Calculation//*/
+    double leftRot  =  leftEncoder.getRate() * ((System.nanoTime() - startT) * Math.pow(10, -9)) / (Constants.ROBODIA / 2);
+    double rightRot = rightEncoder.getRate() * ((System.nanoTime() - startT) * Math.pow(10, -9)) / (Constants.ROBODIA / 2);
     // Positive if turn right
     // Negative if turn left
     curRot += 0.5 * (leftRot - rightRot);
