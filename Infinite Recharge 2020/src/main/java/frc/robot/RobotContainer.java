@@ -27,6 +27,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public static DriveSubsystem driveSubsystem = new DriveSubsystem();
   public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  public static ColourSubsystem colourSubsystem = new ColourSubsystem();
 
   //Declaring Joysticks
   private static Joystick driverStick = new Joystick(Constants.JOY);
@@ -78,6 +79,13 @@ public class RobotContainer {
         intakeSubsystem
       )
     );
+
+    // Default Colour Sub CMD
+    //colourSubsystem.setDefaultCommand(
+    //  new RunCommand(() ->
+    //    TODO smth
+    //  )
+    //);  
 
     //Add Commands to the autonomous command chooser
     m_chooser.setDefaultOption("THE AUTO", autonomousSequence);
