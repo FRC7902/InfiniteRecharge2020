@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj.shuffleboard.SendableCameraWrapper;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.commands.AutonomousSequence;
@@ -25,9 +26,10 @@ import frc.robot.subsystems.*;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public static DriveSubsystem driveSubsystem = new DriveSubsystem();
+  public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
 
   //Declaring Joysticks
-  private static Joystick driverStick = new Joystick(0);
+  private static Joystick driverStick = new Joystick(Constants.JOY);
 
   //Access to Joysticks
   public static Joystick getJS(){
@@ -57,16 +59,29 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
+    // Default Drive Sub CMD
     driveSubsystem.setDefaultCommand(
       //The Arcade command
-      new RunCommand(() -> driveSubsystem
-        .driveJoystick(-driverStick.getRawAxis(Constants.LY)*Constants.kDriveFBSpeed*Constants.kDriveSpeedLimiter, 
-                       driverStick.getRawAxis(Constants.RX)*Constants.kDriveTurn*Constants.kDriveSpeedLimiter), 
-        driveSubsystem));
+      new RunCommand(() -> 
+        driveSubsystem.driveJoystick(
+          -driverStick.getRawAxis(Constants.LY)*Constants.kDriveFBSpeed*Constants.kDriveSpeedLimiter, 
+          driverStick.getRawAxis(Constants.RX)*Constants.kDriveTurn*Constants.kDriveSpeedLimiter), 
+        driveSubsystem
+      )
+    );
+
+    // Default Intake Sub CMD
+    intakeSubsystem.setDefaultCommand(
+      // Default to Stop
+      new RunCommand(() -> 
+        intakeSubsystem.stap(), 
+        intakeSubsystem
+      )
+    );
 
     //Add Commands to the autonomous command chooser
     m_chooser.setDefaultOption("THE AUTO", autonomousSequence);
-    m_chooser.addOption("Auto1", auto1);
+    m_chooser.addOption("Auto", auto1);
     //m_chooser.setDefaultOption("Auto1", auto1);
 
     //Put the Chooser on Dashboard
@@ -80,9 +95,12 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    //When right bumper is pressed, halves top speed
-    new JoystickButton(driverStick, Constants.RB)
-      .whenPressed(() -> driveSubsystem.resetEnc());
+    //When right bumper is pressed, resets Encoders
+    //new JoystickButton(driverStick, Constants.RB)
+    //  .whenPressed(() -> driveSubsystem.resetEnc());
+    //When Left Bumper is pressed, Sucks Stuff
+    new JoystickButton(driverStick, Constants.LB)
+      .whenPressed(() -> intakeSubsystem.succ(), intakeSubsystem);
   }
 
 

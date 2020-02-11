@@ -20,6 +20,9 @@ package frc.robot;
 
 public final class Constants {
 
+  // Joystick USB Slot
+  public static final int JOY = 0;
+
   // Joystick - Button
   public static final int A = 1,
                           B = 2,
@@ -63,9 +66,15 @@ public final class Constants {
   public static final double MINRATE = 1.0;
 
   // Drive Controllers
-  public static final int FL = 6, 
-                          FR = 1, 
-                          BL = 7, 
+  public static final int FL = 2, 
+                          FR = 7, 
+                          BL = 1, 
                           BR = 6;
+
+  // Intake Controller
+  public static final int UI = 5, 
+                          LI = 10;
+  // Speed
+  public static final double SUCSPEED = 0.5;
 
 }
