@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj.shuffleboard.SendableCameraWrapper;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.commands.AutonomousSequence;
@@ -28,6 +27,7 @@ public class RobotContainer {
   public static DriveSubsystem driveSubsystem = new DriveSubsystem();
   public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   public static ColourSubsystem colourSubsystem = new ColourSubsystem();
+  public static ShootSubsystem shootSubsystem = new ShootSubsystem();
 
   //Declaring Joysticks
   private static Joystick driverStick = new Joystick(Constants.JOY);
@@ -87,6 +87,15 @@ public class RobotContainer {
     //  )
     //);  
 
+    // Default Shoot Sub CMD
+    shootSubsystem.setDefaultCommand(
+      // Default to stop
+      new RunCommand(() ->
+        shootSubsystem.stap(),
+        shootSubsystem
+      )
+    );
+
     //Add Commands to the autonomous command chooser
     m_chooser.setDefaultOption("THE AUTO", autonomousSequence);
     m_chooser.addOption("Auto", auto1);
@@ -109,6 +118,9 @@ public class RobotContainer {
     //When Left Bumper is pressed, Sucks Stuff
     new JoystickButton(driverStick, Constants.LB)
       .whenPressed(() -> intakeSubsystem.succ(), intakeSubsystem);
+    //When Right Bumper is pressed, shoot stuff
+    new JoystickButton(driverStick, Constants.RB)
+      .whenPressed(() -> shootSubsystem.shoot(), shootSubsystem);
   }
 
 

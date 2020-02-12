@@ -77,4 +77,9 @@ public final class Constants {
   // Speed
   public static final double SUCSPEED = 0.5;
 
+  // Shooting
+  public static final int LS = 11, RS = 12;
+  // Speed
+  public static final double SHUSPEED = 0.5;
+  
 }
