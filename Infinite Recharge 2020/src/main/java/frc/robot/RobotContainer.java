@@ -71,31 +71,6 @@ public class RobotContainer {
       )
     );
 
-    // Default Intake Sub CMD
-    intakeSubsystem.setDefaultCommand(
-      // Default to Stop
-      new RunCommand(() -> 
-        intakeSubsystem.stap(), 
-        intakeSubsystem
-      )
-    );
-
-    // Default Colour Sub CMD
-    //colourSubsystem.setDefaultCommand(
-    //  new RunCommand(() ->
-    //    TODO smth
-    //  )
-    //);  
-
-    // Default Shoot Sub CMD
-    shootSubsystem.setDefaultCommand(
-      // Default to stop
-      new RunCommand(() ->
-        shootSubsystem.stap(),
-        shootSubsystem
-      )
-    );
-
     //Add Commands to the autonomous command chooser
     m_chooser.setDefaultOption("THE AUTO", autonomousSequence);
     m_chooser.addOption("Auto", auto1);
@@ -117,10 +92,12 @@ public class RobotContainer {
     //  .whenPressed(() -> driveSubsystem.resetEnc());
     //When Left Bumper is pressed, Sucks Stuff
     new JoystickButton(driverStick, Constants.LB)
-      .whenPressed(() -> intakeSubsystem.succ(), intakeSubsystem);
+      .whenPressed(() -> intakeSubsystem.succ(), intakeSubsystem)
+      .whenReleased(() -> intakeSubsystem.stap());
     //When Right Bumper is pressed, shoot stuff
     new JoystickButton(driverStick, Constants.RB)
-      .whenPressed(() -> shootSubsystem.shoot(), shootSubsystem);
+      .whenPressed(() -> shootSubsystem.shoot(), shootSubsystem)
+      .whenReleased(() -> shootSubsystem.stap());
   }
 
 

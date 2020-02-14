@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -16,6 +17,8 @@ public class ShootSubsystem extends SubsystemBase {
 
   private WPI_TalonSRX left = new WPI_TalonSRX(Constants.LS);
   private WPI_TalonSRX right = new WPI_TalonSRX(Constants.RS);
+
+  private String status = "Off";
 
   /**
    * Creates a new ShootSubsystem.
@@ -30,6 +33,7 @@ public class ShootSubsystem extends SubsystemBase {
   public void shoot() {
     left.set(Constants.SHUSPEED);
     right.set(Constants.SHUSPEED);
+    status = "Shooting";
   }
 
   /**
@@ -38,10 +42,12 @@ public class ShootSubsystem extends SubsystemBase {
   public void stap() {
     left.stopMotor();
     right.stopMotor();
+    status = "Stopped";
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putString("Shoot Status", (left.isAlive() == right.isAlive())? status : "Broken");
   }
 }
