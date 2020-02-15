@@ -109,6 +109,7 @@ public class DriveSubsystem extends SubsystemBase {
     // broadcastSpeed();
     updatePos();
   }
+
   /**
    * Sets the speed of the robot on both sides. Use {@link driveJoystick} instead.
    * @param leftSpeed
@@ -121,6 +122,20 @@ public class DriveSubsystem extends SubsystemBase {
     //broadcastSpeed();
   }
 
+  /**
+   * Travel distance ~ for auto 
+   * *NOTE: IN METERS*
+   * *NOTE: Temp Deprecation
+   * @param dist
+   * Distance you want to travel in meters
+   */
+  @Deprecated
+  public void travel(double dist) {
+    // Gets Distance Before
+    // double initDist = 0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance());
+    while(true/*((0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance()) <= (initDist + dist))*/)
+      driveRaw(Constants.TRAVSPEED, Constants.TRAVSPEED);
+  }
 
   /**
    * Stops motors

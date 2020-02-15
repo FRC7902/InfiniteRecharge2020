@@ -49,6 +49,8 @@ public final class Constants {
   public static final double kDriveSpeedLimiter = 0.7;
   public static final double kDriveFBSpeed = 1;
   public static final double kDriveTurn = 0.9;
+  // Travel Speed
+  public static final double TRAVSPEED = 0.75;
 
   // Diameter of Robot in meters
   public static final double ROBODIA = 0.582;
@@ -81,5 +83,8 @@ public final class Constants {
   public static final int LS = 11, RS = 12;
   // Speed
   public static final double SHUSPEED = 0.5;
+
+  // Climbing Controllers
+  public static final int CL = 5, CR = 10;
   
 }
