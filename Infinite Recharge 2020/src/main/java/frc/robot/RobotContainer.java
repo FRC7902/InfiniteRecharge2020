@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -98,6 +99,21 @@ public class RobotContainer {
     new JoystickButton(driverStick, Constants.RB)
       .whenPressed(() -> shootSubsystem.shoot(), shootSubsystem)
       .whenReleased(() -> shootSubsystem.stap());
+    //When X is pressed, deploy 
+    // TODO Check if this works. I dont wanna make another cmd file just for this small thing
+    new JoystickButton(driverStick, Constants.X)
+      .toggleWhenPressed(new CommandBase() {
+        // When CMD is running, deploy
+        @Override
+        public void execute() {
+          intakeSubsystem.deploy();
+        }   
+        // When interrupted (Toggled off) retract
+        @Override
+        public void end(boolean interrupted) {
+          intakeSubsystem.retract();
+        }
+      }, true);
   }
 
 

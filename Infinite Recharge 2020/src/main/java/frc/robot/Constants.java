@@ -76,6 +76,11 @@ public final class Constants {
   // Intake Controller
   public static final int UI = 5, 
                           LI = 10;
+  // Solenoid
+  public static final int LS_FRONT = 99,
+                          LS_BACK = 98,
+                          RS_FRONT = 97,
+                          RS_BACK = 96;
   // Speed
   public static final double SUCSPEED = 0.5;
 

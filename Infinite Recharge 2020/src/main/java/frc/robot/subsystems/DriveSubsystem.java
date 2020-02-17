@@ -10,7 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 // TODO Encoders are commented out due to the robot not being intact right now
-//import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -31,8 +31,8 @@ public class DriveSubsystem extends SubsystemBase {
   /**
    * Encoders
    */
-  //private static Encoder leftEncoder = new Encoder(Constants.LEFT1, Constants.LEFT2, true);
-  //private static Encoder rightEncoder = new Encoder(Constants.RIGHT1, Constants.RIGHT1, false);
+  private static Encoder leftEncoder = new Encoder(Constants.LEFT1, Constants.LEFT2, true);
+  private static Encoder rightEncoder = new Encoder(Constants.RIGHT1, Constants.RIGHT1, false);
 
   /**
    * Positions
@@ -71,8 +71,8 @@ public class DriveSubsystem extends SubsystemBase {
      * larger values result in smoother but potentially
      * less accurate rates than lower values.
      */
-    //leftEncoder.setSamplesToAverage(Constants.AVGNUM);
-    //rightEncoder.setSamplesToAverage(Constants.AVGNUM);
+    leftEncoder.setSamplesToAverage(Constants.AVGNUM);
+    rightEncoder.setSamplesToAverage(Constants.AVGNUM);
 
     /*
      * Defines how far the mechanism attached to the encoder moves per pulse. In
@@ -80,8 +80,8 @@ public class DriveSubsystem extends SubsystemBase {
      * attached to a 6 inch diameter or 0.1524 meter wheel,
      * and that we want to measure distance in meter.
      */
-    //leftEncoder.setDistancePerPulse(Constants.RATIO);
-    //rightEncoder.setDistancePerPulse(Constants.RATIO);
+    leftEncoder.setDistancePerPulse(Constants.RATIO);
+    rightEncoder.setDistancePerPulse(Constants.RATIO);
 
     /*
      * Defines the lowest rate at which the encoder will
@@ -90,8 +90,8 @@ public class DriveSubsystem extends SubsystemBase {
      * where distance refers to the units of distance
      * that you are using, in this case meter.
      */
-    //leftEncoder.setMinRate(Constants.MINRATE);
-    //rightEncoder.setMinRate(Constants.MINRATE);
+    leftEncoder.setMinRate(Constants.MINRATE);
+    rightEncoder.setMinRate(Constants.MINRATE);
   }
 
   /**
@@ -132,8 +132,8 @@ public class DriveSubsystem extends SubsystemBase {
   @Deprecated
   public void travel(double dist) {
     // Gets Distance Before
-    // double initDist = 0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance());
-    while(true/*((0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance()) <= (initDist + dist))*/)
+    double initDist = 0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance());
+    while((0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance()) <= (initDist + dist)))
       driveRaw(Constants.TRAVSPEED, Constants.TRAVSPEED);
   }
 
@@ -148,8 +148,8 @@ public class DriveSubsystem extends SubsystemBase {
    * Reset Encoder
    */
   public void resetEnc() {
-    //leftEncoder.reset();
-    //rightEncoder.reset();
+    leftEncoder.reset();
+    rightEncoder.reset();
   }
 
   /**
@@ -181,16 +181,16 @@ public class DriveSubsystem extends SubsystemBase {
     // Displacement from Spawn
     SmartDashboard.putNumber("Displacement", getDisplacement());
     // AVG Dist
-    //SmartDashboard.putNumber("Total Distance Travelled", 0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance()));
+    SmartDashboard.putNumber("Total Distance Travelled", 0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance()));
   }
 
   /**
    * Determines the positions (coords) of the robo
    */
   private void updatePos() {
-    //double initTime = System.nanoTime();
-    //x += 0.5 * ((leftEncoder.getRate() * ((System.nanoTime() - initTime) * Math.pow(10, -9)) * Math.sin(curRot)) + (rightEncoder.getRate() * ((System.nanoTime() - initTime) * Math.pow(10, -9)) * Math.sin(curRot))) ;
-    //y += 0.5 * ((leftEncoder.getRate() * ((System.nanoTime() - initTime) * Math.pow(10, -9)) * Math.cos(curRot)) + (rightEncoder.getRate() * ((System.nanoTime() - initTime) * Math.pow(10, -9)) * Math.cos(curRot))) ;
+    long initTime = System.nanoTime();
+    x += 0.5 * ((leftEncoder.getRate() * ((System.nanoTime() - initTime) * Math.pow(10, -9)) * Math.sin(curRot)) + (rightEncoder.getRate() * ((System.nanoTime() - initTime) * Math.pow(10, -9)) * Math.sin(curRot))) ;
+    y += 0.5 * ((leftEncoder.getRate() * ((System.nanoTime() - initTime) * Math.pow(10, -9)) * Math.cos(curRot)) + (rightEncoder.getRate() * ((System.nanoTime() - initTime) * Math.pow(10, -9)) * Math.cos(curRot))) ;
   }
 
   /**
@@ -200,13 +200,13 @@ public class DriveSubsystem extends SubsystemBase {
    */
   private void getRotationRobo() {
     // calculate robot rotation change
-    //long startT = System.nanoTime();
+    long startT = System.nanoTime();
     // Uses the equation (length of Arc) = (Angle (RAD)) * (Radius)
     /*                                       //Get the change in Time//      //Convert to Seconds///Radius Calculation//*/
-    //double leftRot  =  leftEncoder.getRate() * ((System.nanoTime() - startT) * Math.pow(10, -9)) / (Constants.ROBODIA / 2);
-    //double rightRot = rightEncoder.getRate() * ((System.nanoTime() - startT) * Math.pow(10, -9)) / (Constants.ROBODIA / 2);
+    double leftRot  =  leftEncoder.getRate() * ((System.nanoTime() - startT) * Math.pow(10, -9)) / (Constants.ROBODIA / 2);
+    double rightRot = rightEncoder.getRate() * ((System.nanoTime() - startT) * Math.pow(10, -9)) / (Constants.ROBODIA / 2);
     // Positive if turn right
     // Negative if turn left
-    //curRot += 0.5 * (leftRot - rightRot);
+    curRot += 0.5 * (leftRot - rightRot);
   }
 }
