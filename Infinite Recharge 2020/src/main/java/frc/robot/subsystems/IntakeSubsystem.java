@@ -90,5 +90,6 @@ public class IntakeSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler 
     SmartDashboard.putString("Intake Status", (upper.isAlive() == lower.isAlive())? status : "Broken");
+    SmartDashboard.putString("Intake Deployment", isDeployed? "Deployed" : "Retracted");
   }
 }

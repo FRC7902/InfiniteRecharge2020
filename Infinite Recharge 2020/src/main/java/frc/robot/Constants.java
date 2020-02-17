@@ -51,6 +51,10 @@ public final class Constants {
   public static final double kDriveTurn = 0.9;
   // Travel Speed
   public static final double TRAVSPEED = 0.75;
+  // Turn Speed
+  public static final double TURNSPEED = 0.5;
+  // Avoid Zero Error 
+  public static final double NOZERO = 0.001;
 
   // Diameter of Robot in meters
   public static final double ROBODIA = 0.582;
@@ -59,7 +63,7 @@ public final class Constants {
   public static final int LEFT1 = 0,
                           LEFT2 = 1,
                           RIGHT1 = 2,
-                          RIGHT3 = 3;
+                          RIGHT2 = 3;
   // Maps Pulse to Distance (m/pulse)
   public static final double RATIO = 1.0 / 2048.0 * Math.PI * 0.1524;
   // Random Error Avg Number

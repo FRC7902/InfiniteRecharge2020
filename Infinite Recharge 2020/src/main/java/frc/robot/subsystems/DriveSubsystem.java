@@ -32,7 +32,7 @@ public class DriveSubsystem extends SubsystemBase {
    * Encoders
    */
   private static Encoder leftEncoder = new Encoder(Constants.LEFT1, Constants.LEFT2, true);
-  private static Encoder rightEncoder = new Encoder(Constants.RIGHT1, Constants.RIGHT1, false);
+  private static Encoder rightEncoder = new Encoder(Constants.RIGHT1, Constants.RIGHT2, false);
 
   /**
    * Positions
@@ -125,16 +125,41 @@ public class DriveSubsystem extends SubsystemBase {
   /**
    * Travel distance ~ for auto 
    * *NOTE: IN METERS*
-   * *NOTE: Temp Deprecation
+   * Will Auto-Stop
    * @param dist
    * Distance you want to travel in meters
    */
-  @Deprecated
   public void travel(double dist) {
     // Gets Distance Before
     double initDist = 0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance());
     while((0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance()) <= (initDist + dist)))
       driveRaw(Constants.TRAVSPEED, Constants.TRAVSPEED);
+    // Stops afterwards
+    stop();
+  }
+
+  /**
+   * Turns Robo ~ for auto
+   * *NOTE: IN RADIANS* (Use Math.toRad() to convert if needed) 
+   * Positive DEG = Right;
+   * Negative DEG = Left;
+   * Will Auto-Stop
+   * @param rot
+   * Rotate this much
+   */
+  public void turn(double rot) {
+    // Get Final Rotation Needed
+    double finRot = curRot + rot;
+    // Avoid Dividing by 0
+    if(finRot == 0.0)
+      finRot += Constants.NOZERO;
+    do{
+      // (rot / Math.abs(rot)) = Neg/Pos Check
+      driveRaw((rot / Math.abs(rot)) * Constants.TURNSPEED, -(rot / Math.abs(rot)) * Constants.TURNSPEED);
+    // Approaching 0 = Arrive at angle
+    }while((curRot - finRot) / finRot > 0);
+    // Stop Motor
+    stop();
   }
 
   /**

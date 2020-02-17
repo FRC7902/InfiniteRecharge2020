@@ -51,7 +51,7 @@ public class RobotContainer {
     //Times out after 1 second
     .withTimeout(1);
 
-  private final Command autonomousSequence = new AutonomousSequence(driveSubsystem);
+  private final Command autonomousSequence = new AutonomousSequence(driveSubsystem, intakeSubsystem, shootSubsystem);
   SendableChooser<Command> m_chooser = new SendableChooser<>();
   
   /**
@@ -113,6 +113,7 @@ public class RobotContainer {
         public void end(boolean interrupted) {
           intakeSubsystem.retract();
         }
+      // true = yes please interrupt
       }, true);
   }
 
