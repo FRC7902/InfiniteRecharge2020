@@ -81,12 +81,17 @@ public final class Constants {
   public static final int UI = 5, 
                           LI = 10;
   // Solenoid
+  // TODO fix nums
   public static final int LS_FRONT = 99,
                           LS_BACK = 98,
                           RS_FRONT = 97,
                           RS_BACK = 96;
   // Speed
   public static final double SUCSPEED = 0.5;
+
+  // Storage Controller
+  public static final int LSTORE = 3,
+                          RSTORE = 8;
 
   // Shooting
   public static final int LS = 11, RS = 12;
