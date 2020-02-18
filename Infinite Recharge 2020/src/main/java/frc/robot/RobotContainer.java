@@ -29,28 +29,19 @@ public class RobotContainer {
   public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   public static ColourSubsystem colourSubsystem = new ColourSubsystem();
   public static ShootSubsystem shootSubsystem = new ShootSubsystem();
+  public static StorageSubsystem storageSubsystem = new StorageSubsystem();
+  public static ClimbSubsystem climbSubsystem = new ClimbSubsystem();
 
   //Declaring Joysticks
-  private static Joystick driverStick = new Joystick(Constants.JOY);
+  private static Joystick driverStick = new Joystick(Constants.JOY),
+                          operatorStick = new Joystick(Constants.OP);
 
   //Access to Joysticks
-  public static Joystick getJS(){
-    return driverStick;
-  }
+  //public static Joystick getJS(){
+  //  return driverStick;
+  //}
 
-  //Autonomous Routines
-
-  //Auto #1
-  private final Command auto1 = new RunCommand(
-    //start driving forward at the start of the command
-    () -> driveSubsystem.driveRaw(0.5, 0.5),
-    //Stop driving at the end of the command
-    // () -> driveSubsystem.stop(),
-    //Requires drive subsystem
-    driveSubsystem)
-    //Times out after 1 second
-    .withTimeout(1);
-
+  //Autonomous Routine
   private final Command autonomousSequence = new AutonomousSequence(driveSubsystem, intakeSubsystem, shootSubsystem);
   SendableChooser<Command> m_chooser = new SendableChooser<>();
   
@@ -66,16 +57,24 @@ public class RobotContainer {
       //The Arcade command
       new RunCommand(() -> 
         driveSubsystem.driveJoystick(
-          -driverStick.getRawAxis(Constants.LY)*Constants.kDriveFBSpeed*Constants.kDriveSpeedLimiter, 
-          driverStick.getRawAxis(Constants.RX)*Constants.kDriveTurn*Constants.kDriveSpeedLimiter), 
+          -driverStick.getRawAxis(Constants.LY)*Constants.SPEED*Constants.LIMIT, 
+          driverStick.getRawAxis(Constants.RX)*Constants.TURN*Constants.LIMIT), 
         driveSubsystem
+      )
+    );
+
+    // Default Climb Sub CMD
+    climbSubsystem.setDefaultCommand(
+      //The Climb command
+      new RunCommand(() ->
+        // Rise & Fall using Left Y Axis
+        climbSubsystem.climb(operatorStick.getRawAxis(Constants.LY)), 
+        climbSubsystem
       )
     );
 
     //Add Commands to the autonomous command chooser
     m_chooser.setDefaultOption("THE AUTO", autonomousSequence);
-    m_chooser.addOption("Auto", auto1);
-    //m_chooser.setDefaultOption("Auto1", auto1);
 
     //Put the Chooser on Dashboard
     Shuffleboard.getTab("Autonomous").add(m_chooser);
@@ -92,16 +91,28 @@ public class RobotContainer {
     //new JoystickButton(driverStick, Constants.RB)
     //  .whenPressed(() -> driveSubsystem.resetEnc());
     //When Left Bumper is pressed, Sucks Stuff
-    new JoystickButton(driverStick, Constants.LB)
-      .whenPressed(() -> intakeSubsystem.succ(), intakeSubsystem)
-      .whenReleased(() -> intakeSubsystem.stap());
+    new JoystickButton(operatorStick, Constants.LB)
+      .whenPressed(() -> {
+        intakeSubsystem.succ();
+        storageSubsystem.store();
+      }, intakeSubsystem)
+      .whenReleased(() -> {
+        intakeSubsystem.stap();
+        storageSubsystem.stop();
+      });
     //When Right Bumper is pressed, shoot stuff
-    new JoystickButton(driverStick, Constants.RB)
-      .whenPressed(() -> shootSubsystem.shoot(), shootSubsystem)
-      .whenReleased(() -> shootSubsystem.stap());
+    new JoystickButton(operatorStick, Constants.RB)
+      .whenPressed(() -> {
+        shootSubsystem.shoot();
+        storageSubsystem.store();
+      }, shootSubsystem)
+      .whenReleased(() -> {
+        shootSubsystem.stap();
+        storageSubsystem.stop();
+      });
     //When X is pressed, deploy 
     // TODO Check if this works. I dont wanna make another cmd file just for this small thing
-    new JoystickButton(driverStick, Constants.X)
+    new JoystickButton(operatorStick, Constants.X)
       .toggleWhenPressed(new CommandBase() {
         // When CMD is running, deploy
         @Override
@@ -116,7 +127,6 @@ public class RobotContainer {
       // true = yes please interrupt
       }, true);
   }
-
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

@@ -32,6 +32,20 @@ public class StorageSubsystem extends SubsystemBase {
     store = new SpeedControllerGroup(left, right);
   }
 
+  /**
+   * Store Motors Start
+   */
+  public void store() {
+    store.set(Constants.STORESPEED);
+  }
+
+  /**
+   * Stop
+   */
+  public void stop() {
+    store.stopMotor();
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

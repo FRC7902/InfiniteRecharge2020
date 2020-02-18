@@ -21,7 +21,8 @@ package frc.robot;
 public final class Constants {
 
   // Joystick USB Slot
-  public static final int JOY = 0;
+  public static final int JOY = 0,
+                          OP = 1;
 
   // Joystick - Button
   public static final int A = 1,
@@ -46,9 +47,9 @@ public final class Constants {
                           PY = 7; // D-Pad
 
   // Drive Limiters
-  public static final double kDriveSpeedLimiter = 0.7;
-  public static final double kDriveFBSpeed = 1;
-  public static final double kDriveTurn = 0.9;
+  public static final double LIMIT = 0.7;
+  public static final double SPEED = 1;
+  public static final double TURN = 0.9;
   // Travel Speed
   public static final double TRAVSPEED = 0.75;
   // Turn Speed
@@ -92,6 +93,8 @@ public final class Constants {
   // Storage Controller
   public static final int LSTORE = 3,
                           RSTORE = 8;
+  // Speed
+  public static final double STORESPEED = 0.4;
 
   // Shooting
   public static final int LS = 11, RS = 12;
@@ -99,6 +102,9 @@ public final class Constants {
   public static final double SHUSPEED = 0.5;
 
   // Climbing Controllers
-  public static final int CL = 5, CR = 10;
+  public static final int CL = 4, 
+                          CR = 9;
+  // Speed
+  public static final double CLMBSPEED = 0.8;
   
 }
