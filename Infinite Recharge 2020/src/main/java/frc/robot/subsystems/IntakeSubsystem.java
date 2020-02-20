@@ -17,10 +17,10 @@ import frc.robot.Constants;
 public class IntakeSubsystem extends SubsystemBase {
 
   // Intake Controllers
-  private WPI_VictorSPX intakeMotor = new WPI_VictorSPX(Constants.INTAKE);
+  private WPI_VictorSPX intakeMotor = new WPI_VictorSPX(Constants.Intake.kIntake);
 
   // Solenoids
-  private DoubleSolenoid soleIntake = new DoubleSolenoid(Constants.I_FRONT, Constants.I_BACK);
+  private DoubleSolenoid soleIntake = new DoubleSolenoid(Constants.Intake.kFrontSolenoid, Constants.Intake.kBackSolenoid);
 
   // Status
   private String status;
@@ -40,17 +40,17 @@ public class IntakeSubsystem extends SubsystemBase {
   /**
    * Sucks the balls in
    */
-  public void succ() {
+  public void suck() {
     if(!isDeployed)
       deploy();
-    intakeMotor.set(Constants.SUCSPEED);
+    intakeMotor.set(Constants.Intake.kSpeed);
     status = "Succing";
   }
 
   /**
    * Stop Sucking
    */
-  public void stap() {
+  public void stop() {
     intakeMotor.stopMotor();
     status = "Off";
   }

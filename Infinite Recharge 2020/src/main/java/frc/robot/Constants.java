@@ -19,6 +19,89 @@ package frc.robot;
  //Drive Values
 
 public final class Constants {
+  public static final class Drive {
+    // Drive Controllers
+    public static final int FL = 4, 
+                            FR = 9, 
+                            BL = 3, 
+                            BR = 8;
+    
+    // Drive Limiters
+    public static final double kLimit = 1;
+    public static final double kDriveSpeed = 1;
+    public static final double kTurnSpeed = 0.9;
+    // Travel Speed
+    public static final double kAutoSpeed = 0.75;
+    // Turn Speed
+    public static final double kAutoTurnSpeed = 0.5;
+    // Avoid Zero Error 
+    public static final double kNoZero = 0.001;
+
+    // Diameter of Robot in meters
+    public static final double kRobotDiameter = 0.582;
+
+    // Encoder
+    public static final int kLeft1Enc = 0,
+                            kLeft2Enc = 1,
+                            kLeft3Enc = 2,
+                            kRight1Enc = 3,
+                            kRight2Enc = 4,
+                            kRight3Enc = 5;
+    // Maps Pulse to Distance (m/pulse)
+    public static final double kRatio = 1.0 / 2048.0 * Math.PI * 0.1524;
+    // Random Error Avg Number
+    public static final int kAvgNum = 5;
+    // Minimum Rate Cap (m/s)
+    public static final double kMinRate = 1.0;
+  }
+
+  public static final class Intake {
+    // Intake Controller
+    public static final int kIntake = 5;
+    // Solenoid
+    // TODO fix nums
+    public static final int kFrontSolenoid = 1,
+                            kBackSolenoid = 2;
+    // Speed
+    public static final double kSpeed = 0.5;
+  }
+
+  public static final class Storage{
+    // Storage Controller
+    public static final int kLeft = 2,
+                            kRight = 7;
+    // Speed
+    public static final double kSpeed = 0.4;
+  }
+
+  public static final class Shooter{
+    // Shooting
+    public static final int LS = 11, 
+                            RS = 12;
+    // Speed
+    public static final double kSpeed = 0.5;
+  }
+
+  public static final class Climber{
+    // Climbing Controllers
+    public static final int CL = 1, 
+                            CR = 6;
+    // Speed
+    public static final double kSpeed = 0.8;
+  }
+
+  public static final class Colour{
+    // Colour Spinner
+    public static final int kSpinner = 10;
+    // Speed
+    public static final double kSpinSpeed = 0.5;
+    // Solenoid
+    // TODO fix num
+    public static final int kFrontSolenoid = 3,
+                            kBackSolenoid = 4;
+    // Confidence
+    public static final double kMinConfidence = 0.8;
+  }
 
   // Joystick USB Slot
   public static final int JOY = 0,
@@ -46,74 +129,12 @@ public final class Constants {
                           PX = 6, // D-Pad
                           PY = 7; // D-Pad
 
-  // Drive Limiters
-  public static final double LIMIT = 1;
-  public static final double SPEED = 1;
-  public static final double TURN = 0.9;
-  // Travel Speed
-  public static final double TRAVSPEED = 0.75;
-  // Turn Speed
-  public static final double TURNSPEED = 0.5;
-  // Avoid Zero Error 
-  public static final double NOZERO = 0.001;
 
-  // Diameter of Robot in meters
-  public static final double ROBODIA = 0.582;
 
-  // Encoder
-  public static final int LEFT1 = 0,
-                          LEFT2 = 1,
-                          LEFT3 = 2,
-                          RIGHT1 = 3,
-                          RIGHT2 = 4,
-                          RIGHT3 = 5;
-  // Maps Pulse to Distance (m/pulse)
-  public static final double RATIO = 1.0 / 2048.0 * Math.PI * 0.1524;
-  // Random Error Avg Number
-  public static final int AVGNUM = 5;
-  // Minimum Rate Cap (m/s)
-  public static final double MINRATE = 1.0;
 
-  // Drive Controllers
-  public static final int FL = 4, 
-                          FR = 9, 
-                          BL = 3, 
-                          BR = 8;
-
-  // Intake Controller
-  public static final int INTAKE = 5;
-  // Solenoid
-  // TODO fix nums
-  public static final int I_FRONT = 1,
-                          I_BACK = 2;
-  // Speed
-  public static final double SUCSPEED = 0.5;
-
-  // Storage Controller
-  public static final int LSTORE = 2,
-                          RSTORE = 7;
-  // Speed
-  public static final double STORESPEED = 0.4;
-
-  // Shooting
-  public static final int LS = 11, RS = 12;
-  // Speed
-  public static final double SHUSPEED = 0.5;
-
-  // Climbing Controllers
-  public static final int CL = 1, 
-                          CR = 6;
-  // Speed
-  public static final double CLMBSPEED = 0.8;
   
-  // Colour Spinner
-  public static final int SPIN = 10;
-  // Speed
-  public static final double SPINSPEED = 0.5;
-  // Solenoid
-  // TODO fix num
-  public static final int COLORSOLE_FRONT = 3,
-                          COLORSOLE_BACK = 4;
-  // Confidence
-  public static final double CON = 0.8;
+
+  
+  
+  
 }

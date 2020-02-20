@@ -17,8 +17,8 @@ import frc.robot.Constants;
 
 public class StorageSubsystem extends SubsystemBase {
   // Controllers
-  private WPI_VictorSPX left = new  WPI_VictorSPX(Constants.LSTORE);
-  private WPI_VictorSPX right = new  WPI_VictorSPX(Constants.RSTORE);
+  private WPI_VictorSPX left = new  WPI_VictorSPX(Constants.Storage.kLeft);
+  private WPI_VictorSPX right = new  WPI_VictorSPX(Constants.Storage.kRight);
 
   private SpeedControllerGroup store;
 
@@ -36,7 +36,7 @@ public class StorageSubsystem extends SubsystemBase {
    * Store Motors Start
    */
   public void store() {
-    store.set(Constants.STORESPEED);
+    store.set(Constants.Storage.kSpeed);
   }
 
   /**

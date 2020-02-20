@@ -15,8 +15,8 @@ import frc.robot.Constants;
 
 public class ShootSubsystem extends SubsystemBase {
 
-  private WPI_TalonSRX left = new WPI_TalonSRX(Constants.LS);
-  private WPI_TalonSRX right = new WPI_TalonSRX(Constants.RS);
+  private WPI_TalonSRX left = new WPI_TalonSRX(Constants.Shooter.LS);
+  private WPI_TalonSRX right = new WPI_TalonSRX(Constants.Shooter.RS);
 
   private String status = "Off";
 
@@ -31,8 +31,8 @@ public class ShootSubsystem extends SubsystemBase {
    * Shoot
    */
   public void shoot() {
-    left.set(Constants.SHUSPEED);
-    right.set(Constants.SHUSPEED);
+    left.set(Constants.Shooter.kSpeed);
+    right.set(Constants.Shooter.kSpeed);
     status = "Shooting";
   }
 

@@ -23,16 +23,16 @@ public class DriveSubsystem extends SubsystemBase {
   /**
    * Creates a new DriveSubsystem.
    */
-  public WPI_VictorSPX frontRight = new WPI_VictorSPX(Constants.FR);
-  public WPI_VictorSPX frontLeft = new WPI_VictorSPX(Constants.FL);
-  public WPI_VictorSPX backRight = new WPI_VictorSPX(Constants.BR);
-  public WPI_VictorSPX backLeft = new WPI_VictorSPX(Constants.BL);
+  public WPI_VictorSPX frontRight = new WPI_VictorSPX(Constants.Drive.FR);
+  public WPI_VictorSPX frontLeft = new WPI_VictorSPX(Constants.Drive.FL);
+  public WPI_VictorSPX backRight = new WPI_VictorSPX(Constants.Drive.BR);
+  public WPI_VictorSPX backLeft = new WPI_VictorSPX(Constants.Drive.BL);
 
   /**
    * Encoders
    */
-  private static Encoder leftEncoder = new Encoder(Constants.LEFT1, Constants.LEFT2, Constants.LEFT3, true);
-  private static Encoder rightEncoder = new Encoder(Constants.RIGHT1, Constants.RIGHT2, Constants.RIGHT3, false);
+  private static Encoder leftEncoder = new Encoder(Constants.Drive.kLeft1Enc, Constants.Drive.kLeft2Enc, Constants.Drive.kLeft3Enc, true);
+  private static Encoder rightEncoder = new Encoder(Constants.Drive.kRight1Enc, Constants.Drive.kRight2Enc, Constants.Drive.kRight3Enc, false);
 
   /**
    * Positions
@@ -71,8 +71,8 @@ public class DriveSubsystem extends SubsystemBase {
      * larger values result in smoother but potentially
      * less accurate rates than lower values.
      */
-    leftEncoder.setSamplesToAverage(Constants.AVGNUM);
-    rightEncoder.setSamplesToAverage(Constants.AVGNUM);
+    leftEncoder.setSamplesToAverage(Constants.Drive.kAvgNum);
+    rightEncoder.setSamplesToAverage(Constants.Drive.kAvgNum);
 
     /*
      * Defines how far the mechanism attached to the encoder moves per pulse. In
@@ -80,8 +80,8 @@ public class DriveSubsystem extends SubsystemBase {
      * attached to a 6 inch diameter or 0.1524 meter wheel,
      * and that we want to measure distance in meter.
      */
-    leftEncoder.setDistancePerPulse(Constants.RATIO);
-    rightEncoder.setDistancePerPulse(Constants.RATIO);
+    leftEncoder.setDistancePerPulse(Constants.Drive.kRatio);
+    rightEncoder.setDistancePerPulse(Constants.Drive.kRatio);
 
     /*
      * Defines the lowest rate at which the encoder will
@@ -90,8 +90,8 @@ public class DriveSubsystem extends SubsystemBase {
      * where distance refers to the units of distance
      * that you are using, in this case meter.
      */
-    leftEncoder.setMinRate(Constants.MINRATE);
-    rightEncoder.setMinRate(Constants.MINRATE);
+    leftEncoder.setMinRate(Constants.Drive.kMinRate);
+    rightEncoder.setMinRate(Constants.Drive.kMinRate);
   }
 
   /**
@@ -133,7 +133,7 @@ public class DriveSubsystem extends SubsystemBase {
     // Gets Distance Before
     double initDist = 0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance());
     while((0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance()) <= (initDist + dist))) {
-      driveRaw(Constants.TRAVSPEED, Constants.TRAVSPEED);
+      driveRaw(Constants.Drive.kAutoSpeed, Constants.Drive.kAutoSpeed);
     }
     // Stops afterwards
     stop();
@@ -153,10 +153,10 @@ public class DriveSubsystem extends SubsystemBase {
     double finRot = curRot + rot;
     // Avoid Dividing by 0
     if(finRot == 0.0)
-      finRot += Constants.NOZERO;
+      finRot += Constants.Drive.kNoZero;
     do{
       // (rot / Math.abs(rot)) = Neg/Pos Check
-      driveRaw((rot / Math.abs(rot)) * Constants.TURNSPEED, -(rot / Math.abs(rot)) * Constants.TURNSPEED);
+      driveRaw((rot / Math.abs(rot)) * Constants.Drive.kAutoTurnSpeed, -(rot / Math.abs(rot)) * Constants.Drive.kAutoTurnSpeed);
     // Approaching 0 = Arrive at angle
     }while((curRot - finRot) / finRot > 0);
     // Stop Motor
@@ -229,8 +229,8 @@ public class DriveSubsystem extends SubsystemBase {
     long startT = System.nanoTime();
     // Uses the equation (length of Arc) = (Angle (RAD)) * (Radius)
     /*                                       //Get the change in Time//      //Convert to Seconds///Radius Calculation//*/
-    double leftRot  =  leftEncoder.getRate() * ((System.nanoTime() - startT) * Math.pow(10, -9)) / (Constants.ROBODIA / 2);
-    double rightRot = rightEncoder.getRate() * ((System.nanoTime() - startT) * Math.pow(10, -9)) / (Constants.ROBODIA / 2);
+    double leftRot  =  leftEncoder.getRate() * ((System.nanoTime() - startT) * Math.pow(10, -9)) / (Constants.Drive.kRobotDiameter / 2);
+    double rightRot = rightEncoder.getRate() * ((System.nanoTime() - startT) * Math.pow(10, -9)) / (Constants.Drive.kRobotDiameter / 2);
     // Positive if turn right
     // Negative if turn left
     curRot += 0.5 * (leftRot - rightRot);

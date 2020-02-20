@@ -53,12 +53,12 @@ public class ColourSubsystem extends SubsystemBase {
   /**
    * Solenoid Piston thing
    */
-  private final DoubleSolenoid piston = new DoubleSolenoid(Constants.COLORSOLE_FRONT, Constants.COLORSOLE_BACK);
+  private final DoubleSolenoid piston = new DoubleSolenoid(Constants.Colour.kFrontSolenoid, Constants.Colour.kBackSolenoid);
 
   /**
    * Motor
    */
-  private final WPI_VictorSPX spinner = new WPI_VictorSPX(Constants.SPIN);
+  private final WPI_VictorSPX spinner = new WPI_VictorSPX(Constants.Colour.kSpinner);
 
   /**
    * Creates a new ColourSubsystem.
@@ -96,11 +96,11 @@ public class ColourSubsystem extends SubsystemBase {
     // Track First Color
     Color firstColour = m_colorSensor.getColor();
     //Start Motor
-    spinner.set(Constants.SPINSPEED);
+    spinner.set(Constants.Colour.kSpinSpeed);
     //Track
     for(int i = 0; i < n*2;) {
       // Checks color and confidence
-      if(firstColour == m_colorSensor.getColor() && m_colorMatcher.matchClosestColor(m_colorSensor.getColor()).confidence > Constants.CON)
+      if(firstColour == m_colorSensor.getColor() && m_colorMatcher.matchClosestColor(m_colorSensor.getColor()).confidence > Constants.Colour.kMinConfidence)
         i++;
     }
     // Stop
@@ -115,8 +115,8 @@ public class ColourSubsystem extends SubsystemBase {
   public void spinTo(Color c) {
     // Check Color & confidence
     // If no, spin
-    while(!(c == m_colorSensor.getColor() && m_colorMatcher.matchClosestColor(m_colorSensor.getColor()).confidence > Constants.CON)) 
-      spinner.set(Constants.SPINSPEED);
+    while(!(c == m_colorSensor.getColor() && m_colorMatcher.matchClosestColor(m_colorSensor.getColor()).confidence > Constants.Colour.kMinConfidence)) 
+      spinner.set(Constants.Colour.kSpinSpeed);
     // Stop Motor
     spinner.stopMotor();
   }

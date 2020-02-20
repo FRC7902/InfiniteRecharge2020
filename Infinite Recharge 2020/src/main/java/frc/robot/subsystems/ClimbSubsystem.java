@@ -16,8 +16,8 @@ import frc.robot.Constants;
 public class ClimbSubsystem extends SubsystemBase {
 
   // Controllers
-  private WPI_VictorSPX left = new WPI_VictorSPX(Constants.CL);
-  private WPI_VictorSPX right = new WPI_VictorSPX(Constants.CR);
+  private WPI_VictorSPX left = new WPI_VictorSPX(Constants.Climber.CL);
+  private WPI_VictorSPX right = new WPI_VictorSPX(Constants.Climber.CR);
   // Speed Group
   private SpeedControllerGroup climber;
 

@@ -57,8 +57,8 @@ public class RobotContainer {
       //The Arcade command
       new RunCommand(() -> 
         driveSubsystem.driveJoystick(
-          -driverStick.getRawAxis(Constants.LY)*Constants.SPEED*Constants.LIMIT, 
-          driverStick.getRawAxis(Constants.RX)*Constants.TURN*Constants.LIMIT), 
+          -driverStick.getRawAxis(Constants.LY)*Constants.Drive.kDriveSpeed*Constants.Drive.kLimit, 
+          driverStick.getRawAxis(Constants.RX)*Constants.Drive.kTurnSpeed*Constants.Drive.kLimit), 
         driveSubsystem
       )
     );
@@ -93,11 +93,11 @@ public class RobotContainer {
     //When Left Bumper is pressed, Sucks Stuff
     new JoystickButton(operatorStick, Constants.LB)
       .whenPressed(() -> {
-        intakeSubsystem.succ();
+        intakeSubsystem.suck();
         storageSubsystem.store();
       }, intakeSubsystem)
       .whenReleased(() -> {
-        intakeSubsystem.stap();
+        intakeSubsystem.stop();
         storageSubsystem.stop();
       });
     //When Right Bumper is pressed, shoot stuff
