@@ -47,7 +47,7 @@ public final class Constants {
                           PY = 7; // D-Pad
 
   // Drive Limiters
-  public static final double LIMIT = 0.7;
+  public static final double LIMIT = 1;
   public static final double SPEED = 1;
   public static final double TURN = 0.9;
   // Travel Speed
@@ -63,8 +63,10 @@ public final class Constants {
   // Encoder
   public static final int LEFT1 = 0,
                           LEFT2 = 1,
-                          RIGHT1 = 2,
-                          RIGHT2 = 3;
+                          LEFT3 = 2,
+                          RIGHT1 = 3,
+                          RIGHT2 = 4,
+                          RIGHT3 = 5;
   // Maps Pulse to Distance (m/pulse)
   public static final double RATIO = 1.0 / 2048.0 * Math.PI * 0.1524;
   // Random Error Avg Number
@@ -73,26 +75,23 @@ public final class Constants {
   public static final double MINRATE = 1.0;
 
   // Drive Controllers
-  public static final int FL = 2, 
-                          FR = 7, 
-                          BL = 1, 
-                          BR = 6;
+  public static final int FL = 4, 
+                          FR = 9, 
+                          BL = 3, 
+                          BR = 8;
 
   // Intake Controller
-  public static final int UI = 5, 
-                          LI = 10;
+  public static final int INTAKE = 5;
   // Solenoid
   // TODO fix nums
-  public static final int LS_FRONT = 99,
-                          LS_BACK = 98,
-                          RS_FRONT = 97,
-                          RS_BACK = 96;
+  public static final int I_FRONT = 1,
+                          I_BACK = 2;
   // Speed
   public static final double SUCSPEED = 0.5;
 
   // Storage Controller
-  public static final int LSTORE = 3,
-                          RSTORE = 8;
+  public static final int LSTORE = 2,
+                          RSTORE = 7;
   // Speed
   public static final double STORESPEED = 0.4;
 
@@ -102,9 +101,19 @@ public final class Constants {
   public static final double SHUSPEED = 0.5;
 
   // Climbing Controllers
-  public static final int CL = 4, 
-                          CR = 9;
+  public static final int CL = 1, 
+                          CR = 6;
   // Speed
   public static final double CLMBSPEED = 0.8;
   
+  // Colour Spinner
+  public static final int SPIN = 10;
+  // Speed
+  public static final double SPINSPEED = 0.5;
+  // Solenoid
+  // TODO fix num
+  public static final int COLORSOLE_FRONT = 3,
+                          COLORSOLE_BACK = 4;
+  // Confidence
+  public static final double CON = 0.8;
 }

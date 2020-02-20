@@ -31,8 +31,8 @@ public class DriveSubsystem extends SubsystemBase {
   /**
    * Encoders
    */
-  private static Encoder leftEncoder = new Encoder(Constants.LEFT1, Constants.LEFT2, true);
-  private static Encoder rightEncoder = new Encoder(Constants.RIGHT1, Constants.RIGHT2, false);
+  private static Encoder leftEncoder = new Encoder(Constants.LEFT1, Constants.LEFT2, Constants.LEFT3, true);
+  private static Encoder rightEncoder = new Encoder(Constants.RIGHT1, Constants.RIGHT2, Constants.RIGHT3, false);
 
   /**
    * Positions
@@ -132,8 +132,9 @@ public class DriveSubsystem extends SubsystemBase {
   public void travel(double dist) {
     // Gets Distance Before
     double initDist = 0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance());
-    while((0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance()) <= (initDist + dist)))
+    while((0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance()) <= (initDist + dist))) {
       driveRaw(Constants.TRAVSPEED, Constants.TRAVSPEED);
+    }
     // Stops afterwards
     stop();
   }

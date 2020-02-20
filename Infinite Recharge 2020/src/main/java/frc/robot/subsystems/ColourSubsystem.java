@@ -7,14 +7,17 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class ColourSubsystem extends SubsystemBase {
 
@@ -42,14 +45,27 @@ public class ColourSubsystem extends SubsystemBase {
   /**
    * The colours of the wheel of misfortune
    */
-  private final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
-  private final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
-  private final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
-  private final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
+  public final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
+  public final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
+  public final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
+  public final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
+
+  /**
+   * Solenoid Piston thing
+   */
+  private final DoubleSolenoid piston = new DoubleSolenoid(Constants.COLORSOLE_FRONT, Constants.COLORSOLE_BACK);
+
+  /**
+   * Motor
+   */
+  private final WPI_VictorSPX spinner = new WPI_VictorSPX(Constants.SPIN);
+
   /**
    * Creates a new ColourSubsystem.
    */
   public ColourSubsystem() {
+    // Off
+    piston.set(DoubleSolenoid.Value.kOff);
     // Add Colours
     m_colorMatcher.addColorMatch(kBlueTarget);
     m_colorMatcher.addColorMatch(kGreenTarget);
@@ -58,10 +74,51 @@ public class ColourSubsystem extends SubsystemBase {
   }
 
   /**
-   * Spin the Lazy Susan one time
+   * Raise the arm
    */
-  public void spin() {
+  public void rise() {
+    piston.set(DoubleSolenoid.Value.kForward);
+  }
 
+  /**
+   * Lowers the arm
+   */
+  public void fall() {
+    piston.set(DoubleSolenoid.Value.kReverse);
+  }
+
+  /**
+   * Spin the Lazy Susan n time
+   * @param n
+   * Spin Amount
+   */
+  public void spin(int n) {
+    // Track First Color
+    Color firstColour = m_colorSensor.getColor();
+    //Start Motor
+    spinner.set(Constants.SPINSPEED);
+    //Track
+    for(int i = 0; i < n*2;) {
+      // Checks color and confidence
+      if(firstColour == m_colorSensor.getColor() && m_colorMatcher.matchClosestColor(m_colorSensor.getColor()).confidence > Constants.CON)
+        i++;
+    }
+    // Stop
+    spinner.stopMotor();
+  }
+
+  /**
+   * Spin to Color
+   * @param c
+   * The color
+   */
+  public void spinTo(Color c) {
+    // Check Color & confidence
+    // If no, spin
+    while(!(c == m_colorSensor.getColor() && m_colorMatcher.matchClosestColor(m_colorSensor.getColor()).confidence > Constants.CON)) 
+      spinner.set(Constants.SPINSPEED);
+    // Stop Motor
+    spinner.stopMotor();
   }
 
   @Override
@@ -90,7 +147,8 @@ public class ColourSubsystem extends SubsystemBase {
         colorString = "Yellow";
       else
         colorString = "Unknown";
-    
+    else
+      colorString = "Unknown";
     // SmartDashboard Output
     SmartDashboard.putNumber("Confidence", match.confidence);
     SmartDashboard.putString("Detected Color", colorString);

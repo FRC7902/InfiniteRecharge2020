@@ -17,12 +17,10 @@ import frc.robot.Constants;
 public class IntakeSubsystem extends SubsystemBase {
 
   // Intake Controllers
-  private WPI_VictorSPX upper = new WPI_VictorSPX(Constants.UI);
-  private WPI_VictorSPX lower = new WPI_VictorSPX(Constants.LI);
+  private WPI_VictorSPX intakeMotor = new WPI_VictorSPX(Constants.INTAKE);
 
   // Solenoids
-  private DoubleSolenoid left = new DoubleSolenoid(Constants.LS_FRONT, Constants.LS_BACK);
-  private DoubleSolenoid right = new DoubleSolenoid(Constants.RS_FRONT, Constants.RS_BACK);
+  private DoubleSolenoid soleIntake = new DoubleSolenoid(Constants.I_FRONT, Constants.I_BACK);
 
   // Status
   private String status;
@@ -33,11 +31,9 @@ public class IntakeSubsystem extends SubsystemBase {
    */
   public IntakeSubsystem() {
     // Retract Pistons
-    left.set(DoubleSolenoid.Value.kOff);
-    right.set(DoubleSolenoid.Value.kOff);
+    soleIntake.set(DoubleSolenoid.Value.kOff);
     isDeployed = false;
-    // Invert the bottom motors
-    lower.setInverted(true);
+    // Set Status
     status = "Off";
   }
 
@@ -47,8 +43,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public void succ() {
     if(!isDeployed)
       deploy();
-    upper.set(Constants.SUCSPEED);
-    lower.set(Constants.SUCSPEED);
+    intakeMotor.set(Constants.SUCSPEED);
     status = "Succing";
   }
 
@@ -56,8 +51,7 @@ public class IntakeSubsystem extends SubsystemBase {
    * Stop Sucking
    */
   public void stap() {
-    upper.stopMotor();
-    lower.stopMotor();
+    intakeMotor.stopMotor();
     status = "Off";
   }
 
@@ -69,8 +63,7 @@ public class IntakeSubsystem extends SubsystemBase {
     // Prevent Multi-use
     if(isDeployed)
       return;
-    left.set(DoubleSolenoid.Value.kForward);
-    right.set(DoubleSolenoid.Value.kForward);
+    soleIntake.set(DoubleSolenoid.Value.kForward);
     isDeployed = true;
   }
 
@@ -81,15 +74,14 @@ public class IntakeSubsystem extends SubsystemBase {
     // Prevent Multi-use
     if(!isDeployed)
       return;
-    left.set(DoubleSolenoid.Value.kReverse);
-    right.set(DoubleSolenoid.Value.kReverse);
+    soleIntake.set(DoubleSolenoid.Value.kReverse);
     isDeployed = false;
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler 
-    SmartDashboard.putString("Intake Status", (upper.isAlive() == lower.isAlive())? status : "Broken");
+    SmartDashboard.putString("Intake Status", (intakeMotor.isAlive())? status : "Broken");
     SmartDashboard.putString("Intake Deployment", isDeployed? "Deployed" : "Retracted");
   }
 }
