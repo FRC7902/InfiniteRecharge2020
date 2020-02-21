@@ -42,7 +42,7 @@ public class RobotContainer {
   //}
 
   //Autonomous Routine
-  private final Command autonomousSequence = new AutonomousSequence(driveSubsystem, intakeSubsystem, shootSubsystem);
+  private final Command autonomousSequence = new AutonomousSequence(driveSubsystem, intakeSubsystem, shootSubsystem, storageSubsystem);
   SendableChooser<Command> m_chooser = new SendableChooser<>();
   
   /**
