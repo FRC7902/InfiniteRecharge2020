@@ -15,10 +15,11 @@ package frc.robot;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-
- //Drive Values
-
 public final class Constants {
+
+  /**
+   * Constants for Drive
+   */
   public static final class Drive {
     // Drive Controllers
     public static final int FL = 4, 
@@ -55,6 +56,9 @@ public final class Constants {
     public static final double kMinRate = 1.0;
   }
 
+  /**
+   * Constants for Intake
+   */
   public static final class Intake {
     // Intake Controller
     public static final int kIntake = 5;
@@ -66,14 +70,24 @@ public final class Constants {
     public static final double kSpeed = 0.5;
   }
 
+  /**
+   * Constants for Storage
+   */
   public static final class Storage{
     // Storage Controller
     public static final int kLeft = 2,
                             kRight = 7;
+    // The transfer wheel
+    public static final int kTransfer = 13;
+    // Transfer Speed (Should be equal or less than shooter speed)
+    public static final double kTransferSpeed = Shooter.kSpeed - 0.1;
     // Speed
     public static final double kSpeed = 0.4;
   }
 
+  /**
+   * Constants for Shooter
+   */
   public static final class Shooter{
     // Shooting
     public static final int LS = 11, 
@@ -82,6 +96,9 @@ public final class Constants {
     public static final double kSpeed = 0.5;
   }
 
+  /**
+   * Constants for Climber
+   */
   public static final class Climber{
     // Climbing Controllers
     public static final int CL = 1, 
@@ -90,6 +107,9 @@ public final class Constants {
     public static final double kSpeed = 0.8;
   }
 
+  /**
+   * Constants for Colour 
+   */
   public static final class Colour{
     // Colour Spinner
     public static final int kSpinner = 10;
@@ -102,6 +122,10 @@ public final class Constants {
     // Confidence
     public static final double kMinConfidence = 0.8;
   }
+
+  /*
+   * Other stuff
+   */
 
   // Joystick USB Slot
   public static final int JOY = 0,
@@ -129,12 +153,4 @@ public final class Constants {
                           PX = 6, // D-Pad
                           PY = 7; // D-Pad
 
-
-
-
-  
-
-  
-  
-  
 }

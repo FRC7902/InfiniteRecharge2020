@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -19,6 +20,7 @@ public class StorageSubsystem extends SubsystemBase {
   // Controllers
   private WPI_VictorSPX left = new  WPI_VictorSPX(Constants.Storage.kLeft);
   private WPI_VictorSPX right = new  WPI_VictorSPX(Constants.Storage.kRight);
+  private WPI_VictorSPX transfer = new  WPI_VictorSPX(Constants.Storage.kTransfer);
 
   private SpeedControllerGroup store;
 
@@ -30,6 +32,8 @@ public class StorageSubsystem extends SubsystemBase {
     left.setInverted(true);
     // Bind
     store = new SpeedControllerGroup(left, right);
+    // WTF such a useful function I was not told about?
+    //transfer.set(ControlMode.VELOCITY, velocity);
   }
 
   /**
@@ -44,6 +48,20 @@ public class StorageSubsystem extends SubsystemBase {
    */
   public void stop() {
     store.stopMotor();
+  }
+
+  /**
+   * Transfer to Shooter 
+   */
+  public void transfer() {
+    transfer.set(Constants.Storage.kTransferSpeed);
+  }
+
+  /**
+   * Terminate Transfer
+   */
+  public void stopTransfer() {
+    transfer.stopMotor();
   }
 
   @Override

@@ -38,7 +38,7 @@ public class RobotContainer {
   private static Joystick driverStick = new Joystick(Constants.JOY),
                           operatorStick = new Joystick(Constants.OP);
 
-  //Access to Joysticks
+  //Access to Joysticks ~ Useless
   //public static Joystick getJS(){
   //  return driverStick;
   //}
@@ -114,12 +114,14 @@ public class RobotContainer {
     //When Right Bumper is pressed, shoot stuff
     new JoystickButton(operatorStick, Constants.RB)
       .whenPressed(() -> {
+        storageSubsystem.transfer();
         shootSubsystem.shoot();
         storageSubsystem.store();
       }, shootSubsystem)
       .whenReleased(() -> {
-        shootSubsystem.stap();
         storageSubsystem.stop();
+        shootSubsystem.stap();
+        storageSubsystem.stopTransfer();
       });
     //When X is pressed, deploy 
     // TODO Check if this works. I dont wanna make another cmd file just for this small thing
