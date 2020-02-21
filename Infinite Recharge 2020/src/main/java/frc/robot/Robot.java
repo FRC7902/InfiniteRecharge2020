@@ -115,7 +115,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    // TODO Put smth here
+    
   }
 
   @Override
