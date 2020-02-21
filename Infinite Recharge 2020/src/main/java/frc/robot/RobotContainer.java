@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.commands.AutonomousSequence;
 import frc.robot.subsystems.*;
 /**
@@ -44,6 +46,8 @@ public class RobotContainer {
   //Autonomous Routine
   private final Command autonomousSequence = new AutonomousSequence(driveSubsystem, intakeSubsystem, shootSubsystem, storageSubsystem);
   SendableChooser<Command> m_chooser = new SendableChooser<>();
+  //Chooser for Colours
+  SendableChooser<Color> colorChooser = new SendableChooser<>();
   
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -76,8 +80,15 @@ public class RobotContainer {
     //Add Commands to the autonomous command chooser
     m_chooser.setDefaultOption("THE AUTO", autonomousSequence);
 
+    //Add Colors to chooser
+    colorChooser.addOption("Red", colourSubsystem.kRedTarget);
+    colorChooser.addOption("Yellow", colourSubsystem.kYellowTarget);
+    colorChooser.addOption("Green", colourSubsystem.kGreenTarget);
+    colorChooser.addOption("Blue", colourSubsystem.kBlueTarget);
+
     //Put the Chooser on Dashboard
     Shuffleboard.getTab("Autonomous").add(m_chooser);
+    Shuffleboard.getTab("SmartDashboard").add(colorChooser);
   }
 
   /**
@@ -126,6 +137,34 @@ public class RobotContainer {
         }
       // true = yes please interrupt
       }, true);
+    //When Y is pressed, deploy colour arm
+    // TODO Check if this works. I dont wanna make another cmd file just for this small thing
+    new JoystickButton(operatorStick, Constants.Y)
+      .toggleWhenPressed(new CommandBase() {
+        // When CMD is running, deploy
+        @Override
+        public void execute() {
+          colourSubsystem.rise();
+        }   
+        // When interrupted (Toggled off) retract
+        @Override
+        public void end(boolean interrupted) {
+          colourSubsystem.fall();
+        }
+      // true = yes please interrupt
+      }, true);
+    //When A is pressed, spin to colour
+    new JoystickButton(operatorStick, Constants.X)
+      .whenPressed(() -> {
+        // Convert i to int
+        int i = (int) SmartDashboard.getNumber("Spin Number", 0.0);
+        // If 0 or less, spin to colour
+        if(i <= 0)
+          colourSubsystem.spinTo(colorChooser.getSelected());
+        // else, do a num of spin
+        else
+          colourSubsystem.spin(i);
+      }, colourSubsystem);
   }
 
   /**
