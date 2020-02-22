@@ -63,7 +63,7 @@ public final class Constants {
     // Intake Controller
     public static final int kIntake = 5;
     // Solenoid
-    // TODO fix nums
+    // TODO check if indexes are correct
     public static final int kFrontSolenoid = 1,
                             kBackSolenoid = 2;
     // Speed
@@ -116,7 +116,7 @@ public final class Constants {
     // Speed
     public static final double kSpinSpeed = 0.5;
     // Solenoid
-    // TODO fix num
+    // TODO check if indexes are correct
     public static final int kFrontSolenoid = 3,
                             kBackSolenoid = 4;
     // Confidence

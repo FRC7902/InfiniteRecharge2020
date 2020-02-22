@@ -9,7 +9,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
-// TODO Encoders are commented out due to the robot not being intact right now
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -80,6 +79,7 @@ public class DriveSubsystem extends SubsystemBase {
      * attached to a 6 inch diameter or 0.1524 meter wheel,
      * and that we want to measure distance in meter.
      */
+    // Basically defines how much 1 count of the encoder is equal to in distance
     leftEncoder.setDistancePerPulse(Constants.Drive.kRatio);
     rightEncoder.setDistancePerPulse(Constants.Drive.kRatio);
 

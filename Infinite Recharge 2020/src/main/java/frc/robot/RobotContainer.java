@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.commands.AutonomousSequence;
+import frc.robot.commands.TheGrandAutonomous;
 import frc.robot.subsystems.*;
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -44,7 +45,8 @@ public class RobotContainer {
   //}
 
   //Autonomous Routine
-  private final Command autonomousSequence = new AutonomousSequence(driveSubsystem, intakeSubsystem, shootSubsystem);
+  private final Command autonomousSequence = new AutonomousSequence(driveSubsystem, intakeSubsystem, shootSubsystem, storageSubsystem);
+  private final Command theGrandAutonomous = new TheGrandAutonomous(driveSubsystem, intakeSubsystem, shootSubsystem, storageSubsystem);
   SendableChooser<Command> m_chooser = new SendableChooser<>();
   //Chooser for Colours
   SendableChooser<Color> colorChooser = new SendableChooser<>();
@@ -78,8 +80,8 @@ public class RobotContainer {
     );
 
     //Add Commands to the autonomous command chooser
-    m_chooser.setDefaultOption("THE AUTO", autonomousSequence);
-
+    m_chooser.setDefaultOption("The Test Auto", autonomousSequence);
+    m_chooser.addOption("The Official Auto", theGrandAutonomous);
     //Add Colors to chooser
     colorChooser.addOption("Red", colourSubsystem.kRedTarget);
     colorChooser.addOption("Yellow", colourSubsystem.kYellowTarget);
@@ -123,7 +125,7 @@ public class RobotContainer {
         shootSubsystem.stap();
         storageSubsystem.stopTransfer();
       });
-    //When X is pressed, deploy 
+    //When X is pressed, deploy Intake 
     // TODO Check if this works. I dont wanna make another cmd file just for this small thing
     new JoystickButton(operatorStick, Constants.X)
       .toggleWhenPressed(new CommandBase() {

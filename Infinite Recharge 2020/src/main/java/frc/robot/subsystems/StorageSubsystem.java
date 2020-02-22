@@ -13,8 +13,6 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-// TODO
-
 public class StorageSubsystem extends SubsystemBase {
   // Controllers
   private WPI_VictorSPX left = new  WPI_VictorSPX(Constants.Storage.kLeft);

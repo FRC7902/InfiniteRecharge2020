@@ -57,7 +57,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   /**
    * Deploys the intake stuff
-   * Auto run when succ() is used and not deployed
+   * Auto run when suck() is used and not deployed
    */
   public void deploy() {
     // Prevent Multi-use
