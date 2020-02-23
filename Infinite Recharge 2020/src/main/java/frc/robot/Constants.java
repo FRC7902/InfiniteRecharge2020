@@ -15,10 +15,121 @@ package frc.robot;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-
- //Drive Values
-
 public final class Constants {
+
+  /**
+   * Constants for Drive
+   */
+  public static final class Drive {
+    // Drive Controllers
+    public static final int FL = 4, 
+                            FR = 9, 
+                            BL = 3, 
+                            BR = 8;
+    
+    // Drive Limiters
+    public static final double kLimit = 1;
+    public static final double kDriveSpeed = 1;
+    public static final double kTurnSpeed = 0.9;
+    // Travel Speed
+    public static final double kAutoSpeed = 0.75;
+    // Turn Speed
+    public static final double kAutoTurnSpeed = 0.5;
+    // Avoid Zero Error 
+    public static final double kNoZero = 0.001;
+
+    // Diameter of Robot in meters
+    public static final double kRobotDiameter = 0.582;
+
+    // Encoder
+    public static final int kLeft1Enc = 0,
+                            kLeft2Enc = 1,
+                            kLeft3Enc = 2,
+                            kRight1Enc = 3,
+                            kRight2Enc = 4,
+                            kRight3Enc = 5;
+    // Maps Pulse to Distance (m/pulse)
+    public static final double kRatio = 1.0 / 2048.0 * Math.PI * 0.1524;
+    // Random Error Avg Number
+    public static final int kAvgNum = 5;
+    // Minimum Rate Cap (m/s)
+    public static final double kMinRate = 1.0;
+  }
+
+  /**
+   * Constants for Intake
+   */
+  public static final class Intake {
+    // Intake Controller
+    public static final int kIntake = 5;
+    // Solenoid
+    // TODO check if indexes are correct
+    public static final int kFrontSolenoid = 1,
+                            kBackSolenoid = 2;
+    // Speed
+    public static final double kSpeed = 0.5;
+  }
+
+  /**
+   * Constants for Storage
+   */
+  public static final class Storage{
+    // Storage Controller
+    public static final int kLeft = 2,
+                            kRight = 7;
+    // The transfer wheel
+    public static final int kTransfer = 13;
+    // Transfer Speed (Should be equal or less than shooter speed)
+    public static final double kTransferSpeed = Shooter.kSpeed - 0.1;
+    // Speed
+    public static final double kSpeed = 0.4;
+  }
+
+  /**
+   * Constants for Shooter
+   */
+  public static final class Shooter{
+    // Shooting
+    public static final int LS = 11, 
+                            RS = 12;
+    // Speed
+    public static final double kSpeed = 0.5;
+  }
+
+  /**
+   * Constants for Climber
+   */
+  public static final class Climber{
+    // Climbing Controllers
+    public static final int CL = 1, 
+                            CR = 6;
+    // Speed
+    public static final double kSpeed = 0.8;
+  }
+
+  /**
+   * Constants for Colour 
+   */
+  public static final class Colour{
+    // Colour Spinner
+    public static final int kSpinner = 10;
+    // Speed
+    public static final double kSpinSpeed = 0.5;
+    // Solenoid
+    // TODO check if indexes are correct
+    public static final int kFrontSolenoid = 3,
+                            kBackSolenoid = 4;
+    // Confidence
+    public static final double kMinConfidence = 0.8;
+  }
+
+  /*
+   * Other stuff
+   */
+
+  // Joystick USB Slot
+  public static final int JOY = 0,
+                          OP = 1;
 
   // Joystick - Button
   public static final int A = 1,
@@ -42,7 +153,4 @@ public final class Constants {
                           PX = 6, // D-Pad
                           PY = 7; // D-Pad
 
-  public static final double kDriveSpeedLimiter = 0.7;
-  public static final double kDriveFBSpeed = 1;
-  public static final double kDriveTurn = 0.5;
 }
