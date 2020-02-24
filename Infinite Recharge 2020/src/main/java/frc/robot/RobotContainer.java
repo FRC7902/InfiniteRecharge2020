@@ -8,7 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.commands.AutonomousSequence;
-import frc.robot.commands.TheGrandAutonomous;
+//import frc.robot.commands.TheGrandAutonomous;
 import frc.robot.subsystems.*;
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -36,8 +36,8 @@ public class RobotContainer {
   public static ClimbSubsystem climbSubsystem = new ClimbSubsystem();
 
   //Declaring Joysticks
-  private static Joystick driverStick = new Joystick(Constants.JOY),
-                          operatorStick = new Joystick(Constants.OP);
+  private static XboxController driverController = new XboxController(Constants.JOY),
+                          operatorController = new XboxController(Constants.OP);
 
   //Access to Joysticks ~ Useless
   //public static Joystick getJS(){
@@ -46,7 +46,7 @@ public class RobotContainer {
 
   //Autonomous Routine
   private final Command autonomousSequence = new AutonomousSequence(driveSubsystem, intakeSubsystem, shootSubsystem, storageSubsystem);
-  private final Command theGrandAutonomous = new TheGrandAutonomous(driveSubsystem, intakeSubsystem, shootSubsystem, storageSubsystem);
+  //private final Command theGrandAutonomous = new TheGrandAutonomous(driveSubsystem, intakeSubsystem, shootSubsystem, storageSubsystem);
   SendableChooser<Command> m_chooser = new SendableChooser<>();
   //Chooser for Colours
   SendableChooser<Color> colorChooser = new SendableChooser<>();
@@ -63,8 +63,8 @@ public class RobotContainer {
       //The Arcade command
       new RunCommand(() -> 
         driveSubsystem.driveJoystick(
-          -driverStick.getRawAxis(Constants.LY)*Constants.Drive.kDriveSpeed*Constants.Drive.kLimit, 
-          driverStick.getRawAxis(Constants.RX)*Constants.Drive.kTurnSpeed*Constants.Drive.kLimit), 
+          -driverController.getRawAxis(Constants.LY)*Constants.Drive.kDriveSpeed*Constants.Drive.kLimit, 
+          driverController.getRawAxis(Constants.RX)*Constants.Drive.kTurnSpeed*Constants.Drive.kLimit), 
         driveSubsystem
       )
     );
@@ -74,14 +74,14 @@ public class RobotContainer {
       //The Climb command
       new RunCommand(() ->
         // Rise & Fall using Left Y Axis
-        climbSubsystem.climb(operatorStick.getRawAxis(Constants.LY)), 
+        climbSubsystem.climb(operatorController.getRawAxis(Constants.LY)), 
         climbSubsystem
       )
     );
 
     //Add Commands to the autonomous command chooser
     m_chooser.setDefaultOption("The Test Auto", autonomousSequence);
-    m_chooser.addOption("The Official Auto", theGrandAutonomous);
+    //m_chooser.addOption("The Official Auto", theGrandAutonomous);
     //Add Colors to chooser
     colorChooser.addOption("Red", colourSubsystem.kRedTarget);
     colorChooser.addOption("Yellow", colourSubsystem.kYellowTarget);
@@ -103,8 +103,9 @@ public class RobotContainer {
     //When right bumper is pressed, resets Encoders
     //new JoystickButton(driverStick, Constants.RB)
     //  .whenPressed(() -> driveSubsystem.resetEnc());
+
     //When Left Bumper is pressed, Sucks Stuff
-    new JoystickButton(operatorStick, Constants.LB)
+    new JoystickButton(operatorController, Constants.LB)
       .whenPressed(() -> {
         intakeSubsystem.suck();
         storageSubsystem.store();
@@ -113,8 +114,9 @@ public class RobotContainer {
         intakeSubsystem.stop();
         storageSubsystem.stop();
       });
+
     //When Right Bumper is pressed, shoot stuff
-    new JoystickButton(operatorStick, Constants.RB)
+    new JoystickButton(operatorController, Constants.RB)
       .whenPressed(() -> {
         storageSubsystem.transfer();
         shootSubsystem.shoot();
@@ -125,9 +127,10 @@ public class RobotContainer {
         shootSubsystem.stap();
         storageSubsystem.stopTransfer();
       });
+
     //When X is pressed, deploy Intake 
     // TODO Check if this works. I dont wanna make another cmd file just for this small thing
-    new JoystickButton(operatorStick, Constants.X)
+    new JoystickButton(operatorController, Constants.X)
       .toggleWhenPressed(new CommandBase() {
         // When CMD is running, deploy
         @Override
@@ -141,9 +144,10 @@ public class RobotContainer {
         }
       // true = yes please interrupt
       }, true);
+
     //When Y is pressed, deploy colour arm
     // TODO Check if this works. I dont wanna make another cmd file just for this small thing
-    new JoystickButton(operatorStick, Constants.Y)
+    new JoystickButton(operatorController, Constants.Y)
       .toggleWhenPressed(new CommandBase() {
         // When CMD is running, deploy
         @Override
@@ -157,8 +161,9 @@ public class RobotContainer {
         }
       // true = yes please interrupt
       }, true);
+
     //When A is pressed, spin to colour
-    new JoystickButton(operatorStick, Constants.X)
+    new JoystickButton(operatorController, Constants.X)
       .whenPressed(() -> {
         // Convert i to int
         int i = (int) SmartDashboard.getNumber("Spin Number", 0.0);

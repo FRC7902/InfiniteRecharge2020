@@ -60,7 +60,7 @@ public final class Constants {
    * Constants for Intake
    */
   public static final class Intake {
-    // Intake Controller
+    // CAN for the Intake Controller
     public static final int kIntake = 5;
     // Solenoid
     // TODO check if indexes are correct
@@ -74,11 +74,13 @@ public final class Constants {
    * Constants for Storage
    */
   public static final class Storage{
-    // Storage Controller
+    // CAN for the Storage Controllers
     public static final int kLeft = 2,
                             kRight = 7;
-    // The transfer wheel
+
+    // CAN for the transfer wheel
     public static final int kTransfer = 13;
+
     // Transfer Speed (Should be equal or less than shooter speed)
     public static final double kTransferSpeed = Shooter.kSpeed - 0.1;
     // Speed
@@ -93,7 +95,7 @@ public final class Constants {
     public static final int LS = 11, 
                             RS = 12;
     // Speed
-    public static final double kSpeed = 0.5;
+    public static final double kSpeed = 1;
   }
 
   /**

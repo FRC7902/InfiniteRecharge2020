@@ -23,7 +23,7 @@ public class TheGrandAutonomous extends SequentialCommandGroup {
   /**
    * Creates a new TheGrandAutonomous.
    */
-  public TheGrandAutonomous(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ShootSubsystem shootSubsystem, StorageSubsystem storageSubsystem) {
+ /* public TheGrandAutonomous(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ShootSubsystem shootSubsystem, StorageSubsystem storageSubsystem) {
     addCommands(
       new ParallelRaceGroup(
       
@@ -98,5 +98,5 @@ public class TheGrandAutonomous extends SequentialCommandGroup {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     //super();
-  }
+  }*/
 }
