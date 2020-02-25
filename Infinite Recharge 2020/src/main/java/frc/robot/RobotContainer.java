@@ -39,11 +39,6 @@ public class RobotContainer {
   private static XboxController driverStick = new XboxController(Constants.JOY),
                           operatorStick = new XboxController(Constants.OP);
 
-  //Access to Joysticks ~ Useless
-  //public static Joystick getJS(){
-  //  return driverStick;
-  //}
-
   //Autonomous Routine
   private final Command autonomousSequence = new AutonomousSequence(driveSubsystem, intakeSubsystem, shootSubsystem, storageSubsystem);
   private final Command theGrandAutonomous = new TheGrandAutonomous(driveSubsystem, intakeSubsystem, shootSubsystem, storageSubsystem);

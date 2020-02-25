@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -20,22 +21,28 @@ public class ShootSubsystem extends SubsystemBase {
   private WPI_TalonSRX right = new WPI_TalonSRX(Constants.Shooter.RS);
   private WPI_VictorSPX transfer = new  WPI_VictorSPX(Constants.Storage.kTransfer);
 
+  private SpeedControllerGroup shooter;
+
   private String status = "Off";
 
   /**
    * Creates a new ShootSubsystem.
    */
   public ShootSubsystem() {
+    // FIX Might need to invert the other guys instead
     right.setInverted(true);
+    // TODO Attempting to put all controller (including transfer)
+    shooter = new SpeedControllerGroup(left, transfer, right);
   }
 
   /**
    * Shoot
    */
   public void shoot() {
-    transfer();
-    left.set(Constants.Shooter.kSpeed);
-    right.set(Constants.Shooter.kSpeed);
+    //transfer();
+    //left.set(Constants.Shooter.kSpeed);
+    //right.set(Constants.Shooter.kSpeed);
+    shooter.set(Constants.Shooter.kSpeed);
     status = "Shooting";
   }
 
@@ -43,22 +50,27 @@ public class ShootSubsystem extends SubsystemBase {
    * Stop
    */
   public void stap() {
-    stopTransfer();
-    left.stopMotor();
-    right.stopMotor();
+    //stopTransfer();
+    //left.stopMotor();
+    //right.stopMotor();
+    shooter.stopMotor();
     status = "Stopped";
   }
 
   /**
    * Transfer to Shooter 
+   * ~ Dont use this anymore ~
    */
+  @Deprecated
   public void transfer() {
     transfer.set(Constants.Storage.kTransferSpeed);
   }
 
   /**
-   * Terminate Transfer
+   * Terminate Transfer 
+   * ~ Dont use this anymore ~
    */
+  @Deprecated
   public void stopTransfer() {
     transfer.stopMotor();
   }

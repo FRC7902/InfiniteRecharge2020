@@ -22,6 +22,7 @@ import frc.robot.subsystems.StorageSubsystem;
 public class TheGrandAutonomous extends SequentialCommandGroup {
   /**
    * Creates a new TheGrandAutonomous.
+   * TODO dont know if runCMD works
    */
   public TheGrandAutonomous(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ShootSubsystem shootSubsystem, StorageSubsystem storageSubsystem) {
     addCommands(
