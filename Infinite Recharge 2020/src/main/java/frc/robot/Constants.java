@@ -64,8 +64,8 @@ public final class Constants {
     public static final int kIntake = 5;
     // Solenoid
     // TODO check if indexes are correct
-    public static final int kFrontSolenoid = 1,
-                            kBackSolenoid = 2;
+    public static final int kFrontSolenoid = 0,
+                            kBackSolenoid = 1;
     // Speed
     public static final double kSpeed = 0.5;
   }
@@ -117,8 +117,8 @@ public final class Constants {
     public static final double kSpinSpeed = 0.5;
     // Solenoid
     // TODO check if indexes are correct
-    public static final int kFrontSolenoid = 3,
-                            kBackSolenoid = 4;
+    public static final int kFrontSolenoid = 2,
+                            kBackSolenoid = 3;
     // Confidence
     public static final double kMinConfidence = 0.8;
   }

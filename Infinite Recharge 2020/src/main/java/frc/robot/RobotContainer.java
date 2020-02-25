@@ -116,14 +116,12 @@ public class RobotContainer {
     //When Right Bumper is pressed, shoot stuff
     new JoystickButton(operatorStick, Constants.RB)
       .whenPressed(() -> {
-        storageSubsystem.transfer();
         shootSubsystem.shoot();
         storageSubsystem.store();
       }, shootSubsystem)
       .whenReleased(() -> {
         storageSubsystem.stop();
         shootSubsystem.stap();
-        storageSubsystem.stopTransfer();
       });
     //When X is pressed, deploy Intake 
     // TODO Check if this works. I dont wanna make another cmd file just for this small thing

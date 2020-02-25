@@ -73,12 +73,17 @@ public class TheGrandAutonomous extends SequentialCommandGroup {
       new ParallelRaceGroup(
       
       //shoot
-      new RunCommand(()-> shootSubsystem.shoot(), driveSubsystem)
+      new RunCommand(()-> {
+        shootSubsystem.shoot();
+      }, driveSubsystem)
       //stop after 5 seconds
       .withTimeout(5),
 
       //move the storage
-      new RunCommand(()-> storageSubsystem.store(), storageSubsystem)
+      new RunCommand(()-> {
+        shootSubsystem.stap();
+        storageSubsystem.store();
+      }, storageSubsystem)
       
       )
     );
