@@ -58,7 +58,7 @@ public class TheGrandAutonomous extends SequentialCommandGroup {
         new RunCommand(() -> storageSubsystem.store(), storageSubsystem)
       ),
 
-      //TODO idk if i can input negative nums, might have to add a turn
+      //DONE Added support to negative distances
       new InstantCommand(() -> driveSubsystem.travel(-10), driveSubsystem),
 
       //turn 120 on Point 2
