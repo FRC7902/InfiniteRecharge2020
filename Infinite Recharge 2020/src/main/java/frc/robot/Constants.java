@@ -78,7 +78,7 @@ public final class Constants {
     public static final int kLeft = 2,
                             kRight = 7;
     // Speed
-    public static final double kSpeed = 1.0;
+    public static final double kSpeed = 0.5;
   }
 
   /**
@@ -92,9 +92,9 @@ public final class Constants {
     public static final int kTransfer = 10;
     // Transfer Speed (Should be equal or less than shooter speed)
     // No longer needed
-    public static final double kTransferSpeed = Shooter.kSpeed - 0.1;
+    public static final double kTransferSpeed = 0.1;
     // Speed
-    public static final double kSpeed = 0.5;
+    public static final double kSpeed = 1;
   }
 
   /**

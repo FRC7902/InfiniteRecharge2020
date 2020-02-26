@@ -19,7 +19,7 @@ public class ShootSubsystem extends SubsystemBase {
 
   private WPI_TalonSRX left = new WPI_TalonSRX(Constants.Shooter.LS);
   private WPI_TalonSRX right = new WPI_TalonSRX(Constants.Shooter.RS);
-  private WPI_VictorSPX transfer = new  WPI_VictorSPX(Constants.Shooter.kTransfer);
+  private WPI_VictorSPX transfer = new  WPI_VictorSPX(Constants.Shooter.kTransfer); //da transfer
 
   private SpeedControllerGroup shooter;
 
@@ -43,7 +43,7 @@ public class ShootSubsystem extends SubsystemBase {
     //left.set(Constants.Shooter.kSpeed);
     //right.set(Constants.Shooter.kSpeed);
     shooter.set(Constants.Shooter.kSpeed);
-    transfer.set(Constants.Shooter.kTransferSpeed);
+    //transfer.set(Constants.Shooter.kTransferSpeed);
     status = "Shooting";
   }
 
