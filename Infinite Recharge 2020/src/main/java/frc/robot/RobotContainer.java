@@ -41,7 +41,7 @@ public class RobotContainer {
 
   //Autonomous Routine
   private final Command autonomousSequence = new AutonomousSequence(driveSubsystem, intakeSubsystem, shootSubsystem, storageSubsystem);
-  private final Command theGrandAutonomous = new TheGrandAutonomous(driveSubsystem, intakeSubsystem, shootSubsystem, storageSubsystem);
+  //private final Command theGrandAutonomous = new TheGrandAutonomous(driveSubsystem, intakeSubsystem, shootSubsystem, storageSubsystem);
   SendableChooser<Command> m_chooser = new SendableChooser<>();
   //Chooser for Colours
   SendableChooser<Color> colorChooser = new SendableChooser<>();
@@ -76,7 +76,7 @@ public class RobotContainer {
 
     //Add Commands to the autonomous command chooser
     m_chooser.setDefaultOption("The Test Auto", autonomousSequence);
-    m_chooser.addOption("The Official Auto", theGrandAutonomous);
+    //m_chooser.addOption("The Official Auto", theGrandAutonomous);
     //Add Colors to chooser
     colorChooser.addOption("Red", colourSubsystem.kRedTarget);
     colorChooser.addOption("Yellow", colourSubsystem.kYellowTarget);
@@ -162,6 +162,10 @@ public class RobotContainer {
         else
           colourSubsystem.spin(i);
       }, colourSubsystem);
+    // When press menu stART  traners
+    new JoystickButton(operatorStick, Constants.M)
+      .whenPressed(() -> shootSubsystem.transfer(), shootSubsystem)
+      .whenReleased(() -> shootSubsystem.stopTransfer(), shootSubsystem);
   }
 
   /**

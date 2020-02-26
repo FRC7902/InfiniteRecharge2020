@@ -19,7 +19,7 @@ public class ShootSubsystem extends SubsystemBase {
 
   private WPI_TalonSRX left = new WPI_TalonSRX(Constants.Shooter.LS);
   private WPI_TalonSRX right = new WPI_TalonSRX(Constants.Shooter.RS);
-  private WPI_VictorSPX transfer = new  WPI_VictorSPX(Constants.Storage.kTransfer);
+  private WPI_VictorSPX transfer = new  WPI_VictorSPX(Constants.Shooter.kTransfer);
 
   private SpeedControllerGroup shooter;
 
@@ -32,7 +32,7 @@ public class ShootSubsystem extends SubsystemBase {
     // FIX Might need to invert the other guys instead
     right.setInverted(true);
     // TODO Attempting to put all controller (including transfer)
-    shooter = new SpeedControllerGroup(left, transfer, right);
+    shooter = new SpeedControllerGroup(left, right);
   }
 
   /**
@@ -43,6 +43,7 @@ public class ShootSubsystem extends SubsystemBase {
     //left.set(Constants.Shooter.kSpeed);
     //right.set(Constants.Shooter.kSpeed);
     shooter.set(Constants.Shooter.kSpeed);
+    transfer.set(Constants.Shooter.kTransferSpeed);
     status = "Shooting";
   }
 
@@ -54,6 +55,7 @@ public class ShootSubsystem extends SubsystemBase {
     //left.stopMotor();
     //right.stopMotor();
     shooter.stopMotor();
+    transfer.stopMotor();
     status = "Stopped";
   }
 
@@ -61,16 +63,14 @@ public class ShootSubsystem extends SubsystemBase {
    * Transfer to Shooter 
    * ~ Dont use this anymore ~
    */
-  @Deprecated
   public void transfer() {
-    transfer.set(Constants.Storage.kTransferSpeed);
+    transfer.set(Constants.Shooter.kTransferSpeed);
   }
 
   /**
    * Terminate Transfer 
    * ~ Dont use this anymore ~
    */
-  @Deprecated
   public void stopTransfer() {
     transfer.stopMotor();
   }

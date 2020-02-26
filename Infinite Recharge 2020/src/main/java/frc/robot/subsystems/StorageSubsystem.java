@@ -25,9 +25,9 @@ public class StorageSubsystem extends SubsystemBase {
    */
   public StorageSubsystem() {
     // Set Inverse
-    left.setInverted(true);
     // Bind
     store = new SpeedControllerGroup(left, right);
+    store.setInverted(true);
     // WTF such a useful function I was not told about?
     //transfer.set(ControlMode.VELOCITY, velocity);
   }
