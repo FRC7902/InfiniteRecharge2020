@@ -58,8 +58,8 @@ public class RobotContainer {
       //The Arcade command
       new RunCommand(() -> 
         driveSubsystem.driveJoystick(
-          -driverController.getRawAxis(Constants.LY)*Constants.Drive.kDriveSpeed*Constants.Drive.kLimit, 
-          driverController.getRawAxis(Constants.RX)*Constants.Drive.kTurnSpeed*Constants.Drive.kLimit), 
+          -driverStick.getRawAxis(Constants.LY)*Constants.Drive.kDriveSpeed*Constants.Drive.kLimit, 
+          driverStick.getRawAxis(Constants.RX)*Constants.Drive.kTurnSpeed*Constants.Drive.kLimit), 
         driveSubsystem
       )
     );
@@ -69,7 +69,7 @@ public class RobotContainer {
       //The Climb command
       new RunCommand(() ->
         // Rise & Fall using Left Y Axis
-        climbSubsystem.climb(operatorController.getRawAxis(Constants.LY)), 
+        climbSubsystem.climb(operatorStick.getRawAxis(Constants.LY)), 
         climbSubsystem
       )
     );
@@ -100,7 +100,7 @@ public class RobotContainer {
     //  .whenPressed(() -> driveSubsystem.resetEnc());
 
     //When Left Bumper is pressed, Sucks Stuff
-    new JoystickButton(operatorController, Constants.LB)
+    new JoystickButton(operatorStick, Constants.LB)
       .whenPressed(() -> {
         intakeSubsystem.suck();
         storageSubsystem.store();
@@ -111,7 +111,7 @@ public class RobotContainer {
       });
 
     //When Right Bumper is pressed, shoot stuff
-    new JoystickButton(operatorController, Constants.RB)
+    new JoystickButton(operatorStick, Constants.RB)
       .whenPressed(() -> {
         shootSubsystem.shoot();
         storageSubsystem.store();
@@ -123,7 +123,7 @@ public class RobotContainer {
 
     //When X is pressed, deploy Intake 
     // TODO Check if this works. I dont wanna make another cmd file just for this small thing
-    new JoystickButton(operatorController, Constants.X)
+    new JoystickButton(operatorStick, Constants.X)
       .toggleWhenPressed(new CommandBase() {
         // When CMD is running, deploy
         @Override
@@ -140,7 +140,7 @@ public class RobotContainer {
 
     //When Y is pressed, deploy colour arm
     // TODO Check if this works. I dont wanna make another cmd file just for this small thing
-    new JoystickButton(operatorController, Constants.Y)
+    new JoystickButton(operatorStick, Constants.Y)
       .toggleWhenPressed(new CommandBase() {
         // When CMD is running, deploy
         @Override
@@ -156,7 +156,7 @@ public class RobotContainer {
       }, true);
 
     //When A is pressed, spin to colour
-    new JoystickButton(operatorController, Constants.X)
+    new JoystickButton(operatorStick, Constants.X)
       .whenPressed(() -> {
         // Convert i to int
         int i = (int) SmartDashboard.getNumber("Spin Number", 0.0);
