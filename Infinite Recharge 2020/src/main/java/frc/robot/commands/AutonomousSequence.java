@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -26,9 +27,12 @@ public class AutonomousSequence extends SequentialCommandGroup {
     // TODO Test Auto to see functionality
     addCommands(
       // Drive 2 meters
-      new InstantCommand(() -> driveSubsystem.travel(2), driveSubsystem),
-      // Turn 90 Degrees to the right
-      new InstantCommand(() -> driveSubsystem.turn(Math.toRadians(90.0)), driveSubsystem)
+      new RunCommand(() -> driveSubsystem.driveRaw(1, 1))
+      .beforeStarting(driveSubsystem::resetEnc, driveSubsystem)
+      .withInterrupt(() -> driveSubsystem.getAvgEncDist() >= 2)
+      // new RunCommand(() -> driveSubsystem.travel(2), driveSubsystem),
+      // // Turn 90 Degrees to the right
+      // new RunCommand(() -> driveSubsystem.turn(Math.toRadians(90.0)), driveSubsystem)
     );
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());

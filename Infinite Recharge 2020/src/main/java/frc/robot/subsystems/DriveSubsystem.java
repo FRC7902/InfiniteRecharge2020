@@ -132,6 +132,7 @@ public class DriveSubsystem extends SubsystemBase {
    * Distance you want to travel in meters
    */
   public void travel(double dist) {
+    /*
     // Gets Desired Dist
     double finDist = 0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance()) + dist;
     // Avoid Dividing by 0
@@ -145,6 +146,15 @@ public class DriveSubsystem extends SubsystemBase {
     }while((0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance()) - finDist) / finDist > 0);
     // Stops afterwards
     stop();
+    */
+    
+    if(dist > 0){
+      driveRaw(1, 1);
+    }
+    if(dist < 0){
+      driveRaw(-1, -1);
+    }
+    
   }
 
   /**
@@ -184,6 +194,10 @@ public class DriveSubsystem extends SubsystemBase {
   public void resetEnc() {
     leftEncoder.reset();
     rightEncoder.reset();
+  }
+
+  public double getAvgEncDist(){
+    return (leftEncoder.getDistance() + rightEncoder.getDistance()) * 0.5;
   }
 
   /**
