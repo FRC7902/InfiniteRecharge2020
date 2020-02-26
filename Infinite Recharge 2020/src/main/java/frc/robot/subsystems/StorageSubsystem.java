@@ -17,7 +17,6 @@ public class StorageSubsystem extends SubsystemBase {
   // Controllers
   private WPI_VictorSPX left = new  WPI_VictorSPX(Constants.Storage.kLeft);
   private WPI_VictorSPX right = new  WPI_VictorSPX(Constants.Storage.kRight);
-  private WPI_VictorSPX transfer = new  WPI_VictorSPX(Constants.Storage.kTransfer);
 
   private SpeedControllerGroup store;
 
@@ -26,9 +25,9 @@ public class StorageSubsystem extends SubsystemBase {
    */
   public StorageSubsystem() {
     // Set Inverse
-    left.setInverted(true);
     // Bind
     store = new SpeedControllerGroup(left, right);
+    store.setInverted(true);
     // WTF such a useful function I was not told about?
     //transfer.set(ControlMode.VELOCITY, velocity);
   }
@@ -45,20 +44,6 @@ public class StorageSubsystem extends SubsystemBase {
    */
   public void stop() {
     store.stopMotor();
-  }
-
-  /**
-   * Transfer to Shooter 
-   */
-  public void transfer() {
-    transfer.set(Constants.Storage.kTransferSpeed);
-  }
-
-  /**
-   * Terminate Transfer
-   */
-  public void stopTransfer() {
-    transfer.stopMotor();
   }
 
   @Override

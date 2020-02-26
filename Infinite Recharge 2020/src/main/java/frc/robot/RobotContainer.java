@@ -36,13 +36,8 @@ public class RobotContainer {
   public static ClimbSubsystem climbSubsystem = new ClimbSubsystem();
 
   //Declaring Joysticks
-  private static XboxController driverController = new XboxController(Constants.JOY),
-                          operatorController = new XboxController(Constants.OP);
-
-  //Access to Joysticks ~ Useless
-  //public static Joystick getJS(){
-  //  return driverStick;
-  //}
+  private static XboxController driverStick = new XboxController(Constants.JOY),
+                          operatorStick = new XboxController(Constants.OP);
 
   //Autonomous Routine
   private final Command autonomousSequence = new AutonomousSequence(driveSubsystem, intakeSubsystem, shootSubsystem, storageSubsystem);
@@ -118,14 +113,12 @@ public class RobotContainer {
     //When Right Bumper is pressed, shoot stuff
     new JoystickButton(operatorController, Constants.RB)
       .whenPressed(() -> {
-        storageSubsystem.transfer();
         shootSubsystem.shoot();
         storageSubsystem.store();
       }, shootSubsystem)
       .whenReleased(() -> {
         storageSubsystem.stop();
         shootSubsystem.stap();
-        storageSubsystem.stopTransfer();
       });
 
     //When X is pressed, deploy Intake 
@@ -174,6 +167,10 @@ public class RobotContainer {
         else
           colourSubsystem.spin(i);
       }, colourSubsystem);
+    // When press menu stART  traners
+    new JoystickButton(operatorStick, Constants.M)
+      .whenPressed(() -> shootSubsystem.transfer(), shootSubsystem)
+      .whenReleased(() -> shootSubsystem.stopTransfer(), shootSubsystem);
   }
 
   /**

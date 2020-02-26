@@ -64,8 +64,8 @@ public final class Constants {
     public static final int kIntake = 5;
     // Solenoid
     // TODO check if indexes are correct
-    public static final int kFrontSolenoid = 1,
-                            kBackSolenoid = 2;
+    public static final int kFrontSolenoid = 0,
+                            kBackSolenoid = 1;
     // Speed
     public static final double kSpeed = 0.5;
   }
@@ -77,14 +77,8 @@ public final class Constants {
     // CAN for the Storage Controllers
     public static final int kLeft = 2,
                             kRight = 7;
-
-    // CAN for the transfer wheel
-    public static final int kTransfer = 13;
-
-    // Transfer Speed (Should be equal or less than shooter speed)
-    public static final double kTransferSpeed = Shooter.kSpeed - 0.1;
     // Speed
-    public static final double kSpeed = 0.4;
+    public static final double kSpeed = 0.5;
   }
 
   /**
@@ -94,6 +88,11 @@ public final class Constants {
     // Shooting
     public static final int LS = 11, 
                             RS = 12;
+    // The transfer wheel
+    public static final int kTransfer = 10;
+    // Transfer Speed (Should be equal or less than shooter speed)
+    // No longer needed
+    public static final double kTransferSpeed = 0.1;
     // Speed
     public static final double kSpeed = 1;
   }
@@ -114,13 +113,13 @@ public final class Constants {
    */
   public static final class Colour{
     // Colour Spinner
-    public static final int kSpinner = 10;
+    public static final int kSpinner = 13;
     // Speed
     public static final double kSpinSpeed = 0.5;
     // Solenoid
     // TODO check if indexes are correct
-    public static final int kFrontSolenoid = 3,
-                            kBackSolenoid = 4;
+    public static final int kFrontSolenoid = 2,
+                            kBackSolenoid = 3;
     // Confidence
     public static final double kMinConfidence = 0.8;
   }

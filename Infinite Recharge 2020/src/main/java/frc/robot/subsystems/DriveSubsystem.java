@@ -125,18 +125,36 @@ public class DriveSubsystem extends SubsystemBase {
   /**
    * Travel distance ~ for auto 
    * *NOTE: IN METERS*
+   * Positive DIST = Forward
+   * Negative DIST = Backward
    * Will Auto-Stop
    * @param dist
    * Distance you want to travel in meters
    */
   public void travel(double dist) {
-    // Gets Distance Before
-    double initDist = 0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance());
-    while((0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance()) <= (initDist + dist))) {
-      driveRaw(Constants.Drive.kAutoSpeed, Constants.Drive.kAutoSpeed);
-    }
+    /*
+    // Gets Desired Dist
+    double finDist = 0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance()) + dist;
+    // Avoid Dividing by 0
+    if(finDist == 0.0)
+      finDist += Constants.Drive.kNoZero;
+    // Apporach Dist Check
+    do{
+      // (dist / Math.abs(dist)) = Neg/Pos Check
+      driveRaw((dist / Math.abs(dist)) * Constants.Drive.kAutoSpeed, (dist / Math.abs(dist)) * Constants.Drive.kAutoSpeed);
+    // Approaching 0 = Arrive at angle
+    }while((0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance()) - finDist) / finDist > 0);
     // Stops afterwards
     stop();
+    */
+    
+    if(dist > 0){
+      driveRaw(1, 1);
+    }
+    if(dist < 0){
+      driveRaw(-1, -1);
+    }
+    
   }
 
   /**
@@ -176,6 +194,10 @@ public class DriveSubsystem extends SubsystemBase {
   public void resetEnc() {
     leftEncoder.reset();
     rightEncoder.reset();
+  }
+
+  public double getAvgEncDist(){
+    return (leftEncoder.getDistance() + rightEncoder.getDistance()) * 0.5;
   }
 
   /**

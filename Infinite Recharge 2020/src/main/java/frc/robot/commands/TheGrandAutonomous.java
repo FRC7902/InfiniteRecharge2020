@@ -22,18 +22,19 @@ import frc.robot.subsystems.StorageSubsystem;
 public class TheGrandAutonomous extends SequentialCommandGroup {
   /**
    * Creates a new TheGrandAutonomous.
+   * TODO dont know if runCMD works
    */
  /* public TheGrandAutonomous(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, ShootSubsystem shootSubsystem, StorageSubsystem storageSubsystem) {
     addCommands(
       new ParallelRaceGroup(
       
-      //shoot
-      new RunCommand(()-> shootSubsystem.shoot(), driveSubsystem)
-      //stop after 5 seconds
-      .withTimeout(5),
+        //shoot
+        new RunCommand(()-> shootSubsystem.shoot(), driveSubsystem)
+        //stop after 5 seconds
+        .withTimeout(5),
 
-      //move the storage
-      new RunCommand(()-> storageSubsystem.store(), storageSubsystem)
+        //move the storage
+        new RunCommand(()-> storageSubsystem.store(), storageSubsystem)
       
       ),
 
@@ -58,7 +59,7 @@ public class TheGrandAutonomous extends SequentialCommandGroup {
         new RunCommand(() -> storageSubsystem.store(), storageSubsystem)
       ),
 
-      //TODO idk if i can input negative nums, might have to add a turn
+      //DONE Added support to negative distances
       new InstantCommand(() -> driveSubsystem.travel(-10), driveSubsystem),
 
       //turn 120 on Point 2
@@ -73,19 +74,19 @@ public class TheGrandAutonomous extends SequentialCommandGroup {
       new ParallelRaceGroup(
       
       //shoot
-      new RunCommand(()-> shootSubsystem.shoot(), driveSubsystem)
+      new RunCommand(()-> {
+        shootSubsystem.shoot();
+      }, driveSubsystem)
       //stop after 5 seconds
       .withTimeout(5),
 
       //move the storage
-      new RunCommand(()-> storageSubsystem.store(), storageSubsystem)
+      new RunCommand(()-> {
+        shootSubsystem.stap();
+        storageSubsystem.store();
+      }, storageSubsystem)
       
       )
-
-      
-
-
-
     );
     
 
