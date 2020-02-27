@@ -83,10 +83,10 @@ public class RobotContainer {
     colorChooser.addOption("Yellow", colourSubsystem.kYellowTarget);
     colorChooser.addOption("Green", colourSubsystem.kGreenTarget);
     colorChooser.addOption("Blue", colourSubsystem.kBlueTarget);
-
+    
     //Put the Chooser on Dashboard
-    Shuffleboard.getTab("Autonomous").add(m_chooser);
-    Shuffleboard.getTab("SmartDashboard").add(colorChooser);
+    SmartDashboard.putData(m_chooser);
+    SmartDashboard.putData(colorChooser);
   }
 
   /**

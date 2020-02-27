@@ -200,6 +200,14 @@ public class DriveSubsystem extends SubsystemBase {
     return (leftEncoder.getDistance() + rightEncoder.getDistance()) * 0.5;
   }
 
+  public boolean checkIfDist(double dist){
+    if(dist > 0){
+      return getAvgEncDist() >= dist;
+    }else{
+      return getAvgEncDist() <= dist;
+    }
+  }
+
   /**
    * Calculate Displacement
    */
@@ -229,7 +237,7 @@ public class DriveSubsystem extends SubsystemBase {
     // Displacement from Spawn
     SmartDashboard.putNumber("Displacement", getDisplacement());
     // AVG Dist
-    SmartDashboard.putNumber("Total Distance Travelled", 0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance()));
+    SmartDashboard.putNumber("Distance Travelled", 0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance()));
   }
 
   /**

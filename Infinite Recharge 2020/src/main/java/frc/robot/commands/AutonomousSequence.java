@@ -27,9 +27,12 @@ public class AutonomousSequence extends SequentialCommandGroup {
     // TODO Test Auto to see functionality
     addCommands(
       // Drive 2 meters
-      new RunCommand(() -> driveSubsystem.driveRaw(1, 1))
+      new RunCommand(() -> driveSubsystem.driveRaw(0.5, 0.5))
       .beforeStarting(driveSubsystem::resetEnc, driveSubsystem)
-      .withInterrupt(() -> driveSubsystem.getAvgEncDist() >= 2)
+      .withInterrupt(() -> driveSubsystem.checkIfDist(2)),
+
+      new InstantCommand(() -> driveSubsystem.turn(Math.toRadians(90.0)), driveSubsystem)
+      
       // new RunCommand(() -> driveSubsystem.travel(2), driveSubsystem),
       // // Turn 90 Degrees to the right
       // new RunCommand(() -> driveSubsystem.turn(Math.toRadians(90.0)), driveSubsystem)
