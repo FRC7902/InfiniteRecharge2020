@@ -115,6 +115,7 @@ public class RobotContainer {
       .whenPressed(() -> {
         shootSubsystem.shoot();
         storageSubsystem.store();
+        shootSubsystem.transfer();
       }, shootSubsystem)
       .whenReleased(() -> {
         storageSubsystem.stop();
