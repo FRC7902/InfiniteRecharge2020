@@ -40,6 +40,13 @@ public class StorageSubsystem extends SubsystemBase {
   }
 
   /**
+   * Reverse
+   */
+  public void reverse() {
+    store.set(-Constants.Storage.kSpeed);
+  }
+
+  /**
    * Stop
    */
   public void stop() {

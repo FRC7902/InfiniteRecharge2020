@@ -68,11 +68,32 @@ public class ShootSubsystem extends SubsystemBase {
   }
 
   /**
+   * Checks if evrything is ready
+   */
+  public boolean isPowered() {
+    return Constants.Shooter.kSpeed == shooter.get();
+  }
+
+  /**
    * Terminate Transfer 
    * ~ Dont use this anymore ~
    */
   public void stopTransfer() {
     transfer.stopMotor();
+  }
+
+  /**
+   * Reverses
+   */
+  public void reverse() {
+    shooter.set(-Constants.Shooter.kSpeed);
+  }
+
+  /**
+   * Reverses Transfer
+   */
+  public void reverseTransfer() {
+    transfer.set(-Constants.Shooter.kSpeed);
   }
 
   @Override

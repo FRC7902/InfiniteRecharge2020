@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -113,11 +114,23 @@ public class RobotContainer {
     //When Right Bumper is pressed, shoot stuff
     new JoystickButton(operatorStick, Constants.RB)
       .whenPressed(() -> {
+        // Reverse all to allow build up
+        shootSubsystem.reverse();
+        shootSubsystem.reverseTransfer();
+        storageSubsystem.reverse();
+        new WaitCommand(0.5).execute();
+        // Prepartion
+        storageSubsystem.stop();
+        shootSubsystem.stopTransfer();
         shootSubsystem.shoot();
-        storageSubsystem.store();
+        // Wait for full speed
+        do{}while(shootSubsystem.isPowered());
+        // Activate
         shootSubsystem.transfer();
+        storageSubsystem.store();
       }, shootSubsystem)
       .whenReleased(() -> {
+        // Stop everything when released
         storageSubsystem.stop();
         shootSubsystem.stap();
       });
