@@ -59,9 +59,10 @@ public class DriveSubsystem extends SubsystemBase {
     // frontLeft.setInverted(true);
     // backRight.setInverted(false);
     // backLeft.setInverted(true);
-    rightSide.setInverted(true);
+    leftSide.setInverted(true);
     // drive is a new DifferentialDrive
     drive = new DifferentialDrive(leftSide, rightSide);
+    
 
     // Encoder
     /*
@@ -121,6 +122,8 @@ public class DriveSubsystem extends SubsystemBase {
     updatePos();
     //broadcastSpeed();
   }
+
+  
 
   /**
    * Travel distance ~ for auto 
@@ -196,8 +199,20 @@ public class DriveSubsystem extends SubsystemBase {
     rightEncoder.reset();
   }
 
+  public void setMax(double max){
+    drive.setMaxOutput(max);
+  }
+
   public double getAvgEncDist(){
     return (leftEncoder.getDistance() + rightEncoder.getDistance()) * 0.5;
+  }
+
+  public boolean checkIfDist(double dist){
+    if(dist > 0){
+      return getAvgEncDist() >= dist;
+    }else{
+      return getAvgEncDist() <= dist;
+    }
   }
 
   /**
@@ -229,7 +244,7 @@ public class DriveSubsystem extends SubsystemBase {
     // Displacement from Spawn
     SmartDashboard.putNumber("Displacement", getDisplacement());
     // AVG Dist
-    SmartDashboard.putNumber("Total Distance Travelled", 0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance()));
+    SmartDashboard.putNumber("Distance Travelled", 0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance()));
   }
 
   /**

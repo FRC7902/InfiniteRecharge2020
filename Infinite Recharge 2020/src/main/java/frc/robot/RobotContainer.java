@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
@@ -84,10 +83,10 @@ public class RobotContainer {
     colorChooser.addOption("Yellow", colourSubsystem.kYellowTarget);
     colorChooser.addOption("Green", colourSubsystem.kGreenTarget);
     colorChooser.addOption("Blue", colourSubsystem.kBlueTarget);
-
+    
     //Put the Chooser on Dashboard
-    Shuffleboard.getTab("Autonomous").add(m_chooser);
-    Shuffleboard.getTab("SmartDashboard").add(colorChooser);
+    SmartDashboard.putData(m_chooser);
+    SmartDashboard.putData(colorChooser);
   }
 
   /**
@@ -107,7 +106,9 @@ public class RobotContainer {
         intakeSubsystem.stop();
         storageSubsystem.stop();
       });
-
+    new JoystickButton(driverStick, Constants.RB)
+      .whenPressed(() -> driveSubsystem.setMax(Constants.Drive.kDriveLimit))
+      .whenReleased(() -> driveSubsystem.setMax(1));
     //When Right Bumper is pressed, shoot stuff
     new JoystickButton(operatorStick, Constants.RB)
       .whenPressed(
@@ -155,10 +156,10 @@ public class RobotContainer {
         // Stop everything when released
         storageSubsystem.stop();
         shootSubsystem.stap();
+        intakeSubsystem.stop();
       });
 
     //When X is pressed, deploy Intake 
-    // TODO Check if this works. I dont wanna make another cmd file just for this small thing
     new JoystickButton(operatorStick, Constants.X)
       .toggleWhenPressed(new CommandBase() {
         // When CMD is running, deploy
@@ -175,7 +176,6 @@ public class RobotContainer {
       }, true);
 
     //When Y is pressed, deploy colour arm
-    // TODO Check if this works. I dont wanna make another cmd file just for this small thing
     new JoystickButton(operatorStick, Constants.Y)
       .toggleWhenPressed(new CommandBase() {
         // When CMD is running, deploy
