@@ -54,6 +54,7 @@ public final class Constants {
     public static final int kAvgNum = 5;
     // Minimum Rate Cap (m/s)
     public static final double kMinRate = 1.0;
+    public static final double kDriveLimit = 0.1;
   }
 
   /**
@@ -67,7 +68,7 @@ public final class Constants {
     public static final int kFrontSolenoid = 0,
                             kBackSolenoid = 1;
     // Speed
-    public static final double kSpeed = 0.5;
+    public static final double kSpeed = 0.3;
   }
 
   /**

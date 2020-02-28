@@ -59,9 +59,10 @@ public class DriveSubsystem extends SubsystemBase {
     // frontLeft.setInverted(true);
     // backRight.setInverted(false);
     // backLeft.setInverted(true);
-    rightSide.setInverted(true);
+    leftSide.setInverted(true);
     // drive is a new DifferentialDrive
     drive = new DifferentialDrive(leftSide, rightSide);
+    
 
     // Encoder
     /*
@@ -121,6 +122,8 @@ public class DriveSubsystem extends SubsystemBase {
     updatePos();
     //broadcastSpeed();
   }
+
+  
 
   /**
    * Travel distance ~ for auto 
@@ -194,6 +197,10 @@ public class DriveSubsystem extends SubsystemBase {
   public void resetEnc() {
     leftEncoder.reset();
     rightEncoder.reset();
+  }
+
+  public void setMax(double max){
+    drive.setMaxOutput(max);
   }
 
   public double getAvgEncDist(){

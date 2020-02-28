@@ -83,5 +83,6 @@ public class IntakeSubsystem extends SubsystemBase {
     // This method will be called once per scheduler 
     SmartDashboard.putString("Intake Status", (intakeMotor.isAlive())? status : "Broken");
     SmartDashboard.putString("Intake Deployment", isDeployed? "Deployed" : "Retracted");
+    SmartDashboard.putNumber("Intake Speed", intakeMotor.get());
   }
 }
