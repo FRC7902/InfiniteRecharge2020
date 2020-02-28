@@ -61,7 +61,7 @@ public class RobotContainer {
       new RunCommand(() -> 
         driveSubsystem.driveJoystick(
           -driverStick.getRawAxis(Constants.LY)*Constants.Drive.kDriveSpeed*Constants.Drive.kLimit, 
-          driverStick.getRawAxis(Constants.RX)*Constants.Drive.kTurnSpeed*Constants.Drive.kLimit), 
+          -driverStick.getRawAxis(Constants.RX)*Constants.Drive.kTurnSpeed*Constants.Drive.kLimit), 
         driveSubsystem
       )
     );

@@ -30,7 +30,7 @@ public final class Constants {
     // Drive Limiters
     public static final double kLimit = 1;
     public static final double kDriveSpeed = 1;
-    public static final double kTurnSpeed = 0.9;
+    public static final double kTurnSpeed = 0.7;
     // Travel Speed
     public static final double kAutoSpeed = 0.75;
     // Turn Speed
@@ -64,7 +64,7 @@ public final class Constants {
     // CAN for the Intake Controller
     public static final int kIntake = 5;
     // Solenoid
-    // TODO check if indexes are correct
+    // TODO check if Intake solenoid indexes are correct
     public static final int kFrontSolenoid = 0,
                             kBackSolenoid = 1;
     // Speed
@@ -120,7 +120,6 @@ public final class Constants {
     // Speed
     public static final double kSpinSpeed = 0.5;
     // Solenoid
-    // TODO check if indexes are correct
     public static final int kFrontSolenoid = 2,
                             kBackSolenoid = 3;
     // Confidence

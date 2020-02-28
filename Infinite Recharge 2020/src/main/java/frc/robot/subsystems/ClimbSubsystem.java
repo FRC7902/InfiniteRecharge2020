@@ -31,7 +31,6 @@ public class ClimbSubsystem extends SubsystemBase {
     climber = new SpeedControllerGroup(left, right);
   }
 
-  // TODO Set auto stop somehow
   public void climb(double speed) {
     climber.set(speed);
   }

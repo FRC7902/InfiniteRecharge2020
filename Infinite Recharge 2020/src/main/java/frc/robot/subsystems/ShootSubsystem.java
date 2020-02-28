@@ -31,7 +31,6 @@ public class ShootSubsystem extends SubsystemBase {
   public ShootSubsystem() {
     // FIX Might need to invert the other guys instead
     right.setInverted(true);
-    // TODO Attempting to put all controller (including transfer)
     shooter = new SpeedControllerGroup(left, right);
   }
 

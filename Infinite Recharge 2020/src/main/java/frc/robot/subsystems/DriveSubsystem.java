@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -33,6 +34,7 @@ public class DriveSubsystem extends SubsystemBase {
   private static Encoder leftEncoder = new Encoder(Constants.Drive.kLeft1Enc, Constants.Drive.kLeft2Enc, Constants.Drive.kLeft3Enc, true);
   private static Encoder rightEncoder = new Encoder(Constants.Drive.kRight1Enc, Constants.Drive.kRight2Enc, Constants.Drive.kRight3Enc, false);
 
+  public final Timer m_timer = new Timer();
   /**
    * Positions
    */
@@ -229,6 +231,19 @@ public class DriveSubsystem extends SubsystemBase {
   public void setMaxOutput(double maxOutput){
     drive.setMaxOutput(maxOutput);
   }
+
+  public void resetTimer(){
+    m_timer.reset();
+  }
+
+  public void startTimer(){
+    m_timer.start();
+  }
+
+  public double getTimer(){
+    return m_timer.get();
+  }
+
   /**
    * This method will be called once per scheduler run
    */
@@ -258,18 +273,17 @@ public class DriveSubsystem extends SubsystemBase {
 
   /**
    * Get Cur Rotation of robot
-   * TODO will change rot over time, must fix
-   * FIX nah
+   * 
    */
   private void getRotationRobo() {
-    // calculate robot rotation change
-    long startT = System.nanoTime();
-    // Uses the equation (length of Arc) = (Angle (RAD)) * (Radius)
-    /*                                       //Get the change in Time//      //Convert to Seconds///Radius Calculation//*/
-    double leftRot  =  leftEncoder.getRate() * ((System.nanoTime() - startT) * Math.pow(10, -9)) / (Constants.Drive.kRobotDiameter / 2);
-    double rightRot = rightEncoder.getRate() * ((System.nanoTime() - startT) * Math.pow(10, -9)) / (Constants.Drive.kRobotDiameter / 2);
-    // Positive if turn right
-    // Negative if turn left
-    curRot += 0.5 * (leftRot - rightRot);
+    // // calculate robot rotation change
+    // long startT = System.nanoTime();
+    // // Uses the equation (length of Arc) = (Angle (RAD)) * (Radius)
+    // /*                                       //Get the change in Time//      //Convert to Seconds///Radius Calculation//*/
+    // double leftRot  =  leftEncoder.getRate() * ((System.nanoTime() - startT) * Math.pow(10, -9)) / (Constants.Drive.kRobotDiameter / 2);
+    // double rightRot = rightEncoder.getRate() * ((System.nanoTime() - startT) * Math.pow(10, -9)) / (Constants.Drive.kRobotDiameter / 2);
+    // // Positive if turn right
+    // // Negative if turn left
+    // curRot += 0.5 * (leftRot - rightRot);
   }
 }
