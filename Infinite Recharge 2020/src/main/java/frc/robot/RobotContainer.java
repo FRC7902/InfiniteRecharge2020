@@ -11,15 +11,18 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.commands.AutonomousSequence;
-//import frc.robot.commands.TheGrandAutonomous;
 import frc.robot.subsystems.*;
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -42,7 +45,6 @@ public class RobotContainer {
 
   //Autonomous Routine
   private final Command autonomousSequence = new AutonomousSequence(driveSubsystem, intakeSubsystem, shootSubsystem, storageSubsystem);
-  //private final Command theGrandAutonomous = new TheGrandAutonomous(driveSubsystem, intakeSubsystem, shootSubsystem, storageSubsystem);
   SendableChooser<Command> m_chooser = new SendableChooser<>();
   //Chooser for Colours
   SendableChooser<Color> colorChooser = new SendableChooser<>();
@@ -76,8 +78,7 @@ public class RobotContainer {
     );
 
     //Add Commands to the autonomous command chooser
-    m_chooser.setDefaultOption("The Test Auto", autonomousSequence);
-    //m_chooser.addOption("The Official Auto", theGrandAutonomous);
+    m_chooser.setDefaultOption("The Auto", autonomousSequence);
     //Add Colors to chooser
     colorChooser.addOption("Red", colourSubsystem.kRedTarget);
     colorChooser.addOption("Yellow", colourSubsystem.kYellowTarget);
@@ -96,10 +97,6 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    //When right bumper is pressed, resets Encoders
-    //new JoystickButton(driverStick, Constants.RB)
-    //  .whenPressed(() -> driveSubsystem.resetEnc());
-
     //When Left Bumper is pressed, Sucks Stuff
     new JoystickButton(operatorStick, Constants.LB)
       .whenPressed(() -> {
@@ -113,22 +110,47 @@ public class RobotContainer {
 
     //When Right Bumper is pressed, shoot stuff
     new JoystickButton(operatorStick, Constants.RB)
-      .whenPressed(() -> {
-        // Reverse all to allow build up
-        shootSubsystem.reverse();
-        shootSubsystem.reverseTransfer();
-        storageSubsystem.reverse();
-        new WaitCommand(0.5).execute();
-        // Prepartion
-        storageSubsystem.stop();
-        shootSubsystem.stopTransfer();
-        shootSubsystem.shoot();
-        // Wait for full speed
-        do{}while(shootSubsystem.isPowered());
-        // Activate
-        shootSubsystem.transfer();
-        storageSubsystem.store();
-      }, shootSubsystem)
+      .whenPressed(
+        // Creates a new sequence
+        new SequentialCommandGroup(
+          // Runs the reversal of everything in parallel
+          new ParallelCommandGroup(
+            new InstantCommand(
+              () -> shootSubsystem.reverse(), shootSubsystem
+            ),
+            new InstantCommand(
+              () -> shootSubsystem.reverseTransfer(), shootSubsystem
+            ),
+            new InstantCommand(
+              () -> storageSubsystem.reverse(), storageSubsystem
+            )
+          ),
+          // Waits 0.5 Seconds
+          new WaitCommand(Constants.Shooter.kTimeout),
+          // Starts preparations
+          new ParallelCommandGroup(
+            new InstantCommand(
+              () -> storageSubsystem.stop(), storageSubsystem
+            ),
+            new InstantCommand(
+              () -> shootSubsystem.stopTransfer(), shootSubsystem
+            ),
+            new InstantCommand(
+              () -> shootSubsystem.shoot(), shootSubsystem
+            )
+          ),
+          // Wait Until Shooter is Full Power
+          new WaitUntilCommand(() -> shootSubsystem.isPowered()),
+          // Activate
+          new ParallelCommandGroup(
+            new InstantCommand(
+              () -> shootSubsystem.transfer(), shootSubsystem
+            ),
+            new InstantCommand(
+              () -> storageSubsystem.store(), storageSubsystem
+            )
+          )
+      ), true)
       .whenReleased(() -> {
         // Stop everything when released
         storageSubsystem.stop();

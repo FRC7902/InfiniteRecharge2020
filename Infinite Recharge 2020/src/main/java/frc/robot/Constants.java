@@ -95,6 +95,8 @@ public final class Constants {
     public static final double kTransferSpeed = 1;
     // Speed
     public static final double kSpeed = 1;
+    // Reversal Timeout
+    public static final double kTimeout = 0.5;
   }
 
   /**
