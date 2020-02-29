@@ -29,13 +29,13 @@ public class AutonomousSequence extends SequentialCommandGroup {
       // TODO Get Auto to drive robot forward
       // Drive 2 meters
       
-      // new RunCommand(() -> driveSubsystem.driveRaw(0.3, 0.3))
-      // .withTimeout(5)
+      new RunCommand(() -> driveSubsystem.driveRaw(0.3, 0.3), driveSubsystem)
+      .withTimeout(5)
 
       //SOLUTION 2
-      new RunCommand(() -> driveSubsystem.driveRaw(0.3, 0.3))
-      .beforeStarting(driveSubsystem::resetEnc, driveSubsystem)
-      .withInterrupt(() -> driveSubsystem.checkIfDist(2))
+      // new RunCommand(() -> driveSubsystem.driveRaw(0.3, 0.3))
+      // .beforeStarting(driveSubsystem::resetEnc, driveSubsystem)
+      // .withInterrupt(() -> driveSubsystem.checkIfDist(2))
 
       //SOLUTION 3
       // new RunCommand(() -> driveSubsystem.driveRaw(0.3, 0.3))

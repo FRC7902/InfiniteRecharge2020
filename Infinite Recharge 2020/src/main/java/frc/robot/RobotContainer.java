@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -112,46 +111,46 @@ public class RobotContainer {
     //When Right Bumper is pressed, shoot stuff
     new JoystickButton(operatorStick, Constants.RB)
       .whenPressed(
+        () -> {
+          shootSubsystem.shoot();
+          storageSubsystem.store();
+          shootSubsystem.transfer();
+        }
         // Creates a new sequence
-        new SequentialCommandGroup(
-          // Runs the reversal of everything in parallel
-          new ParallelCommandGroup(
-            new InstantCommand(
-              () -> shootSubsystem.reverse(), shootSubsystem
-            ),
-            new InstantCommand(
-              () -> shootSubsystem.reverseTransfer(), shootSubsystem
-            ),
-            new InstantCommand(
-              () -> storageSubsystem.reverse(), storageSubsystem
-            )
-          ),
-          // Waits 0.5 Seconds
-          new WaitCommand(Constants.Shooter.kTimeout),
-          // Starts preparations
-          new ParallelCommandGroup(
-            new InstantCommand(
-              () -> storageSubsystem.stop(), storageSubsystem
-            ),
-            new InstantCommand(
-              () -> shootSubsystem.stopTransfer(), shootSubsystem
-            ),
-            new InstantCommand(
-              () -> shootSubsystem.shoot(), shootSubsystem
-            )
-          ),
-          // Wait Until Shooter is Full Power
-          new WaitUntilCommand(() -> shootSubsystem.isPowered()),
-          // Activate
-          new ParallelCommandGroup(
-            new InstantCommand(
-              () -> shootSubsystem.transfer(), shootSubsystem
-            ),
-            new InstantCommand(
-              () -> storageSubsystem.store(), storageSubsystem
-            )
-          )
-      ), true)
+      //   new SequentialCommandGroup(
+      //     // Runs the reversal of everything in parallel
+      //     new InstantCommand(
+      //       () -> shootSubsystem.reverse(), shootSubsystem
+      //     ),
+      //     new InstantCommand(
+      //       () -> shootSubsystem.reverseTransfer(), shootSubsystem
+      //     ),
+      //     new InstantCommand(
+      //       () -> storageSubsystem.reverse(), storageSubsystem
+      //     ),
+      //     // Waits 0.5 Seconds
+      //     new WaitCommand(Constants.Shooter.kTimeout),
+      //     // Starts preparations
+      //     new InstantCommand(
+      //       () -> storageSubsystem.stop(), storageSubsystem
+      //     ),
+      //     new InstantCommand(
+      //       () -> shootSubsystem.stopTransfer(), shootSubsystem
+      //     ),
+      //     new InstantCommand(
+      //       () -> shootSubsystem.shoot(), shootSubsystem
+      //     ),
+      //     // Wait Until Shooter is Full Power
+      //     new WaitUntilCommand(() -> shootSubsystem.isPowered()),
+      //     // Activate
+      //     new InstantCommand(
+      //       () -> shootSubsystem.transfer(), shootSubsystem
+      //     ),
+      //     new InstantCommand(
+      //       () -> storageSubsystem.store(), storageSubsystem
+      //     )
+      // )
+      )
       .whenReleased(() -> {
         // Stop everything when released
         storageSubsystem.stop();

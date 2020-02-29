@@ -7,10 +7,10 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 //import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -40,6 +40,8 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Start Compressor Cycle (Reloads at 125 psi)
     comp.setClosedLoopControl(true);
+    
+    CameraServer.getInstance().startAutomaticCapture();
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
     // autonomous chooser on the dashboard.
@@ -68,6 +70,8 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
     // CommandScheduler.getInstance().isScheduled();
+
+    
   }
 
   /**
