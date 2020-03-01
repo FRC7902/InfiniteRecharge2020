@@ -72,6 +72,12 @@ public class ShootSubsystem extends SubsystemBase {
   public boolean isPowered() {
     return Constants.Shooter.kSpeed == shooter.get();
   }
+  public void dumpShoot(){
+    shooter.set(Constants.Shooter.kDumpSpeed);
+  }
+  public void dumpTransfer(){
+    transfer.set(Constants.Shooter.kDumpTransferSpeed);
+  }
 
   /**
    * Terminate Transfer 
@@ -85,14 +91,14 @@ public class ShootSubsystem extends SubsystemBase {
    * Reverses
    */
   public void reverse() {
-    shooter.set(-Constants.Shooter.kSpeed);
+    shooter.set(Constants.Shooter.kReverseSpeed);
   }
 
   /**
    * Reverses Transfer
    */
   public void reverseTransfer() {
-    transfer.set(-Constants.Shooter.kSpeed);
+    transfer.set(Constants.Shooter.kReverseSpeed);
   }
 
   @Override

@@ -28,7 +28,7 @@ public final class Constants {
                             BR = 8;
     //he
     // Drive Limiters
-    public static final double kLimit = 1;
+    public static final double kLimit = 0.85;
     public static final double kDriveSpeed = 1;
     public static final double kTurnSpeed = 0.7;
     // Travel Speed
@@ -68,7 +68,7 @@ public final class Constants {
     public static final int kFrontSolenoid = 0,
                             kBackSolenoid = 1;
     // Speed
-    public static final double kSpeed = 0.3;
+    public static final double kSpeed = 0.4;
   }
 
   /**
@@ -79,7 +79,8 @@ public final class Constants {
     public static final int kLeft = 2,
                             kRight = 7;
     // Speed
-    public static final double kSpeed = 0.8;
+    public static final double kSpeed = 0.9;
+    public static final double kReverseSpeed = -0.4;
   }
 
   /**
@@ -96,6 +97,10 @@ public final class Constants {
     public static final double kTransferSpeed = 1;
     // Speed
     public static final double kSpeed = 1;
+    public static final double kReverseSpeed = -0.5;
+    //Dump Speed
+    public static final double kDumpSpeed = 0.1;
+    public static final double kDumpTransferSpeed = 0.1;
     // Reversal Timeout
     public static final double kTimeout = 0.5;
   }

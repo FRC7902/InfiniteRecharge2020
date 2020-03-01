@@ -41,10 +41,17 @@ public class StorageSubsystem extends SubsystemBase {
   }
 
   /**
+   * Store Motors Start
+   */
+  public void storeIntake() {
+    store.set(Constants.Storage.kSpeed - 0.1);
+  }
+
+  /**
    * Reverse
    */
   public void reverse() {
-    store.set(-Constants.Storage.kSpeed);
+    store.set(Constants.Storage.kReverseSpeed);
   }
 
   /**
