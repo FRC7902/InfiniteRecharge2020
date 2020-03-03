@@ -31,6 +31,12 @@ public class ShootSubsystem extends SubsystemBase {
   public ShootSubsystem() {
     // FIX Might need to invert the other guys instead
     right.setInverted(true);
+    // Limit Things
+    left.configPeakCurrentLimit(60);
+    right.configPeakCurrentLimit(60);
+    left.configOpenloopRamp(0.3);
+    right.configOpenloopRamp(0.3);
+    // good
     shooter = new SpeedControllerGroup(left, right);
   }
 

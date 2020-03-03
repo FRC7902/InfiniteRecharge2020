@@ -28,8 +28,8 @@ public final class Constants {
                             BR = 8;
     //he
     // Drive Limiters
-    public static final double kLimit = 0.85;
-    public static final double kDriveSpeed = 1;
+    public static final double kLimit = 1.0;
+    public static final double kDriveSpeed = 1.0;
     public static final double kTurnSpeed = 0.7;
     // Travel Speed
     public static final double kAutoSpeed = 0.75;
@@ -37,6 +37,8 @@ public final class Constants {
     public static final double kAutoTurnSpeed = 0.5;
     // Avoid Zero Error 
     public static final double kNoZero = 0.001;
+
+    public static final double kIntakeDriveSpeed = 0.85;
 
     // Diameter of Robot in meters
     public static final double kRobotDiameter = 0.582;
@@ -81,6 +83,8 @@ public final class Constants {
     // Speed
     public static final double kSpeed = 0.9;
     public static final double kReverseSpeed = -0.4;
+
+    public static final double kIntakeSpeed = 0.6;
   }
 
   /**

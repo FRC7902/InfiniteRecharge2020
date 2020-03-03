@@ -10,12 +10,13 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
+//import edu.wpi.first.wpilibj.SpeedController;
+//import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+//import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.Constants;
 
 public class DriveSubsystem extends SubsystemBase {
@@ -47,10 +48,11 @@ public class DriveSubsystem extends SubsystemBase {
   /**
    * Creates SpeedControllers
    */
-  SpeedController leftSide = new SpeedControllerGroup(frontLeft, backLeft);
-  SpeedController rightSide = new SpeedControllerGroup(frontRight, backRight);
+  //SpeedController leftSide, rightSide;
 
-  public DifferentialDrive drive;
+  //public DifferentialDrive drive;
+
+  private double max = 1.0;
 
   /**
    * <t>Drive Subsystem</t>
@@ -61,9 +63,21 @@ public class DriveSubsystem extends SubsystemBase {
     // frontLeft.setInverted(true);
     // backRight.setInverted(false);
     // backLeft.setInverted(true);
-    leftSide.setInverted(true);
+
+    frontRight.configClosedloopRamp(0.3);
+    frontLeft.configClosedloopRamp(0.3);
+    backRight.configClosedloopRamp(0.3);
+    backLeft.configClosedloopRamp(0.3);
+
+    frontLeft.setInverted(true);
+    backLeft.setInverted(true);
+
+    //leftSide = new SpeedControllerGroup(frontLeft, backLeft);
+    //rightSide = new SpeedControllerGroup(frontRight, backRight);
+    
+    
     // drive is a new DifferentialDrive
-    drive = new DifferentialDrive(leftSide, rightSide);
+    //drive = new DifferentialDrive(leftSide, rightSide);
     
 
     // Encoder
@@ -100,14 +114,19 @@ public class DriveSubsystem extends SubsystemBase {
   /**
    * Sets the speed of the robot on both sides. Recommended method to use.
    * @param leftY
-   * Left Side
+   * Speed
    * @param rightX
-   * Right Side
+   * Turn
    */
   public void driveJoystick(double leftY, double rightX){
-    drive.arcadeDrive(rightX, leftY);
-    // leftSide.set((leftY*Constants.kDriveFBSpeed)*Constants.kDriveSpeedLimiter-rightX*Constants.kDriveTurn);
-    // rightSide.set((leftY*Constants.kDriveFBSpeed)*Constants.kDriveSpeedLimiter+rightX*Constants.kDriveTurn);
+    //drive.arcadeDrive(rightX, leftY);
+    //drive.arcadeDrive(leftY, rightX);
+    //frontLeft.set(max * ((leftY*Constants.Drive.kDriveSpeed)-rightX*Constants.Drive.kTurnSpeed));
+    backLeft.set(max * ((leftY*Constants.Drive.kDriveSpeed)-rightX*Constants.Drive.kTurnSpeed));
+
+    
+    //frontRight.set(max * ((leftY*Constants.Drive.kDriveSpeed)+rightX*Constants.Drive.kTurnSpeed));
+    //backRight.set(max * ((leftY*Constants.Drive.kDriveSpeed)+rightX*Constants.Drive.kTurnSpeed));
     // turnSpeed = rightX*Constants.kDriveTurn;
     // broadcastSpeed();
     updatePos();
@@ -119,8 +138,12 @@ public class DriveSubsystem extends SubsystemBase {
    * @param rightSpeed
    */
   public void driveRaw(double leftSpeed, double rightSpeed){
-    leftSide.set(leftSpeed);
-    rightSide.set(rightSpeed);
+    frontLeft.set(leftSpeed);
+    backLeft.set(leftSpeed);
+
+    frontRight.set(rightSpeed);
+    backRight.set(rightSpeed);
+
     updatePos();
     //broadcastSpeed();
   }
@@ -190,7 +213,14 @@ public class DriveSubsystem extends SubsystemBase {
    * Stops motors
    */
   public void stop(){
-    drive.stopMotor();
+    frontLeft.stopMotor();
+    backLeft.stopMotor();
+
+    frontRight.stopMotor();
+    backRight.stopMotor();
+
+    // leftSide.stopMotor();
+    // rightSide.stopMotor();
   }
 
   /**
@@ -202,7 +232,10 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void setMax(double max){
-    drive.setMaxOutput(max);
+    // Clamps Max
+    MathUtil.clamp(max, -1.0, 1.0);
+    // Sets Max
+    this.max = max;
   }
 
   public double getAvgEncDist(){
@@ -229,7 +262,7 @@ public class DriveSubsystem extends SubsystemBase {
    * Set max output 
    */
   public void setMaxOutput(double maxOutput){
-    drive.setMaxOutput(maxOutput);
+    setMax(maxOutput);
   }
 
   public void resetTimer(){
@@ -252,8 +285,8 @@ public class DriveSubsystem extends SubsystemBase {
     // Important for Displacement Calculation
     getRotationRobo();
     // Put up the speeds
-    SmartDashboard.putNumber("Left Speed", leftSide.get());
-    SmartDashboard.putNumber("Right Speed", rightSide.get());
+    SmartDashboard.putNumber("Left Speed", frontLeft.get());
+    SmartDashboard.putNumber("Right Speed", frontRight.get());
     // For the Humans
     SmartDashboard.putNumber("Robot Rotation", Math.toDegrees(curRot)); 
     // Displacement from Spawn

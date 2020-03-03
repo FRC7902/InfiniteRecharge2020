@@ -7,10 +7,10 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+// import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+// import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootSubsystem;
@@ -26,8 +26,6 @@ public class AutonomousSequence extends SequentialCommandGroup {
    */
   public AutonomousSequence(DriveSubsystem driveSubsystem, IntakeSubsystem IntakeSubsystem, ShootSubsystem shootSubsystem, StorageSubsystem storageSubsystem) {
     
-    long startT = System.nanoTime();
-
     addCommands(
       // TODO Get Auto to drive robot forward
       // Drive 2 meters

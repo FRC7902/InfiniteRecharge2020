@@ -8,9 +8,11 @@
 package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.wpilibj.Compressor;
-//import edu.wpi.first.wpilibj.PowerDistributionPanel;
+//import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -28,9 +30,9 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-  private Compressor comp = new Compressor();
+  //private Compressor comp = new Compressor();
 
-  // private PowerDistributionPanel pdp = new PowerDistributionPanel();
+  private PowerDistributionPanel pdp = new PowerDistributionPanel();
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -39,8 +41,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     // Start Compressor Cycle (Reloads at 125 psi)
-    comp.setClosedLoopControl(true);
-    
+    // comp.setClosedLoopControl(true);
+    // Start Camera
     CameraServer.getInstance().startAutomaticCapture();
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
@@ -60,7 +62,10 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     // PDP things
-    // pdp.clearStickyFaults();
+    SmartDashboard.putNumber("Front Left Current", pdp.getCurrent(12));
+    SmartDashboard.putNumber("Front Right Current", pdp.getCurrent(3));
+    SmartDashboard.putNumber("Back Left Current", pdp.getCurrent(13));
+    SmartDashboard.putNumber("Back Right Current", pdp.getCurrent(2));
     // Runs the Scheduler. This is responsible for polling buttons, adding
     // newly-scheduled
     // commands, running already-scheduled commands, removing finished or
@@ -69,23 +74,19 @@ public class Robot extends TimedRobot {
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    // CommandScheduler.getInstance().isScheduled();
-
-    
   }
 
   /**
    * This function is called once each time the robot enters Disabled mode.
    */
   @Override
-  public void disabledInit() {
-    // Start restocking pressure in disabled mode
-    comp.start();
-  }
+  public void disabledInit() {}
 
+  /**
+   * This function is called periodically during Disabled mode.
+   */
   @Override
-  public void disabledPeriodic() {
-  }
+  public void disabledPeriodic() {}
 
   /**
    * This autonomous runs the autonomous command selected by your
@@ -104,10 +105,7 @@ public class Robot extends TimedRobot {
    * This function is called periodically during autonomous.
    */
   @Override
-  public void autonomousPeriodic() {
-    // Comment this or not?
-    // m_autonomousCommand.execute();
-  }
+  public void autonomousPeriodic() {}
 
   @Override
   public void teleopInit() {
@@ -118,16 +116,13 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-
   }
 
   /**
    * This function is called periodically during operator control.
    */
   @Override
-  public void teleopPeriodic() {
-
-  }
+  public void teleopPeriodic() {}
 
   @Override
   public void testInit() {
@@ -139,7 +134,5 @@ public class Robot extends TimedRobot {
    * This function is called periodically during test mode.
    */
   @Override
-  public void testPeriodic() {
-    // Smth here
-  }
+  public void testPeriodic() {}
 }
