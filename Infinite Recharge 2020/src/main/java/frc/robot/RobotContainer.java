@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.AutonomousSequence;
+import frc.robot.commands.Forward;
 import frc.robot.commands.Deployment;
 import frc.robot.commands.DumpLoad;
 import frc.robot.commands.ShootHigh;
@@ -46,7 +46,7 @@ public class RobotContainer {
                                 operatorStick = new XboxController(Constants.OP);
 
   // Autonomous Routine
-  private final Command forward = new AutonomousSequence(driveSubsystem, intakeSubsystem, shootSubsystem, storageSubsystem);
+  private final Command forward = new Forward(driveSubsystem, intakeSubsystem, shootSubsystem, storageSubsystem);
   private final Command intake = new Deployment(driveSubsystem, intakeSubsystem, storageSubsystem);
   private final Command low = new DumpLoad(driveSubsystem, storageSubsystem, shootSubsystem);
   private final Command high = new ShootHigh(shootSubsystem, storageSubsystem, driveSubsystem);
@@ -113,12 +113,12 @@ public class RobotContainer {
       .whenPressed(() -> {
         intakeSubsystem.suck();
         storageSubsystem.storeIntake();
-        driveSubsystem.setMaxOutput(Constants.Drive.kIntakeDriveSpeed);
+        driveSubsystem.setMax(Constants.Drive.kIntakeDriveSpeed);
       }, intakeSubsystem)
       .whenReleased(() -> {
         intakeSubsystem.stop();
         storageSubsystem.stop();
-        driveSubsystem.setMaxOutput(1);
+        driveSubsystem.setMax(1);
       });
 
     // Right Bumper on Operator Stick, Shoot Balls
@@ -143,7 +143,7 @@ public class RobotContainer {
       })
       .whenReleased(() -> {
         storageSubsystem.stop();
-        shootSubsystem.stap();
+        shootSubsystem.stop();
         intakeSubsystem.stop();
         time.stop();
         time.reset();
@@ -157,7 +157,7 @@ public class RobotContainer {
       storageSubsystem.reverse();
     })
     .whenReleased(() -> {
-      shootSubsystem.stap();
+      shootSubsystem.stop();
       storageSubsystem.stop();
     });
 
@@ -169,9 +169,14 @@ public class RobotContainer {
       storageSubsystem.store();
     })
     .whenReleased(() -> {
-      shootSubsystem.stap();
+      shootSubsystem.stop();
       storageSubsystem.stop();
     });
+
+    // A on Operator Stick ~ Reverse Intake
+    new JoystickButton(operatorStick, Constants.A)
+      .whenPressed(() -> intakeSubsystem.reverse())
+      .whenReleased(() -> intakeSubsystem.normal());
 
     // //When X is pressed, deploy Intake 
     // new JoystickButton(operatorStick, Constants.X)
@@ -204,29 +209,15 @@ public class RobotContainer {
     //     }
     //   // true = yes please interrupt
     //   }, true);
-
-    //When A is pressed, invert intake
-    new JoystickButton(operatorStick, Constants.A)
-      .whenPressed(() -> 
-        intakeSubsystem.reverse()
-      )
-      .whenReleased(() ->
-        intakeSubsystem.normal()
-      );
-
-    // When press menu stART  traners
-    new JoystickButton(operatorStick, Constants.M)
-      .whenPressed(() -> shootSubsystem.transfer(), shootSubsystem)
-      .whenReleased(() -> shootSubsystem.stopTransfer(), shootSubsystem);
   }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
-   * @return the command to run in autonomous
+   * @return 
+   * The command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
     return m_chooser.getSelected();
   }
 }

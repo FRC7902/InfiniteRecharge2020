@@ -17,26 +17,29 @@ import frc.robot.Constants;
 
 public class ShootSubsystem extends SubsystemBase {
 
+  // The Controller
   private WPI_TalonSRX left = new WPI_TalonSRX(Constants.Shooter.LS);
   private WPI_TalonSRX right = new WPI_TalonSRX(Constants.Shooter.RS);
-  private WPI_VictorSPX transfer = new  WPI_VictorSPX(Constants.Shooter.kTransfer); //da transfer
+  private WPI_VictorSPX transfer = new  WPI_VictorSPX(Constants.Shooter.kTransfer); 
 
+  // The Shooter Group
   private SpeedControllerGroup shooter;
 
+  // Status
   private String status = "Off";
 
   /**
    * Creates a new ShootSubsystem.
    */
   public ShootSubsystem() {
-    // FIX Might need to invert the other guys instead
+    // Invert Shooter
     right.setInverted(true);
     // Limit Things
     left.configPeakCurrentLimit(60);
     right.configPeakCurrentLimit(60);
     left.configOpenloopRamp(0.3);
     right.configOpenloopRamp(0.3);
-    // good
+    // Creates the Shooter Group
     shooter = new SpeedControllerGroup(left, right);
   }
 
@@ -44,29 +47,25 @@ public class ShootSubsystem extends SubsystemBase {
    * Shoot
    */
   public void shoot() {
-    //transfer();
-    //left.set(Constants.Shooter.kSpeed);
-    //right.set(Constants.Shooter.kSpeed);
+    // Activate
     shooter.set(Constants.Shooter.kSpeed);
-    //transfer.set(Constants.Shooter.kTransferSpeed);
+    // Change Status
     status = "Shooting";
   }
 
   /**
    * Stop
    */
-  public void stap() {
-    //stopTransfer();
-    //left.stopMotor();
-    //right.stopMotor();
+  public void stop() {
+    // Stops the Motor
     shooter.stopMotor();
     transfer.stopMotor();
+    // Change Status
     status = "Stopped";
   }
 
   /**
    * Transfer to Shooter 
-   * ~ Dont use this anymore ~
    */
   public void transfer() {
     transfer.set(Constants.Shooter.kTransferSpeed);
@@ -78,16 +77,23 @@ public class ShootSubsystem extends SubsystemBase {
   public boolean isPowered() {
     return Constants.Shooter.kSpeed == shooter.get();
   }
+
+  /**
+   * Dumps Balls from Shooter
+   */
   public void dumpShoot(){
     shooter.set(Constants.Shooter.kDumpSpeed);
   }
+
+  /**
+   * Dumps Balls with Transfer
+   */
   public void dumpTransfer(){
     transfer.set(Constants.Shooter.kDumpTransferSpeed);
   }
 
   /**
    * Terminate Transfer 
-   * ~ Dont use this anymore ~
    */
   public void stopTransfer() {
     transfer.stopMotor();

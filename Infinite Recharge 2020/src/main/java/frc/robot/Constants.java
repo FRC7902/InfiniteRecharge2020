@@ -66,7 +66,6 @@ public final class Constants {
     // CAN for the Intake Controller
     public static final int kIntake = 5;
     // Solenoid
-    // TODO check if Intake solenoid indexes are correct
     public static final int kFrontSolenoid = 0,
                             kBackSolenoid = 1;
     // Speed

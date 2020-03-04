@@ -20,13 +20,12 @@ public class DumpShot extends ParallelCommandGroup {
    * Creates a new DumpShot.
    */
   public DumpShot(ShootSubsystem shootSubsystem, StorageSubsystem storageSubsystem) {
-    addCommands(
+    // Add Commands
+    super(
+      // Dump Balls
       new RunCommand(() -> shootSubsystem.dumpShoot(), shootSubsystem),
       new RunCommand(() -> shootSubsystem.dumpTransfer(), shootSubsystem),
       new RunCommand(() -> storageSubsystem.store(), storageSubsystem)
-
     );
-    // Add your commands in the super() call, e.g.
-    // super(new FooCommand(), new BarCommand());super();
   }
 }

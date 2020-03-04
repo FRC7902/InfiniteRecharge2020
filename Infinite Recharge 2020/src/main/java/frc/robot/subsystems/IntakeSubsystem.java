@@ -9,7 +9,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
-//import edu.wpi.first.wpilibj.DoubleSolenoid;
+// import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -20,7 +20,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private WPI_VictorSPX intakeMotor = new WPI_VictorSPX(Constants.Intake.kIntake);
 
   // Solenoids
-  //private DoubleSolenoid soleIntake = new DoubleSolenoid(Constants.Intake.kFrontSolenoid, Constants.Intake.kBackSolenoid);
+  // private DoubleSolenoid soleIntake = new DoubleSolenoid(Constants.Intake.kFrontSolenoid, Constants.Intake.kBackSolenoid);
 
   // Status
   private String status;

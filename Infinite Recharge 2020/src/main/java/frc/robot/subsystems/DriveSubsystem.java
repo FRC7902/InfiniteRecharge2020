@@ -48,36 +48,34 @@ public class DriveSubsystem extends SubsystemBase {
   /**
    * Creates SpeedControllers
    */
-  //SpeedController leftSide, rightSide;
+  // private SpeedController leftSide, rightSide;
 
-  //public DifferentialDrive drive;
+  // private DifferentialDrive drive;
 
+  /**
+   * The Maximum Speed of the Robots
+   */
   private double max = 1.0;
 
   /**
    * <t>Drive Subsystem</t>
    */
   public DriveSubsystem() {
-    // if a motor is inverted, switch the boolean
-    // frontRight.setInverted(false);
-    // frontLeft.setInverted(true);
-    // backRight.setInverted(false);
-    // backLeft.setInverted(true);
-
+    // Set a Ramp for all Motors
     frontRight.configClosedloopRamp(0.3);
     frontLeft.configClosedloopRamp(0.3);
     backRight.configClosedloopRamp(0.3);
     backLeft.configClosedloopRamp(0.3);
-
+    // Inverse the Motor
     frontLeft.setInverted(true);
     backLeft.setInverted(true);
 
-    //leftSide = new SpeedControllerGroup(frontLeft, backLeft);
-    //rightSide = new SpeedControllerGroup(frontRight, backRight);
+    // Makes Speed 
+    // leftSide = new SpeedControllerGroup(frontLeft, backLeft);
+    // rightSide = new SpeedControllerGroup(frontRight, backRight);
     
-    
-    // drive is a new DifferentialDrive
-    //drive = new DifferentialDrive(leftSide, rightSide);
+    // Drive
+    // drive = new DifferentialDrive(leftSide, rightSide);
     
 
     // Encoder
@@ -96,7 +94,6 @@ public class DriveSubsystem extends SubsystemBase {
      * attached to a 6 inch diameter or 0.1524 meter wheel,
      * and that we want to measure distance in meter.
      */
-    // Basically defines how much 1 count of the encoder is equal to in distance
     leftEncoder.setDistancePerPulse(Constants.Drive.kRatio);
     rightEncoder.setDistancePerPulse(Constants.Drive.kRatio);
 
@@ -119,16 +116,17 @@ public class DriveSubsystem extends SubsystemBase {
    * Turn
    */
   public void driveJoystick(double leftY, double rightX){
-    //drive.arcadeDrive(rightX, leftY);
-    //drive.arcadeDrive(leftY, rightX);
-    //frontLeft.set(max * ((leftY*Constants.Drive.kDriveSpeed)-rightX*Constants.Drive.kTurnSpeed));
-    backLeft.set(max * ((leftY*Constants.Drive.kDriveSpeed)-rightX*Constants.Drive.kTurnSpeed));
+    // Drive System
+    // drive.arcadeDrive(rightX, leftY);
+    // drive.arcadeDrive(leftY, rightX);
 
-    
-    //frontRight.set(max * ((leftY*Constants.Drive.kDriveSpeed)+rightX*Constants.Drive.kTurnSpeed));
-    //backRight.set(max * ((leftY*Constants.Drive.kDriveSpeed)+rightX*Constants.Drive.kTurnSpeed));
-    // turnSpeed = rightX*Constants.kDriveTurn;
-    // broadcastSpeed();
+    // Manual Drive
+    frontLeft.set(max * ((leftY*Constants.Drive.kDriveSpeed)-rightX*Constants.Drive.kTurnSpeed));
+    backLeft.set(max * ((leftY*Constants.Drive.kDriveSpeed)-rightX*Constants.Drive.kTurnSpeed));
+    frontRight.set(max * ((leftY*Constants.Drive.kDriveSpeed)+rightX*Constants.Drive.kTurnSpeed));
+    backRight.set(max * ((leftY*Constants.Drive.kDriveSpeed)+rightX*Constants.Drive.kTurnSpeed));
+
+    // Update Network Table
     updatePos();
   }
 
@@ -138,17 +136,15 @@ public class DriveSubsystem extends SubsystemBase {
    * @param rightSpeed
    */
   public void driveRaw(double leftSpeed, double rightSpeed){
+    // Manual Drive Raw
     frontLeft.set(leftSpeed);
     backLeft.set(leftSpeed);
-
     frontRight.set(rightSpeed);
     backRight.set(rightSpeed);
 
+    // Update Network Table
     updatePos();
-    //broadcastSpeed();
   }
-
-  
 
   /**
    * Travel distance ~ for auto 
@@ -156,11 +152,13 @@ public class DriveSubsystem extends SubsystemBase {
    * Positive DIST = Forward
    * Negative DIST = Backward
    * Will Auto-Stop
+   * 
    * @param dist
    * Distance you want to travel in meters
    */
+  @Deprecated
   public void travel(double dist) {
-    /*
+    /* Encoder Code No Work
     // Gets Desired Dist
     double finDist = 0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance()) + dist;
     // Avoid Dividing by 0
@@ -176,13 +174,13 @@ public class DriveSubsystem extends SubsystemBase {
     stop();
     */
     
-    if(dist > 0){
-      driveRaw(1, 1);
-    }
-    if(dist < 0){
-      driveRaw(-1, -1);
-    }
-    
+    // Drive 
+    if(dist == 0)
+      return;
+    if(dist > 0)
+      driveRaw(Constants.Drive.kDriveSpeed, Constants.Drive.kDriveSpeed);
+    else if(dist < 0)
+      driveRaw(-Constants.Drive.kDriveSpeed, -Constants.Drive.kDriveSpeed);
   }
 
   /**
@@ -194,6 +192,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @param rot
    * Rotate this much
    */
+  @Deprecated
   public void turn(double rot) {
     // Get Final Rotation Needed
     double finRot = curRot + rot;
@@ -213,9 +212,9 @@ public class DriveSubsystem extends SubsystemBase {
    * Stops motors
    */
   public void stop(){
+    // Stops Drive
     frontLeft.stopMotor();
     backLeft.stopMotor();
-
     frontRight.stopMotor();
     backRight.stopMotor();
 
@@ -231,6 +230,9 @@ public class DriveSubsystem extends SubsystemBase {
     rightEncoder.reset();
   }
 
+  /**
+   * Sets the maximum speed for the drive
+   */
   public void setMax(double max){
     // Clamps Max
     MathUtil.clamp(max, -1.0, 1.0);
@@ -238,10 +240,18 @@ public class DriveSubsystem extends SubsystemBase {
     this.max = max;
   }
 
+  /**
+   * Gets the Distance Travel
+   */ 
   public double getAvgEncDist(){
     return (leftEncoder.getDistance() + rightEncoder.getDistance()) * 0.5;
   }
 
+  /**
+   * Check a distance?
+   * @param dist
+   * @return
+   */
   public boolean checkIfDist(double dist){
     if(dist > 0){
       return getAvgEncDist() >= dist;
@@ -259,20 +269,22 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   /**
-   * Set max output 
+   * Resets Timer
    */
-  public void setMaxOutput(double maxOutput){
-    setMax(maxOutput);
-  }
-
   public void resetTimer(){
     m_timer.reset();
   }
 
+  /**
+   * Starts Timer
+   */
   public void startTimer(){
     m_timer.start();
   }
 
+  /**
+   * Returns the timer
+   */
   public double getTimer(){
     return m_timer.get();
   }
@@ -306,8 +318,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   /**
    * Get Cur Rotation of robot
-   * 
    */
+  @Deprecated
   private void getRotationRobo() {
     // // calculate robot rotation change
     // long startT = System.nanoTime();

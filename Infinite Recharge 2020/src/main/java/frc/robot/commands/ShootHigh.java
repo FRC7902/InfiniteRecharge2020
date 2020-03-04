@@ -24,44 +24,43 @@ public class ShootHigh extends SequentialCommandGroup {
    * Creates a new ShootHigh.
    */
   public ShootHigh(ShootSubsystem shootSubsystem, StorageSubsystem storageSubsystem, DriveSubsystem driveSubsystem) {
-    // Add your commands in the super() call, e.g.
-    // super(new FooCommand(), new BarCommand());
+    // Add Commands
     super(
-
+      // Shoot Powerup
       new RunCommand(() -> {
         shootSubsystem.shoot();
       }, shootSubsystem)
-      .withTimeout(1),
-
+      .withInterrupt(() -> shootSubsystem.isPowered()),
+      // Activate
       new RunCommand(() -> {
         shootSubsystem.transfer();
         storageSubsystem.store();
       })
       .withTimeout(2),
-
+      // Stop Everything
       new RunCommand(() -> {
         storageSubsystem.stop();
         shootSubsystem.stopTransfer();
-        shootSubsystem.stap();
+        shootSubsystem.stop();
       }).withTimeout(0.5),
-
+      // Powerup
       new RunCommand(() -> {
         shootSubsystem.shoot();
       }, shootSubsystem)
-      .withTimeout(1),
-
+      .withInterrupt(() -> shootSubsystem.isPowered()),
+      // Shoot Again
       new RunCommand(() -> {
         shootSubsystem.transfer();
         storageSubsystem.store();
       })
       .withTimeout(2),
-
+      // Stop Again
       new InstantCommand(() -> {
         storageSubsystem.stop();
         shootSubsystem.stopTransfer();
-        shootSubsystem.stap();
+        shootSubsystem.stop();
       }),
-
+      // Drive Forward
       new RunCommand(() -> driveSubsystem.driveRaw(-0.3, -0.3), driveSubsystem)
       .beforeStarting(driveSubsystem::resetTimer, driveSubsystem)
       .beforeStarting(driveSubsystem::startTimer, driveSubsystem)

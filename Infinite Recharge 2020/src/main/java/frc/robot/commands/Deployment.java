@@ -22,14 +22,16 @@ public class Deployment extends SequentialCommandGroup {
    * Creates a new Deployment.
    */
   public Deployment(DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem, StorageSubsystem storageSubsystem) {
-    addCommands(
+    // Add Commands
+    super(
+      // Sketch Deployment
       new RunCommand(() -> driveSubsystem.driveRaw(1, 1))
       .beforeStarting(driveSubsystem::resetTimer, driveSubsystem)
       .beforeStarting(driveSubsystem::startTimer, driveSubsystem)
       .withInterrupt(() -> driveSubsystem.getTimer() > 0.2),
-
+      // Wait 1 Second
       new WaitCommand(1),
-
+      // Drive Forward and Suck
       new RunCommand(() -> {
         driveSubsystem.driveRaw(-0.4, - 0.4);
         intakeSubsystem.suck();
@@ -38,11 +40,6 @@ public class Deployment extends SequentialCommandGroup {
       .beforeStarting(driveSubsystem::resetTimer, driveSubsystem)
       .beforeStarting(driveSubsystem::startTimer, driveSubsystem)
       .withInterrupt(() -> driveSubsystem.getTimer() > 5)
-
-      
     );
-    // Add your commands in the super() call, e.g.
-    // super(new FooCommand(), new BarCommand());
-    
   }
 }
