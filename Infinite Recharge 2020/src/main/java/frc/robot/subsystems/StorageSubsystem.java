@@ -44,7 +44,7 @@ public class StorageSubsystem extends SubsystemBase {
    * Store Motors Start
    */
   public void storeIntake() {
-    store.set(Constants.Storage.kSpeed - 0.1);
+    store.set(Constants.Storage.kIntakeSpeed);
   }
 
   /**

@@ -12,7 +12,7 @@ import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+//import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
@@ -53,7 +53,7 @@ public class ColourSubsystem extends SubsystemBase {
   /**
    * Solenoid Piston thing
    */
-  private final DoubleSolenoid piston = new DoubleSolenoid(Constants.Colour.kFrontSolenoid, Constants.Colour.kBackSolenoid);
+  //private final DoubleSolenoid piston = new DoubleSolenoid(Constants.Colour.kFrontSolenoid, Constants.Colour.kBackSolenoid);
 
   /**
    * Motor
@@ -65,7 +65,7 @@ public class ColourSubsystem extends SubsystemBase {
    */
   public ColourSubsystem() {
     // Off
-    piston.set(DoubleSolenoid.Value.kOff);
+    //piston.set(DoubleSolenoid.Value.kOff);
     // Add Colours
     m_colorMatcher.addColorMatch(kBlueTarget);
     m_colorMatcher.addColorMatch(kGreenTarget);
@@ -77,14 +77,14 @@ public class ColourSubsystem extends SubsystemBase {
    * Raise the arm
    */
   public void rise() {
-    piston.set(DoubleSolenoid.Value.kForward);
+    //piston.set(DoubleSolenoid.Value.kForward);
   }
 
   /**
    * Lowers the arm
    */
   public void fall() {
-    piston.set(DoubleSolenoid.Value.kReverse);
+    //piston.set(DoubleSolenoid.Value.kReverse);
   }
 
   /**

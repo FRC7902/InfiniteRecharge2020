@@ -8,15 +8,16 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+// import edu.wpi.first.wpilibj2.command.CommandBase;
+// import edu.wpi.first.wpilibj2.command.CommandScheduler;
+// import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+// import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+// import edu.wpi.first.wpilibj2.command.WaitCommand;
+// import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -24,7 +25,7 @@ import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.commands.AutonomousSequence;
 import frc.robot.commands.Deployment;
 import frc.robot.commands.DumpLoad;
-import frc.robot.commands.Shoot;
+// import frc.robot.commands.Shoot;
 import frc.robot.commands.ShootHigh;
 import frc.robot.subsystems.*;
 /**
@@ -37,10 +38,10 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public static DriveSubsystem driveSubsystem = new DriveSubsystem();
   public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
-  public static ColourSubsystem colourSubsystem = new ColourSubsystem();
+  //public static ColourSubsystem colourSubsystem = new ColourSubsystem();
   public static ShootSubsystem shootSubsystem = new ShootSubsystem();
   public static StorageSubsystem storageSubsystem = new StorageSubsystem();
-  public static ClimbSubsystem climbSubsystem = new ClimbSubsystem();
+  //public static ClimbSubsystem climbSubsystem = new ClimbSubsystem();
 
   //Declaring Joysticks
   private static XboxController driverStick = new XboxController(Constants.JOY),
@@ -71,20 +72,20 @@ public class RobotContainer {
       new RunCommand(() -> 
         driveSubsystem.driveJoystick(
           -driverStick.getRawAxis(Constants.LY)*Constants.Drive.kDriveSpeed*Constants.Drive.kLimit, 
-          -driverStick.getRawAxis(Constants.RX)*Constants.Drive.kTurnSpeed*Constants.Drive.kLimit), 
+          driverStick.getRawAxis(Constants.RX)*Constants.Drive.kTurnSpeed*Constants.Drive.kLimit), 
         driveSubsystem
       )
     );
 
     // Default Climb Sub CMD
-    climbSubsystem.setDefaultCommand(
-      //The Climb command
-      new RunCommand(() ->
-        // Rise & Fall using Left Y Axis
-        climbSubsystem.climb(operatorStick.getRawAxis(Constants.LY)), 
-        climbSubsystem
-      )
-    );
+    // climbSubsystem.setDefaultCommand(
+    //   //The Climb command
+    //   new RunCommand(() ->
+    //     // Rise & Fall using Left Y Axis
+    //     climbSubsystem.climb(operatorStick.getRawAxis(Constants.LY)), 
+    //     climbSubsystem
+    //   )
+    // );
 
     //Add Commands to the autonomous command chooser
     m_chooser.setDefaultOption("Go forward", autonomousSequence);
@@ -92,15 +93,18 @@ public class RobotContainer {
     m_chooser.addOption("Drop Load", drop);
     m_chooser.addOption("Shoot High", high);
     //Add Colors to chooser
-    colorChooser.addOption("Red", colourSubsystem.kRedTarget);
-    colorChooser.addOption("Yellow", colourSubsystem.kYellowTarget);
-    colorChooser.addOption("Green", colourSubsystem.kGreenTarget);
-    colorChooser.addOption("Blue", colourSubsystem.kBlueTarget);
+    // colorChooser.addOption("Red", colourSubsystem.kRedTarget);
+    // colorChooser.addOption("Yellow", colourSubsystem.kYellowTarget);
+    // colorChooser.addOption("Green", colourSubsystem.kGreenTarget);
+    // colorChooser.addOption("Blue", colourSubsystem.kBlueTarget);
     
     //Put the Chooser on Dashboard
     SmartDashboard.putData(m_chooser);
     SmartDashboard.putData(colorChooser);
   }
+
+
+  private Timer time = new Timer();
 
   /**
    * Use this method to define your button->command mappings.  Buttons can be created by
@@ -109,21 +113,25 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    //When Left Bumper is pressed, Sucks Stuff
-    new JoystickButton(operatorStick, Constants.LB)
-      .whenPressed(() -> {
-        intakeSubsystem.suck();
-        storageSubsystem.storeIntake();
-      }, intakeSubsystem)
-      .whenReleased(() -> {
-        intakeSubsystem.stop();
-        storageSubsystem.stop();
-      });
 
     // Drive limit
     new JoystickButton(driverStick, Constants.RB)
       .whenPressed(() -> driveSubsystem.setMax(Constants.Drive.kDriveLimit))
       .whenReleased(() -> driveSubsystem.setMax(1));
+
+    //When Left Bumper is pressed, Sucks Stuff
+    new JoystickButton(operatorStick, Constants.LB)
+      .whenPressed(() -> {
+        intakeSubsystem.suck();
+        storageSubsystem.storeIntake();
+        driveSubsystem.setMaxOutput(Constants.Drive.kIntakeDriveSpeed);
+      }, intakeSubsystem)
+      .whenReleased(() -> {
+        intakeSubsystem.stop();
+        storageSubsystem.stop();
+        driveSubsystem.setMaxOutput(1);
+      });
+
     //When Right Bumper is pressed, shoot stuff
     new JoystickButton(operatorStick, Constants.RB)
       .whenPressed(
@@ -164,20 +172,31 @@ public class RobotContainer {
         
      // )
 
-     /*
           () -> {
+            // Reverse Everything
+            shootSubsystem.reverse();
             shootSubsystem.reverseTransfer();
             storageSubsystem.reverse();
-
+            // Wait 0.5 second
+            time.start();
+            while(time.get() <= 0.5);
+            // Prep
+            shootSubsystem.stopTransfer();
+            storageSubsystem.stop();
+            shootSubsystem.shoot();
+            // Wait
+            while(!shootSubsystem.isPowered());
+            // Shoot
+            shootSubsystem.transfer();
+            storageSubsystem.store();
           }
-     */
-
+     /*
          () -> {
            shootSubsystem.shoot();
            storageSubsystem.store();
            shootSubsystem.transfer();
          }
-        
+      */
         // Creates a new sequence
         
       )
@@ -185,7 +204,10 @@ public class RobotContainer {
         storageSubsystem.stop();
         shootSubsystem.stap();
         intakeSubsystem.stop();
+        time.stop();
+        time.reset();
       });
+
     //reverse Shoot and storage when pressing B
     new JoystickButton(operatorStick, Constants.B)
     .whenPressed(
@@ -201,6 +223,7 @@ public class RobotContainer {
         storageSubsystem.stop();
       }
     );
+
     //Dump shoot when pressing Y
     new JoystickButton(operatorStick,Constants.Y)
     .whenPressed(
@@ -216,50 +239,51 @@ public class RobotContainer {
         storageSubsystem.stop();
       }
     );
-    //When X is pressed, deploy Intake 
-    new JoystickButton(operatorStick, Constants.X)
-      .toggleWhenPressed(new CommandBase() {
-        // When CMD is running, deploy
-        @Override
-        public void execute() {
-          intakeSubsystem.deploy();
-        }   
-        // When interrupted (Toggled off) retract
-        @Override
-        public void end(boolean interrupted) {
-          intakeSubsystem.retract();
-        }
-      // true = yes please interrupt
-      }, true);
+
+    // //When X is pressed, deploy Intake 
+    // new JoystickButton(operatorStick, Constants.X)
+    //   .toggleWhenPressed(new CommandBase() {
+    //     // When CMD is running, deploy
+    //     @Override
+    //     public void execute() {
+    //       intakeSubsystem.deploy();
+    //     }   
+    //     // When interrupted (Toggled off) retract
+    //     @Override
+    //     public void end(boolean interrupted) {
+    //       intakeSubsystem.retract();
+    //     }
+    //   // true = yes please interrupt
+    //   }, true);
 
     //When Y is pressed, deploy colour arm
-    new JoystickButton(operatorStick, Constants.Y)
-      .toggleWhenPressed(new CommandBase() {
-        // When CMD is running, deploy
-        @Override
-        public void execute() {
-          colourSubsystem.rise();
-        }   
-        // When interrupted (Toggled off) retract
-        @Override
-        public void end(boolean interrupted) {
-          colourSubsystem.fall();
-        }
-      // true = yes please interrupt
-      }, true);
+    // new JoystickButton(operatorStick, Constants.Y)
+    //   .toggleWhenPressed(new CommandBase() {
+    //     // When CMD is running, deploy
+    //     @Override
+    //     public void execute() {
+    //       colourSubsystem.rise();
+    //     }   
+    //     // When interrupted (Toggled off) retract
+    //     @Override
+    //     public void end(boolean interrupted) {
+    //       colourSubsystem.fall();
+    //     }
+    //   // true = yes please interrupt
+    //   }, true);
 
-    //When A is pressed, spin to colour
-    new JoystickButton(operatorStick, Constants.X)
-      .whenPressed(() -> {
-        // Convert i to int
-        int i = (int) SmartDashboard.getNumber("Spin Number", 0.0);
-        // If 0 or less, spin to colour
-        if(i <= 0)
-          colourSubsystem.spinTo(colorChooser.getSelected());
-        // else, do a num of spin
-        else
-          colourSubsystem.spin(i);
-      }, colourSubsystem);
+    // //When A is pressed, spin to colour
+    // new JoystickButton(operatorStick, Constants.X)
+    //   .whenPressed(() -> {
+    //     // Convert i to int
+    //     int i = (int) SmartDashboard.getNumber("Spin Number", 0.0);
+    //     // If 0 or less, spin to colour
+    //     if(i <= 0)
+    //       colourSubsystem.spinTo(colorChooser.getSelected());
+    //     // else, do a num of spin
+    //     else
+    //       colourSubsystem.spin(i);
+    //   }, colourSubsystem);
     // When press menu stART  traners
     new JoystickButton(operatorStick, Constants.M)
       .whenPressed(() -> shootSubsystem.transfer(), shootSubsystem)
