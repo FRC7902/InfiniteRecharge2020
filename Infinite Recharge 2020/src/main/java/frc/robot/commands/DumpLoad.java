@@ -22,13 +22,14 @@ public class DumpLoad extends SequentialCommandGroup {
    * Creates a new DumpLoad.
    */
   public DumpLoad(DriveSubsystem driveSubsystem, StorageSubsystem storageSubsystem, ShootSubsystem shootSubsystem) {
-    addCommands(
-      // drive
+    // Add Commands
+    super(
+      // Drive Towards Low Port
       new RunCommand(() -> driveSubsystem.driveRaw(0.5, 0.5))
       .beforeStarting(driveSubsystem::resetTimer, driveSubsystem)
       .beforeStarting(driveSubsystem::startTimer, driveSubsystem)
       .withInterrupt(() -> driveSubsystem.getTimer() >= 4),
-      // drop Load
+      // Deposit
       new RunCommand(() -> {
         driveSubsystem.stop();
         shootSubsystem.shoot();
@@ -38,17 +39,15 @@ public class DumpLoad extends SequentialCommandGroup {
       .beforeStarting(driveSubsystem::resetTimer, driveSubsystem)
       .beforeStarting(driveSubsystem::startTimer, driveSubsystem)
       .withInterrupt(() -> driveSubsystem.getTimer() >= 2),
-
-      // stop
+      // Stop to Allow Rest
       new RunCommand(() -> {
-        shootSubsystem.stap();
+        shootSubsystem.stop();
         storageSubsystem.stop();
       })
       .beforeStarting(driveSubsystem::resetTimer, driveSubsystem)
       .beforeStarting(driveSubsystem::startTimer, driveSubsystem)
       .withInterrupt(() -> driveSubsystem.getTimer() >= 0.5),
-
-      // drop Load
+      // Re-deposit
       new RunCommand(() -> {
         shootSubsystem.shoot();
         shootSubsystem.transfer();
@@ -57,10 +56,9 @@ public class DumpLoad extends SequentialCommandGroup {
       .beforeStarting(driveSubsystem::resetTimer, driveSubsystem)
       .beforeStarting(driveSubsystem::startTimer, driveSubsystem)
       .withInterrupt(() -> driveSubsystem.getTimer() >= 2),
-
-      // stop
+      // Stop
       new InstantCommand(() -> {
-        shootSubsystem.stap();
+        shootSubsystem.stop();
         shootSubsystem.stopTransfer();
         storageSubsystem.stop();
       })

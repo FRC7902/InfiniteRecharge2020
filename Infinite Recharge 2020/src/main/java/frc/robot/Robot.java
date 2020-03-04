@@ -41,7 +41,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     // Start Compressor Cycle (Reloads at 125 psi)
-    //comp.setClosedLoopControl(true);
+    // comp.setClosedLoopControl(true);
+    // Start Camera
     CameraServer.getInstance().startAutomaticCapture();
     // Deploy SMDS
     
@@ -67,7 +68,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Front Right Current", pdp.getCurrent(3));
     SmartDashboard.putNumber("Back Left Current", pdp.getCurrent(13));
     SmartDashboard.putNumber("Back Right Current", pdp.getCurrent(2));
-    // pdp.clearStickyFaults();
     // Runs the Scheduler. This is responsible for polling buttons, adding
     // newly-scheduled
     // commands, running already-scheduled commands, removing finished or
@@ -76,23 +76,19 @@ public class Robot extends TimedRobot {
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    // CommandScheduler.getInstance().isScheduled();
-
-    
   }
 
   /**
    * This function is called once each time the robot enters Disabled mode.
    */
   @Override
-  public void disabledInit() {
-    // Start restocking pressure in disabled mode
-    //comp.start();
-  }
+  public void disabledInit() {}
 
+  /**
+   * This function is called periodically during Disabled mode.
+   */
   @Override
-  public void disabledPeriodic() {
-  }
+  public void disabledPeriodic() {}
 
   /**
    * This autonomous runs the autonomous command selected by your
@@ -111,10 +107,7 @@ public class Robot extends TimedRobot {
    * This function is called periodically during autonomous.
    */
   @Override
-  public void autonomousPeriodic() {
-    // Comment this or not?
-    // m_autonomousCommand.execute();
-  }
+  public void autonomousPeriodic() {}
 
   @Override
   public void teleopInit() {
@@ -125,16 +118,13 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-
   }
 
   /**
    * This function is called periodically during operator control.
    */
   @Override
-  public void teleopPeriodic() {
-
-  }
+  public void teleopPeriodic() {}
 
   @Override
   public void testInit() {
@@ -146,7 +136,5 @@ public class Robot extends TimedRobot {
    * This function is called periodically during test mode.
    */
   @Override
-  public void testPeriodic() {
-    // Smth here
-  }
+  public void testPeriodic() {}
 }
