@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -31,10 +32,16 @@ public class ClimbSubsystem extends SubsystemBase {
     climber = new SpeedControllerGroup(left, right);
   }
 
+  /**
+   * Climb with Speed
+   */
   public void climb(double speed) {
     climber.set(speed);
   }
 
+  /**
+   * Stop Climbing
+   */
   public void stop() {
     climber.stopMotor();
   }
@@ -42,5 +49,6 @@ public class ClimbSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Climb Speed", climber.get());
   }
 }
