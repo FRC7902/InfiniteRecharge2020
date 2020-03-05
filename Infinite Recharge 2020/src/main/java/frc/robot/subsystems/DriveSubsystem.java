@@ -13,10 +13,10 @@ import edu.wpi.first.wpilibj.Encoder;
 //import edu.wpi.first.wpilibj.SpeedController;
 //import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Timer;
-//import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpiutil.math.MathUtil;
+//import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.Constants;
 
 public class DriveSubsystem extends SubsystemBase {
@@ -50,12 +50,12 @@ public class DriveSubsystem extends SubsystemBase {
    */
   // private SpeedController leftSide, rightSide;
 
-  // private DifferentialDrive drive;
+  private DifferentialDrive drive;
 
   /**
    * The Maximum Speed of the Robots
    */
-  private double max = 1.0;
+  //private double max = 1.0;
 
   /**
    * <t>Drive Subsystem</t>
@@ -69,14 +69,16 @@ public class DriveSubsystem extends SubsystemBase {
     // Inverse the Motor
     frontLeft.setInverted(true);
     backLeft.setInverted(true);
+    // Make Slaves
+    backRight.follow(frontRight);
+    backLeft.follow(frontLeft);
 
     // Makes Speed 
     // leftSide = new SpeedControllerGroup(frontLeft, backLeft);
     // rightSide = new SpeedControllerGroup(frontRight, backRight);
     
     // Drive
-    // drive = new DifferentialDrive(leftSide, rightSide);
-    
+    drive = new DifferentialDrive(frontLeft, frontRight);
 
     // Encoder
     /*
@@ -116,15 +118,16 @@ public class DriveSubsystem extends SubsystemBase {
    * Turn
    */
   public void driveJoystick(double leftY, double rightX){
-    // Drive System
-    // drive.arcadeDrive(rightX, leftY);
+    // Drive 
+    // For some reason it is inverted... hmmm
+    drive.arcadeDrive(rightX, leftY);
     // drive.arcadeDrive(leftY, rightX);
 
     // Manual Drive
-    frontLeft.set(max * ((leftY*Constants.Drive.kDriveSpeed)-rightX*Constants.Drive.kTurnSpeed));
-    backLeft.set(max * ((leftY*Constants.Drive.kDriveSpeed)-rightX*Constants.Drive.kTurnSpeed));
-    frontRight.set(max * ((leftY*Constants.Drive.kDriveSpeed)+rightX*Constants.Drive.kTurnSpeed));
-    backRight.set(max * ((leftY*Constants.Drive.kDriveSpeed)+rightX*Constants.Drive.kTurnSpeed));
+    //frontLeft.set(max * ((leftY*Constants.Drive.kDriveSpeed)-rightX*Constants.Drive.kTurnSpeed));
+    //backLeft.set(max * ((leftY*Constants.Drive.kDriveSpeed)-rightX*Constants.Drive.kTurnSpeed));
+    //frontRight.set(max * ((leftY*Constants.Drive.kDriveSpeed)+rightX*Constants.Drive.kTurnSpeed));
+    //backRight.set(max * ((leftY*Constants.Drive.kDriveSpeed)+rightX*Constants.Drive.kTurnSpeed));
 
     // Update Network Table
     updatePos();
@@ -136,11 +139,12 @@ public class DriveSubsystem extends SubsystemBase {
    * @param rightSpeed
    */
   public void driveRaw(double leftSpeed, double rightSpeed){
-    // Manual Drive Raw
-    frontLeft.set(leftSpeed);
-    backLeft.set(leftSpeed);
-    frontRight.set(rightSpeed);
-    backRight.set(rightSpeed);
+    // Manual Drive 
+    drive.tankDrive(leftSpeed, rightSpeed);
+    //frontLeft.set(leftSpeed);
+    //backLeft.set(leftSpeed);
+    //frontRight.set(rightSpeed);
+    //backRight.set(rightSpeed);
 
     // Update Network Table
     updatePos();
@@ -158,7 +162,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   @Deprecated
   public void travel(double dist) {
-    /* Encoder Code No Work
+    
     // Gets Desired Dist
     double finDist = 0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance()) + dist;
     // Avoid Dividing by 0
@@ -172,15 +176,14 @@ public class DriveSubsystem extends SubsystemBase {
     }while((0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance()) - finDist) / finDist > 0);
     // Stops afterwards
     stop();
-    */
     
-    // Drive 
-    if(dist == 0)
-      return;
-    if(dist > 0)
-      driveRaw(Constants.Drive.kDriveSpeed, Constants.Drive.kDriveSpeed);
-    else if(dist < 0)
-      driveRaw(-Constants.Drive.kDriveSpeed, -Constants.Drive.kDriveSpeed);
+    // // Drive 
+    // if(dist == 0)
+    //   return;
+    // if(dist > 0)
+    //   driveRaw(Constants.Drive.kDriveSpeed, Constants.Drive.kDriveSpeed);
+    // else if(dist < 0)
+    //   driveRaw(-Constants.Drive.kDriveSpeed, -Constants.Drive.kDriveSpeed);
   }
 
   /**
@@ -213,10 +216,11 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void stop(){
     // Stops Drive
-    frontLeft.stopMotor();
-    backLeft.stopMotor();
-    frontRight.stopMotor();
-    backRight.stopMotor();
+    drive.stopMotor();
+    //frontLeft.stopMotor();
+    //backLeft.stopMotor();
+    //frontRight.stopMotor();
+    //backRight.stopMotor();
 
     // leftSide.stopMotor();
     // rightSide.stopMotor();
@@ -234,10 +238,11 @@ public class DriveSubsystem extends SubsystemBase {
    * Sets the maximum speed for the drive
    */
   public void setMax(double max){
-    // Clamps Max
-    MathUtil.clamp(max, -1.0, 1.0);
-    // Sets Max
-    this.max = max;
+    // // Clamps Max
+    // MathUtil.clamp(max, -1.0, 1.0);
+    // // Sets Max
+    // this.max = max;
+    drive.setMaxOutput(max);
   }
 
   /**
@@ -304,7 +309,7 @@ public class DriveSubsystem extends SubsystemBase {
     // Displacement from Spawn
     SmartDashboard.putNumber("Displacement", getDisplacement());
     // AVG Dist
-    SmartDashboard.putNumber("Distance Travelled", 0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance()));
+    SmartDashboard.putNumber("Distance Travelled", getAvgEncDist());
   }
 
   /**
@@ -321,14 +326,14 @@ public class DriveSubsystem extends SubsystemBase {
    */
   @Deprecated
   private void getRotationRobo() {
-    // // calculate robot rotation change
-    // long startT = System.nanoTime();
-    // // Uses the equation (length of Arc) = (Angle (RAD)) * (Radius)
-    // /*                                       //Get the change in Time//      //Convert to Seconds///Radius Calculation//*/
-    // double leftRot  =  leftEncoder.getRate() * ((System.nanoTime() - startT) * Math.pow(10, -9)) / (Constants.Drive.kRobotDiameter / 2);
-    // double rightRot = rightEncoder.getRate() * ((System.nanoTime() - startT) * Math.pow(10, -9)) / (Constants.Drive.kRobotDiameter / 2);
-    // // Positive if turn right
-    // // Negative if turn left
-    // curRot += 0.5 * (leftRot - rightRot);
+    // calculate robot rotation change
+    long startT = System.nanoTime();
+    // Uses the equation (length of Arc) = (Angle (RAD)) * (Radius)
+    /*                                       //Get the change in Time//      //Convert to Seconds///Radius Calculation//*/
+    double leftRot  =  leftEncoder.getRate() * ((System.nanoTime() - startT) * Math.pow(10, -9)) / (Constants.Drive.kRobotDiameter / 2);
+    double rightRot = rightEncoder.getRate() * ((System.nanoTime() - startT) * Math.pow(10, -9)) / (Constants.Drive.kRobotDiameter / 2);
+    // Positive if turn right
+    // Negative if turn left
+    curRot += 0.5 * (leftRot - rightRot);
   }
 }

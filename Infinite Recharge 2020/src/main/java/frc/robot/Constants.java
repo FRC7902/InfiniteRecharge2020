@@ -26,7 +26,11 @@ public final class Constants {
                             FR = 9, 
                             BL = 3, 
                             BR = 8;
-    //he
+    // PDP Numbers
+    public static final int FLP = 12, 
+                            FRP = 3, 
+                            BLP = 13, 
+                            BRP = 2;
     // Drive Limiters
     public static final double kLimit = 1.0;
     public static final double kDriveSpeed = 1.0;
@@ -55,7 +59,7 @@ public final class Constants {
     // Random Error Avg Number
     public static final int kAvgNum = 5;
     // Minimum Rate Cap (m/s)
-    public static final double kMinRate = 1.0;
+    public static final double kMinRate = 0.05;
     public static final double kDriveLimit = 0.1;
   }
 
@@ -97,9 +101,9 @@ public final class Constants {
     public static final int kTransfer = 10;
     // Transfer Speed (Should be equal or less than shooter speed)
     // No longer needed
-    public static final double kTransferSpeed = 1;
+    public static final double kTransferSpeed = 1.0;
     // Speed
-    public static final double kSpeed = 1;
+    public static final double kSpeed = 1.0;
     public static final double kReverseSpeed = -0.5;
     //Dump Speed
     public static final double kDumpSpeed = 0.1;

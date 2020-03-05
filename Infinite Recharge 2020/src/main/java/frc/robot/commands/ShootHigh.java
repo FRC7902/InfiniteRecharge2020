@@ -18,6 +18,7 @@ import frc.robot.subsystems.StorageSubsystem;
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class ShootHigh extends SequentialCommandGroup {
+
   /**
    * Creates a new ShootHigh.
    */
@@ -27,14 +28,14 @@ public class ShootHigh extends SequentialCommandGroup {
       // Shoot Powerup
       new RunCommand(() -> {
         shootSubsystem.shoot();
+        shootSubsystem.transfer();
       }, shootSubsystem)
-      .withInterrupt(() -> shootSubsystem.isPowered()),
+      .withTimeout(1.0),
       // Activate
       new RunCommand(() -> {
-        shootSubsystem.transfer();
         storageSubsystem.store();
       })
-      .withTimeout(2),
+      .withTimeout(2.0),
       // Stop Everything
       new RunCommand(() -> {
         storageSubsystem.stop();
@@ -44,11 +45,11 @@ public class ShootHigh extends SequentialCommandGroup {
       // Powerup
       new RunCommand(() -> {
         shootSubsystem.shoot();
+        shootSubsystem.transfer();
       }, shootSubsystem)
-      .withInterrupt(() -> shootSubsystem.isPowered()),
+      .withTimeout(2.0),
       // Shoot Again
       new RunCommand(() -> {
-        shootSubsystem.transfer();
         storageSubsystem.store();
       })
       .withTimeout(2),

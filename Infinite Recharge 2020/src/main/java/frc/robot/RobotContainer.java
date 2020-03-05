@@ -56,6 +56,9 @@ public class RobotContainer {
 
   // Timer
   private Timer time = new Timer();
+
+  // Shooter Variable
+  private boolean isEnd = false;
   
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -67,12 +70,15 @@ public class RobotContainer {
     // Default Drive Sub CMD
     driveSubsystem.setDefaultCommand(
       //The Arcade command
-      new RunCommand(() -> 
-        driveSubsystem.driveJoystick(
-          -driverStick.getRawAxis(Constants.LY)*Constants.Drive.kDriveSpeed*Constants.Drive.kLimit, 
-          driverStick.getRawAxis(Constants.RX)*Constants.Drive.kTurnSpeed*Constants.Drive.kLimit), 
-        driveSubsystem
-      )
+      new RunCommand(() -> {
+        if (driverStick.getRawAxis(Constants.LY) + driverStick.getRawAxis(Constants.RX) == 0.0)
+          driveSubsystem.stop();
+        else
+          driveSubsystem.driveJoystick(
+            -driverStick.getRawAxis(Constants.LY)*Constants.Drive.kDriveSpeed*Constants.Drive.kLimit, 
+            -driverStick.getRawAxis(Constants.RX)*Constants.Drive.kTurnSpeed*Constants.Drive.kLimit);
+        
+      }, driveSubsystem)
     );
 
     // Default Climb Sub CMD
@@ -124,24 +130,36 @@ public class RobotContainer {
     // Right Bumper on Operator Stick, Shoot Balls
     new JoystickButton(operatorStick, Constants.RB)
       .whenPressed(() -> {
+        // Start
+        isEnd = false;
         // Reverse Everything
         shootSubsystem.reverse();
         shootSubsystem.reverseTransfer();
         storageSubsystem.reverse();
         // Wait 0.5 second
         time.start();
-        while(time.get() <= 0.5);
+        while(time.get() <= 0.5)
+          if(isEnd)
+            return;
+        time.stop();
+        time.reset();
         // Prep
-        shootSubsystem.stopTransfer();
         storageSubsystem.stop();
         shootSubsystem.shoot();
+        shootSubsystem.transfer();
         // Wait
-        while(!shootSubsystem.isPowered());
+        time.start();
+        while(time.get() <= 1.0)
+          if(isEnd)
+            return;
+        time.stop();
+        time.reset();
         // Shoot
         shootSubsystem.transfer();
         storageSubsystem.store();
       })
       .whenReleased(() -> {
+        isEnd = true;
         storageSubsystem.stop();
         shootSubsystem.stop();
         intakeSubsystem.stop();

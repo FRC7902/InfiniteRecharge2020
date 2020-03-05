@@ -35,8 +35,8 @@ public class ShootSubsystem extends SubsystemBase {
     // Invert Shooter
     right.setInverted(true);
     // Limit Things
-    left.configPeakCurrentLimit(60);
-    right.configPeakCurrentLimit(60);
+    // left.configPeakCurrentLimit(60);
+    // right.configPeakCurrentLimit(60);
     left.configOpenloopRamp(0.3);
     right.configOpenloopRamp(0.3);
     // Creates the Shooter Group
@@ -69,13 +69,6 @@ public class ShootSubsystem extends SubsystemBase {
    */
   public void transfer() {
     transfer.set(Constants.Shooter.kTransferSpeed);
-  }
-
-  /**
-   * Checks if evrything is ready
-   */
-  public boolean isPowered() {
-    return Constants.Shooter.kSpeed == shooter.get();
   }
 
   /**

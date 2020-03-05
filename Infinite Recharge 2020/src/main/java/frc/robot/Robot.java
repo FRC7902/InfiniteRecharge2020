@@ -62,10 +62,11 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     // PDP things
-    SmartDashboard.putNumber("Front Left Current", pdp.getCurrent(12));
-    SmartDashboard.putNumber("Front Right Current", pdp.getCurrent(3));
-    SmartDashboard.putNumber("Back Left Current", pdp.getCurrent(13));
-    SmartDashboard.putNumber("Back Right Current", pdp.getCurrent(2));
+    SmartDashboard.putNumber("Front Left Current", pdp.getCurrent(Constants.Drive.FLP));
+    SmartDashboard.putNumber("Front Right Current", pdp.getCurrent(Constants.Drive.FRP));
+    SmartDashboard.putNumber("Back Left Current", pdp.getCurrent(Constants.Drive.BLP));
+    SmartDashboard.putNumber("Back Right Current", pdp.getCurrent(Constants.Drive.BRP));
+    SmartDashboard.putNumber("Total Current", pdp.getTotalCurrent());
     // Runs the Scheduler. This is responsible for polling buttons, adding
     // newly-scheduled
     // commands, running already-scheduled commands, removing finished or
