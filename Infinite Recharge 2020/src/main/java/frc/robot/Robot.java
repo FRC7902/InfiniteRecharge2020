@@ -7,8 +7,8 @@
 
 package frc.robot;
 
-import edu.wpi.first.cameraserver.CameraServer;
-//import edu.wpi.first.wpilibj.Compressor;
+//import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,7 +30,7 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-  //private Compressor comp = new Compressor();
+  private Compressor comp = new Compressor();
 
   private PowerDistributionPanel pdp = new PowerDistributionPanel();
 
@@ -41,9 +41,9 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     // Start Compressor Cycle (Reloads at 125 psi)
-    // comp.setClosedLoopControl(true);
+    comp.setClosedLoopControl(true);
     // Start Camera
-    CameraServer.getInstance().startAutomaticCapture();
+    //CameraServer.getInstance().startAutomaticCapture();
     // Deploy SMDS
     
     // Instantiate our RobotContainer. This will perform all our button bindings,

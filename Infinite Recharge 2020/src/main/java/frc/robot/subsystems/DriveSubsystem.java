@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-//import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.Constants;
 
 public class DriveSubsystem extends SubsystemBase {
@@ -32,8 +31,8 @@ public class DriveSubsystem extends SubsystemBase {
   /**
    * Encoders
    */
-  private static Encoder leftEncoder = new Encoder(Constants.Drive.kLeft1Enc, Constants.Drive.kLeft2Enc, Constants.Drive.kLeft3Enc, true);
-  private static Encoder rightEncoder = new Encoder(Constants.Drive.kRight1Enc, Constants.Drive.kRight2Enc, Constants.Drive.kRight3Enc, false);
+  private static Encoder leftEncoder = new Encoder(Constants.Drive.kLeft1Enc, Constants.Drive.kLeft2Enc, false);
+  private static Encoder rightEncoder = new Encoder(Constants.Drive.kRight1Enc, Constants.Drive.kRight2Enc, true);
 
   public final Timer m_timer = new Timer();
   /**
@@ -139,11 +138,10 @@ public class DriveSubsystem extends SubsystemBase {
    * @param rightSpeed
    */
   public void driveRaw(double leftSpeed, double rightSpeed){
-    // Manual Drive 
-    drive.tankDrive(leftSpeed, rightSpeed);
-    //frontLeft.set(leftSpeed);
+    // Manual Drive
+    frontLeft.set(leftSpeed);
     //backLeft.set(leftSpeed);
-    //frontRight.set(rightSpeed);
+    frontRight.set(rightSpeed);
     //backRight.set(rightSpeed);
 
     // Update Network Table
@@ -164,7 +162,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void travel(double dist) {
     
     // Gets Desired Dist
-    double finDist = 0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance()) + dist;
+    double finDist = getAvgEncDist() + dist;
     // Avoid Dividing by 0
     if(finDist == 0.0)
       finDist += Constants.Drive.kNoZero;
@@ -173,7 +171,7 @@ public class DriveSubsystem extends SubsystemBase {
       // (dist / Math.abs(dist)) = Neg/Pos Check
       driveRaw((dist / Math.abs(dist)) * Constants.Drive.kAutoSpeed, (dist / Math.abs(dist)) * Constants.Drive.kAutoSpeed);
     // Approaching 0 = Arrive at angle
-    }while((0.5 * (leftEncoder.getDistance() + rightEncoder.getDistance()) - finDist) / finDist > 0);
+    }while((getAvgEncDist() - finDist) / finDist > 0);
     // Stops afterwards
     stop();
     
@@ -229,10 +227,11 @@ public class DriveSubsystem extends SubsystemBase {
   /**
    * Reset Encoder
    */
-  public void resetEnc() {
-    leftEncoder.reset();
-    rightEncoder.reset();
-  }
+  // @Deprecated
+  // public void resetEnc() {
+  //   leftEncoder.reset();
+  //   rightEncoder.reset();
+  // }
 
   /**
    * Sets the maximum speed for the drive
@@ -249,7 +248,7 @@ public class DriveSubsystem extends SubsystemBase {
    * Gets the Distance Travel
    */ 
   public double getAvgEncDist(){
-    return (leftEncoder.getDistance() + rightEncoder.getDistance()) * 0.5;
+    return /*(-*/leftEncoder.getDistance()/* + rightEncoder.getDistance()) * 0.5*/;
   }
 
   /**
@@ -257,13 +256,13 @@ public class DriveSubsystem extends SubsystemBase {
    * @param dist
    * @return
    */
-  public boolean checkIfDist(double dist){
-    if(dist > 0){
-      return getAvgEncDist() >= dist;
-    }else{
-      return getAvgEncDist() <= dist;
-    }
-  }
+  // public boolean checkIfDist(double dist){
+  //   if(dist > 0){
+  //     return getAvgEncDist() >= dist;
+  //   }else{
+  //     return getAvgEncDist() <= dist;
+  //   }
+  // }
 
   /**
    * Calculate Displacement
@@ -310,6 +309,9 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Displacement", getDisplacement());
     // AVG Dist
     SmartDashboard.putNumber("Distance Travelled", getAvgEncDist());
+    // DEBUG
+    SmartDashboard.putNumber("Left Encoder", leftEncoder.getDistance());
+    SmartDashboard.putNumber("Right Encoder", rightEncoder.getDistance());
   }
 
   /**

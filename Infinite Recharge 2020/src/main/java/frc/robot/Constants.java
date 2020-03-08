@@ -7,6 +7,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants.  This class should not be used for any other purpose.  All constants should be
@@ -50,17 +53,15 @@ public final class Constants {
     // Encoder
     public static final int kLeft1Enc = 0,
                             kLeft2Enc = 1,
-                            kLeft3Enc = 2,
-                            kRight1Enc = 3,
-                            kRight2Enc = 4,
-                            kRight3Enc = 5;
+                            kRight1Enc = 2,
+                            kRight2Enc = 3;
     // Maps Pulse to Distance (m/pulse)
-    public static final double kRatio = 1.0 / 2048.0 * Math.PI * 0.1524;
+    public static final double kRatio = (Math.PI * 0.1524) / 2048.0;
     // Random Error Avg Number
     public static final int kAvgNum = 5;
     // Minimum Rate Cap (m/s)
     public static final double kMinRate = 0.05;
-    public static final double kDriveLimit = 0.1;
+    public static final double kDriveLimit = 0.2;
   }
 
   /**
@@ -85,7 +86,7 @@ public final class Constants {
                             kRight = 7;
     // Speed
     public static final double kSpeed = 0.9;
-    public static final double kReverseSpeed = -0.4;
+    public static final double kReverseSpeed = -0.2;
 
     public static final double kIntakeSpeed = 0.6;
   }
@@ -136,6 +137,18 @@ public final class Constants {
                             kBackSolenoid = 3;
     // Confidence
     public static final double kMinConfidence = 0.8;
+  }
+
+  public static final class Camera {
+    // GRIP Table Key
+    public static final NetworkTable kGrip = NetworkTableInstance.getDefault().getTable(NetworkTable.PATH_SEPARATOR + "GRIP");
+    // Desired Coordinate
+    public static final String kXKey = "",
+                               kYKey = "";
+    // MAX = 640
+    public static final double kX = 320.0,
+    // MAX = 480
+                               kY = 240.0;
   }
 
   /*

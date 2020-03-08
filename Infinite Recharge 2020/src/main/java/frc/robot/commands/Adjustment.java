@@ -7,25 +7,22 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import frc.robot.subsystems.ShootSubsystem;
-import frc.robot.subsystems.StorageSubsystem;
+// import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class DumpShot extends ParallelCommandGroup {
+public class Adjustment extends SequentialCommandGroup {
   /**
-   * Creates a new DumpShot.
+   * Creates a new Adjustment.
    */
-  public DumpShot(ShootSubsystem shootSubsystem, StorageSubsystem storageSubsystem) {
-    // Add Commands
+  public Adjustment() {
+    // Adding Commands
     super(
-      // Dump Balls
-      new RunCommand(() -> shootSubsystem.dumpShoot(), shootSubsystem),
-      new RunCommand(() -> shootSubsystem.dumpTransfer(), shootSubsystem),
-      new RunCommand(() -> storageSubsystem.store(), storageSubsystem)
+      // new RunCommand(() -> {
+      //   if
+      // })
     );
   }
 }

@@ -7,17 +7,12 @@
 
 package frc.robot;
 
+import java.util.concurrent.TimeUnit;
+
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-// import edu.wpi.first.wpilibj2.command.CommandBase;
-// import edu.wpi.first.wpilibj2.command.CommandScheduler;
-// import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-// import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-// import edu.wpi.first.wpilibj2.command.WaitCommand;
-// import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -28,10 +23,11 @@ import frc.robot.commands.ShootHigh;
 import frc.robot.subsystems.*;
 
 /**
- * This class is where the bulk of the robot should be declared.  Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
- * (including subsystems, commands, and button mappings) should be declared here.
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a "declarative" paradigm, very little robot logic should
+ * actually be handled in the {@link Robot} periodic methods (other than the
+ * scheduler calls). Instead, the structure of the robot (including subsystems,
+ * commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
@@ -43,7 +39,7 @@ public class RobotContainer {
 
   // Declaring Joysticks
   private static XboxController driverStick = new XboxController(Constants.JOY),
-                                operatorStick = new XboxController(Constants.OP);
+      operatorStick = new XboxController(Constants.OP);
 
   // Autonomous Routine
   private final Command forward = new Forward(driveSubsystem, intakeSubsystem, shootSubsystem, storageSubsystem);
@@ -55,13 +51,13 @@ public class RobotContainer {
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   // Timer
-  private Timer time = new Timer();
+  //private Timer time = new Timer();
 
   // Shooter Variable
   private boolean isEnd = false;
-  
+
   /**
-   * The container for the robot.  Contains subsystems, OI devices, and commands.
+   * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
@@ -69,106 +65,100 @@ public class RobotContainer {
 
     // Default Drive Sub CMD
     driveSubsystem.setDefaultCommand(
-      //The Arcade command
-      new RunCommand(() -> {
-        if (driverStick.getRawAxis(Constants.LY) + driverStick.getRawAxis(Constants.RX) == 0.0)
-          driveSubsystem.stop();
-        else
-          driveSubsystem.driveJoystick(
-            -driverStick.getRawAxis(Constants.LY)*Constants.Drive.kDriveSpeed*Constants.Drive.kLimit, 
-            -driverStick.getRawAxis(Constants.RX)*Constants.Drive.kTurnSpeed*Constants.Drive.kLimit);
-        
-      }, driveSubsystem)
-    );
+        // The Arcade command
+        new RunCommand(() -> {
+          if (driverStick.getRawAxis(Constants.LY) + driverStick.getRawAxis(Constants.RX) == 0.0)
+            driveSubsystem.stop();
+          else
+            driveSubsystem.driveJoystick(
+                -driverStick.getRawAxis(Constants.LY) * Constants.Drive.kDriveSpeed * Constants.Drive.kLimit,
+                -driverStick.getRawAxis(Constants.RX) * Constants.Drive.kTurnSpeed * Constants.Drive.kLimit);
+
+        }, driveSubsystem));
 
     // Default Climb Sub CMD
     // climbSubsystem.setDefaultCommand(
-    //   //The Climb command
-    //   new RunCommand(() ->
-    //     // Rise & Fall using Left Y Axis
-    //     climbSubsystem.climb(operatorStick.getRawAxis(Constants.LY)), 
-    //     climbSubsystem
-    //   )
+    // //The Climb command
+    // new RunCommand(() ->
+    // // Rise & Fall using Left Y Axis
+    // climbSubsystem.climb(operatorStick.getRawAxis(Constants.LY)),
+    // climbSubsystem
+    // )
     // );
 
-    //Add Commands to the autonomous command chooser
+    // Add Commands to the autonomous command chooser
     m_chooser.setDefaultOption("Forward", forward);
     m_chooser.addOption("Intake", intake);
     m_chooser.addOption("Low Port", low);
     m_chooser.addOption("High Port", high);
-    
-    //Put the Chooser on Dashboard
+
+    // Put the Chooser on Dashboard
     SmartDashboard.putData(m_chooser);
   }
 
-
-  //private Timer time = new Timer();
+  // private Timer time = new Timer();
 
   /**
-   * Use this method to define your button->command mappings.  Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
-   * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   * Use this method to define your button->command mappings. Buttons can be
+   * created by instantiating a {@link GenericHID} or one of its subclasses
+   * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
+   * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
 
     // Right Bumper on Driver Stick ~ Limit Speed
-    new JoystickButton(driverStick, Constants.RB)
-      .whenPressed(() -> driveSubsystem.setMax(Constants.Drive.kDriveLimit))
-      .whenReleased(() -> driveSubsystem.setMax(1));
+    new JoystickButton(driverStick, Constants.RB).whenPressed(() -> driveSubsystem.setMax(Constants.Drive.kDriveLimit))
+        .whenReleased(() -> driveSubsystem.setMax(1));
 
     // Left Bumper on Operator Stick ~ Sucks Balls
-    new JoystickButton(operatorStick, Constants.LB)
-      .whenPressed(() -> {
-        intakeSubsystem.suck();
-        storageSubsystem.storeIntake();
-        driveSubsystem.setMax(Constants.Drive.kIntakeDriveSpeed);
-      }, intakeSubsystem)
-      .whenReleased(() -> {
-        intakeSubsystem.stop();
-        storageSubsystem.stop();
-        driveSubsystem.setMax(1);
-      });
+    new JoystickButton(operatorStick, Constants.LB).whenPressed(() -> {
+      intakeSubsystem.suck();
+      storageSubsystem.storeIntake();
+      driveSubsystem.setMax(Constants.Drive.kIntakeDriveSpeed);
+    }, intakeSubsystem).whenReleased(() -> {
+      intakeSubsystem.stop();
+      storageSubsystem.stop();
+      driveSubsystem.setMax(1);
+    });
 
     // Right Bumper on Operator Stick, Shoot Balls
-    new JoystickButton(operatorStick, Constants.RB)
-      .whenPressed(() -> {
-        // Start
-        isEnd = false;
-        // Reverse Everything
+    new JoystickButton(operatorStick, Constants.RB).whenPressed(() -> {
+      // Start
+      isEnd = false;
+      // Reverse Everything
+      if (!isEnd) {
         shootSubsystem.reverse();
         shootSubsystem.reverseTransfer();
         storageSubsystem.reverse();
-        // Wait 0.5 second
-        time.start();
-        while(time.get() <= 0.5)
-          if(isEnd)
-            return;
-        time.stop();
-        time.reset();
+      }
+      // Wait 0.5 second
+      try {
+        TimeUnit.MILLISECONDS.sleep(500);
+      } catch (InterruptedException e) {}
         // Prep
-        storageSubsystem.stop();
-        shootSubsystem.shoot();
-        shootSubsystem.transfer();
-        // Wait
-        time.start();
-        while(time.get() <= 1.0)
-          if(isEnd)
-            return;
-        time.stop();
-        time.reset();
-        // Shoot
+        if(!isEnd) {
+          storageSubsystem.stop();
+          shootSubsystem.shoot();
+          shootSubsystem.transfer();
+        }
+      // Wait
+      try {
+        TimeUnit.MILLISECONDS.sleep(1000);
+      } catch (InterruptedException e) {}
+      // Shoot
+      if(!isEnd) {
         shootSubsystem.transfer();
         storageSubsystem.store();
-      })
-      .whenReleased(() -> {
-        isEnd = true;
-        storageSubsystem.stop();
-        shootSubsystem.stop();
-        intakeSubsystem.stop();
-        time.stop();
-        time.reset();
-      });
+      }
+    })
+    .whenReleased(() -> {
+      isEnd = true;
+      try {
+        TimeUnit.MILLISECONDS.sleep(2200);
+      } catch (InterruptedException e) {}
+      storageSubsystem.stop();
+      shootSubsystem.stop();
+    });
 
     // B on Operator Stick ~ Reserve All
     new JoystickButton(operatorStick, Constants.B)

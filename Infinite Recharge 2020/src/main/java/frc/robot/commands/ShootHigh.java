@@ -8,7 +8,6 @@
 package frc.robot.commands;
 
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 //import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -44,23 +43,6 @@ public class ShootHigh extends SequentialCommandGroup {
         shootSubsystem.stopTransfer();
         shootSubsystem.stop();
       }).withTimeout(0.5),
-      // Powerup
-      new RunCommand(() -> {
-        shootSubsystem.shoot();
-        shootSubsystem.transfer();
-      }, shootSubsystem)
-      .withTimeout(2.0),
-      // Shoot Again
-      new RunCommand(() -> {
-        storageSubsystem.store();
-      })
-      .withTimeout(2),
-      // Stop Again
-      new InstantCommand(() -> {
-        storageSubsystem.stop();
-        shootSubsystem.stopTransfer();
-        shootSubsystem.stop();
-      }),
       // Drive Forward
       new RunCommand(() -> driveSubsystem.driveRaw(-0.3, -0.3), driveSubsystem)
       .beforeStarting(driveSubsystem::resetTimer, driveSubsystem)

@@ -1,30 +1,19 @@
 {
   "tabPane": [
     {
-      "title": "SmartDashboard",
+      "title": "Le Epic Panel",
       "autoPopulate": true,
       "autoPopulatePrefix": "SmartDashboard/",
       "widgetPane": {
-        "gridSize": 128.0,
-        "showGrid": false,
+        "gridSize": 64.0,
+        "showGrid": true,
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
-          "10,0": {
+          "11,0": {
             "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "ComboBox Chooser",
-              "_source0": "network_table:///SmartDashboard/SendableChooser[1]",
-              "_title": "SendableChooser[1]"
-            }
-          },
-          "7,2": {
-            "size": [
-              2,
-              2
+              4,
+              3
             ],
             "content": {
               "_type": "Grid Layout",
@@ -61,10 +50,10 @@
               }
             }
           },
-          "5,2": {
+          "9,3": {
             "size": [
               2,
-              2
+              3
             ],
             "content": {
               "_type": "List Layout",
@@ -89,10 +78,10 @@
               ]
             }
           },
-          "5,0": {
+          "7,0": {
             "size": [
               2,
-              2
+              6
             ],
             "content": {
               "_type": "Subsystem Layout",
@@ -147,10 +136,10 @@
               ]
             }
           },
-          "7,0": {
+          "9,0": {
             "size": [
               2,
-              2
+              3
             ],
             "content": {
               "_type": "List Layout",
@@ -182,63 +171,46 @@
           },
           "0,0": {
             "size": [
-              5,
-              4
+              7,
+              7
             ],
             "content": {
               "_type": "Camera Stream",
-              "_source0": "camera_server://USB Camera 0",
-              "_title": "USB Camera 0",
+              "_source0": "camera_server://rPi Camera 0",
+              "_title": "rPi Camera 0",
               "Crosshair/Show crosshair": true,
               "Crosshair/Crosshair color": "#FFFFFFFF",
               "Controls/Show controls": true,
-              "Controls/Rotation": "NONE",
+              "Controls/Rotation": "HALF",
               "compression": -1.0,
               "fps": -1,
-              "imageWidth": 0,
-              "imageHeight": 0
+              "imageWidth": -1,
+              "imageHeight": -1
             }
-          }
-        }
-      }
-    },
-    {
-      "title": "LiveWindow",
-      "autoPopulate": false,
-      "autoPopulatePrefix": "LiveWindow/",
-      "widgetPane": {
-        "gridSize": 128.0,
-        "showGrid": true,
-        "hgap": 16.0,
-        "vgap": 16.0,
-        "tiles": {
-          "0,0": {
+          },
+          "11,3": {
             "size": [
-              3,
-              2
+              2,
+              1
             ],
             "content": {
-              "_type": "Differential Drivebase",
-              "_source0": "network_table:///LiveWindow/Ungrouped/DifferentialDrive[1]",
-              "_title": "DifferentialDrive[1]",
-              "Wheels/Number of wheels": 4,
-              "Wheels/Wheel diameter": 80.0,
-              "Visuals/Show velocity vectors": true
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Right Encoder",
+              "_title": "Right Encoder"
+            }
+          },
+          "13,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Left Encoder",
+              "_title": "Left Encoder"
             }
           }
         }
-      }
-    },
-    {
-      "title": "Debug",
-      "autoPopulate": false,
-      "autoPopulatePrefix": "",
-      "widgetPane": {
-        "gridSize": 128.0,
-        "showGrid": true,
-        "hgap": 16.0,
-        "vgap": 16.0,
-        "tiles": {}
       }
     }
   ],
