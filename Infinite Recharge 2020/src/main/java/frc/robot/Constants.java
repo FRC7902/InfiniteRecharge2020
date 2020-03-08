@@ -86,7 +86,7 @@ public final class Constants {
                             kRight = 7;
     // Speed
     public static final double kSpeed = 0.9;
-    public static final double kReverseSpeed = -0.2;
+    public static final double kReverseSpeed = -0.1;
 
     public static final double kIntakeSpeed = 0.6;
   }

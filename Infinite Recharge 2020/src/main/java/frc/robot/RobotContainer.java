@@ -7,7 +7,7 @@
 
 package frc.robot;
 
-import java.util.concurrent.TimeUnit;
+// import java.util.concurrent.TimeUnit;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -20,6 +20,7 @@ import frc.robot.commands.Forward;
 import frc.robot.commands.Deployment;
 import frc.robot.commands.DumpLoad;
 import frc.robot.commands.ShootHigh;
+import frc.robot.commands.Shooter;
 import frc.robot.subsystems.*;
 
 /**
@@ -54,7 +55,7 @@ public class RobotContainer {
   //private Timer time = new Timer();
 
   // Shooter Variable
-  private boolean isEnd = false;
+  // private boolean isEnd = false;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -122,7 +123,8 @@ public class RobotContainer {
     });
 
     // Right Bumper on Operator Stick, Shoot Balls
-    new JoystickButton(operatorStick, Constants.RB).whenPressed(() -> {
+    Shooter shoot = new Shooter(shootSubsystem, storageSubsystem);
+    new JoystickButton(operatorStick, Constants.RB).whenPressed(shoot/*() -> {
       // Start
       isEnd = false;
       // Reverse Everything
@@ -150,15 +152,15 @@ public class RobotContainer {
         shootSubsystem.transfer();
         storageSubsystem.store();
       }
-    })
-    .whenReleased(() -> {
+    }*/)
+    .whenReleased(() -> shoot.end()/*{
       isEnd = true;
       try {
         TimeUnit.MILLISECONDS.sleep(2200);
       } catch (InterruptedException e) {}
       storageSubsystem.stop();
       shootSubsystem.stop();
-    });
+    }*/);
 
     // B on Operator Stick ~ Reserve All
     new JoystickButton(operatorStick, Constants.B)
