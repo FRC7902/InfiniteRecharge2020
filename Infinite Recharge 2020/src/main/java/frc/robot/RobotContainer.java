@@ -175,53 +175,29 @@ public class RobotContainer {
     });
 
     // Y on Operator Stick ~ Dumps Load
-    new JoystickButton(operatorStick,Constants.Y)
-    .whenPressed(() -> {
-      shootSubsystem.dumpShoot();
-      shootSubsystem.dumpTransfer();
-      storageSubsystem.store();
-    })
-    .whenReleased(() -> {
-      shootSubsystem.stop();
-      storageSubsystem.stop();
-    });
+    // new JoystickButton(operatorStick,Constants.Y)
+    // .whenPressed(() -> {
+    //   shootSubsystem.dumpShoot();
+    //   shootSubsystem.dumpTransfer();
+    //   storageSubsystem.store();
+    // })
+    // .whenReleased(() -> {
+    //   shootSubsystem.stop();
+    //   storageSubsystem.stop();
+    // });
 
     // A on Operator Stick ~ Reverse Intake
     new JoystickButton(operatorStick, Constants.A)
       .whenPressed(() -> intakeSubsystem.reverse())
       .whenReleased(() -> intakeSubsystem.normal());
 
-    // //When X is pressed, deploy Intake 
-    // new JoystickButton(operatorStick, Constants.X)
-    //   .toggleWhenPressed(new CommandBase() {
-    //     // When CMD is running, deploy
-    //     @Override
-    //     public void execute() {
-    //       intakeSubsystem.deploy();
-    //     }   
-    //     // When interrupted (Toggled off) retract
-    //     @Override
-    //     public void end(boolean interrupted) {
-    //       intakeSubsystem.retract();
-    //     }
-    //   // true = yes please interrupt
-    //   }, true);
+    //When X is pressed, deploy Intake 
+    new JoystickButton(operatorStick, Constants.X)
+    .whenPressed(() -> intakeSubsystem.deploy());
 
-    //When Y is pressed, deploy colour arm
-    // new JoystickButton(operatorStick, Constants.Y)
-    //   .toggleWhenPressed(new CommandBase() {
-    //     // When CMD is running, deploy
-    //     @Override
-    //     public void execute() {
-    //       colourSubsystem.rise();
-    //     }   
-    //     // When interrupted (Toggled off) retract
-    //     @Override
-    //     public void end(boolean interrupted) {
-    //       colourSubsystem.fall();
-    //     }
-    //   // true = yes please interrupt
-    //   }, true);
+    //When Y is pressed, retract Intake
+    new JoystickButton(operatorStick, Constants.Y)
+    .whenPressed(() -> intakeSubsystem.retract());
   }
 
   /**

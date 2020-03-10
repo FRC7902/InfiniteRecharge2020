@@ -158,7 +158,6 @@ public class DriveSubsystem extends SubsystemBase {
    * @param dist
    * Distance you want to travel in meters
    */
-  @Deprecated
   public void travel(double dist) {
     
     // Gets Desired Dist
@@ -193,7 +192,6 @@ public class DriveSubsystem extends SubsystemBase {
    * @param rot
    * Rotate this much
    */
-  @Deprecated
   public void turn(double rot) {
     // Get Final Rotation Needed
     double finRot = curRot + rot;

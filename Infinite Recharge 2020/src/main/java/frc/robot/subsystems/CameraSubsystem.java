@@ -16,20 +16,37 @@ public class CameraSubsystem extends SubsystemBase {
   /**
    * Coordinates
    */
-  private double curX = Constants.Camera.kGrip.getEntry(Constants.Camera.kXKey).getDouble(-1.0), 
-                 curY = Constants.Camera.kGrip.getEntry(Constants.Camera.kYKey).getDouble(-1.0);
+  private double curX, curY;
 
   /**
    * Creates a new CameraSubsystem.
    */
   public CameraSubsystem() {
-    
+    // Get Camera Pixel Location
+    curX = Constants.Camera.kGrip.getEntry(Constants.Camera.kXKey).getDouble(-1.0);
+    curY = Constants.Camera.kGrip.getEntry(Constants.Camera.kYKey).getDouble(-1.0);
+  }
+
+  /**
+   * Get the X
+   */
+  public double getX() {
+    return curX;
+  }
+
+  /**
+   * Get the Y
+   */
+  public double getY() {
+    return curY;
   }
 
   /**
    * Distance from X
    */
   public double getDistX() {
+    // if(curX == -1.0)
+    //   return curX; 
     return Constants.Camera.kX - curX;
   }
 
@@ -43,6 +60,8 @@ public class CameraSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    curX = Constants.Camera.kGrip.getEntry(Constants.Camera.kXKey).getDouble(-1.0);
+    curY = Constants.Camera.kGrip.getEntry(Constants.Camera.kYKey).getDouble(-1.0);
     // Returns the Current Coordinate of the detected Green
     SmartDashboard.putNumber("Current X", curX);
     SmartDashboard.putNumber("Current Y", curY);

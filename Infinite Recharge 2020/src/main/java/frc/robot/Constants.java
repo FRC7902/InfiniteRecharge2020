@@ -9,6 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpiutil.math.MathUtil;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -141,14 +142,20 @@ public final class Constants {
 
   public static final class Camera {
     // GRIP Table Key
-    public static final NetworkTable kGrip = NetworkTableInstance.getDefault().getTable(NetworkTable.PATH_SEPARATOR + "GRIP");
+    public static final NetworkTable kGrip = NetworkTableInstance.getDefault().getTable(NetworkTable.PATH_SEPARATOR + "GRIP" + NetworkTable.PATH_SEPARATOR + "contours");
     // Desired Coordinate
     public static final String kXKey = "",
                                kYKey = "";
     // MAX = 640
-    public static final double kX = 320.0,
+    public static final double kX = MathUtil.clamp(320.0, 0.0, 640.0),
     // MAX = 480
-                               kY = 240.0;
+                               kY = MathUtil.clamp(240.0, 0.0, 640.0);
+    // Adjust Speed
+    public static final double kSpeed = 0.25;
+    // Adjustment Timeout
+    public static final double kTimeout = 5;
+    // Range End Condition
+    public static final double kRange = 1.5;
   }
 
   /*
